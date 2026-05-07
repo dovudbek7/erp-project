@@ -1,0 +1,18 @@
+import { Outlet } from "react-router";
+import Dashboard from "./Dashboard";
+
+function Layout() {
+  return (
+    <div>
+      <div className="grid grid-cols-[300px_1fr]">
+        <Dashboard />
+        <div className="col">
+          <div className="bg-gray-200 p-4">Content Area</div>
+          <Outlet />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Layout;
