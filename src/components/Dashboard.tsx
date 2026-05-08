@@ -1,7 +1,7 @@
 import { RiDashboardFill } from "react-icons/ri";
 import { FaWarehouse } from "react-icons/fa";
 import { BsFillBoxSeamFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const sideItems = [
   {
@@ -39,7 +39,7 @@ const Dashboard = () => {
 
       <div className="py-5 px-4 flex flex-col gap-3">
         {sideItems.map((item) => (
-          <Link
+          <NavLink
             to={item.route}
             key={item.id}
             className="hover:border hover:border-2 p-2 rounded-md hover:border-gray-400"
@@ -48,7 +48,7 @@ const Dashboard = () => {
               <span className="">{item.icon}</span>
               <span className="font-semibold">{item.name}</span>
             </div>
-          </Link>
+          </NavLink>
         ))}
       </div>
     </div>

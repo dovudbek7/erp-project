@@ -1,10 +1,12 @@
+import { InvoicesList } from "./MockData";
 
 const Lot = () => {
-    return (
-        <div>
-            Lots
-        </div>
-    );
-}
+  return (
+    <div>
+      Lots
+      <InvoicesList />
+    </div>
+  );
+};
 
 export default Lot;
