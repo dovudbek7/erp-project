@@ -152,3 +152,13 @@ export interface MockData {
   lots: Lot[];
   inventoryMovements: InventoryMovement[];
 }
+export interface warehouse {
+  id: string;
+  tenantId: string;
+  code: string;
+  name: string;
+  type: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

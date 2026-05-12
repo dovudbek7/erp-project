@@ -9,7 +9,7 @@ function Layout() {
         <div className="col">
           <div className="bg-gray-300 p-4 text-white">Content Area</div>
 
-          <div className="p-[35px_60px]">
+          <div className="container p-[35px_60px]">
             <Outlet />
           </div>
         </div>

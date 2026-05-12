@@ -16,6 +16,9 @@ export const handlers = [
   http.get("/api/products", () => {
     return HttpResponse.json(mockData.products);
   }),
+  http.get("/api/warehouses", () => {
+    return HttpResponse.json(mockData.warehouses);
+  }),
 
   http.get("/api/products/:id", ({ params }) => {
     const { id } = params;

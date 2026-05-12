@@ -1,4 +1,4 @@
-import { Button, Paper } from "@mui/material";
+import { Button, colors, Paper } from "@mui/material";
 import useLots from "../hooks/useLots";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { Chip } from "@mui/material";
@@ -6,20 +6,10 @@ import moment from "moment";
 function Lots() {
   const { data, error, isLoading } = useLots();
 
-  // const rows = data?.map((d) => ({
-  //   id: d.id,
-  //   lotNumber: d.lotNumber,
-  //   product: d.productId,
-  //   warehouse: d.warehouseId,
-  //   status: d.status,
-  //   unitCost: d.unitCost,
-  //   // unit: d.costPerUnit,
-  // }));
-
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID" },
-    { field: "lotNumber", headerName: "Lot Number" },
-    { field: "productId", headerName: "Product" },
+    { field: "id", headerName: "ID", flex: 1 },
+    { field: "lotNumber", headerName: "Lot Number", flex: 1 },
+    { field: "productId", headerName: "Product", flex: 1 },
     {
       field: "warehouseId",
       headerName: "Warehouse",
@@ -28,7 +18,7 @@ function Lots() {
       field: "status",
       headerName: "Status",
       description: "This column has a value getter and is not sortable.",
-      width: 120,
+      flex: 1,
       renderCell: (params) => {
         const status = params.value;
 
@@ -60,7 +50,7 @@ function Lots() {
     {
       field: "unitCost",
       headerName: "Unit Cost",
-      width: 110,
+      flex: 1,
       renderCell: (param) => {
         return <p>{param.value} UZS</p>;
       },
@@ -68,7 +58,7 @@ function Lots() {
     {
       field: "currentQuantity",
       headerName: "Current QTY",
-      width: 100,
+      flex: 1,
       renderCell: (param) => {
         return <p>{param.value} KG</p>;
       },
@@ -77,7 +67,7 @@ function Lots() {
     {
       field: "expiryDate",
       headerName: "Expiry Date",
-      width: 120,
+      flex: 1,
       renderCell: (param) => {
         let d = new Date();
         let year = d.getFullYear();
@@ -110,7 +100,7 @@ function Lots() {
     {
       field: "source",
       headerName: "Source",
-      width: 130,
+      flex: 1,
       renderCell: (param) => {
         return <Chip label={param.value} size="small" variant="outlined" />;
       },
@@ -138,8 +128,8 @@ function Lots() {
             </Button>
           </div>
         </div>
-        <div className="mt-5">
-          <Paper sx={{ height: "auto", width: "100%", borderRadius: "15px" }}>
+        <div className="mt-5 shadow shadow-md">
+          <Paper sx={{ height: "auto" }}>
             <DataGrid
               rows={data}
               // getRowId={}
@@ -147,7 +137,7 @@ function Lots() {
               initialState={{ pagination: { paginationModel } }}
               pageSizeOptions={[5, 10]}
               checkboxSelection
-              sx={{ border: 0, borderRadius: "15px" }}
+              sx={{ border: 0 }}
             />
           </Paper>
         </div>
