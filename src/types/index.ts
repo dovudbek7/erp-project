@@ -119,6 +119,10 @@ export interface Lot {
   expiryDate: string;
   initialQuantity: string;
   currentQuantity: string;
+  warehouseId: string;
+  unitCost: string;
+  currency: string;
+  source: string;
   uom: string;
   costPerUnit: string;
   status: "AVAILABLE" | "RESERVED" | "SOLD_OUT";

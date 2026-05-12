@@ -42,7 +42,7 @@ const Dashboard = () => {
           <NavLink
             to={item.route}
             key={item.id}
-            className="hover:border hover:border-2 p-2 rounded-md hover:border-gray-400"
+            className="hover:outline hover:outline-2 p-2 rounded-md hover:border-gray-400"
           >
             <div className="flex items-center gap-3 text-gray-400 hover:text-white">
               <span className="">{item.icon}</span>

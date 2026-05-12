@@ -1,20 +1,14 @@
-import { useState, useEffect } from "react";
-import type { Lot } from "../types";
+import useLots from "../hooks/useLots";
 export const InvoicesList = () => {
-  const [invoices, setInvoices] = useState<Lot[]>([]);
+  const { data, error, isLoading } = useLots();
 
-  useEffect(() => {
-    fetch("/api/lots")
-      .then((res) => res.json())
-      .then((data: Lot[]) => {
-        setInvoices(data);
-        console.log(invoices);
-      });
-  }, []);
+  console.log(data);
 
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>{error.message}</p>;
   return (
     <div>
-      {invoices.map((inv) => (
+      {data?.map((inv) => (
         <div key={inv.id}>{inv.id}</div>
       ))}
     </div>
