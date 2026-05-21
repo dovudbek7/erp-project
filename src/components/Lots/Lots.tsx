@@ -1,14 +1,22 @@
-import { Button, colors, Paper } from "@mui/material";
-import useLots from "../hooks/useLots";
+import { Button, Chip, Paper } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
-import { Chip } from "@mui/material";
 import moment from "moment";
+import { Link } from "react-router";
+import useLots from "../../hooks/useLots";
+import { useTranslation } from "react-i18next";
 function Lots() {
   const { data, error, isLoading } = useLots();
-
+  const { t } = useTranslation();
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 1 },
-    { field: "lotNumber", headerName: "Lot Number", flex: 1 },
+    {
+      field: "lotNumber",
+      headerName: "Lot Number",
+      flex: 1,
+      renderCell(params) {
+        return <Link to={`/lots/${params.id}`}>{params.row.lotNumber}</Link>;
+      },
+    },
     { field: "productId", headerName: "Product", flex: 1 },
     {
       field: "warehouseId",
@@ -117,22 +125,20 @@ function Lots() {
       <div className="">
         <div className="flex justify-between">
           <div className="">
-            <h2 className="text-3xl font-bold">Lots</h2>
-            <p className="text-gray-400">
-              All inventory batches with cost and expiry tracking.
-            </p>
+            <h2 className="text-3xl font-bold ">{t("lotsPage.name")}</h2>
+            <p className="text-gray-400">{t("lotsPage.desc")}</p>
           </div>
           <div className="">
             <Button variant="contained" color="error">
-              + Add
+              + {t("actions.addButton")}
             </Button>
           </div>
         </div>
         <div className="mt-5 shadow shadow-md">
           <Paper sx={{ height: "auto" }}>
             <DataGrid
-              rows={data}
-              // getRowId={}
+              rows={data || []}
+              getRowId={(row) => row.id}
               columns={columns}
               initialState={{ pagination: { paginationModel } }}
               pageSizeOptions={[5, 10]}

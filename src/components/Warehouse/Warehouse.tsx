@@ -1,11 +1,13 @@
 import { Button, Chip, Paper } from "@mui/material";
-import useWarehouse from "../hooks/useWarehouse";
+
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import useWarehouse from "../../hooks/useWarehouse";
+import { useTranslation } from "react-i18next";
 
 function Warehouse() {
   const { data } = useWarehouse();
   console.log(data);
-
+  const { t } = useTranslation();
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 1 },
     { field: "name", headerName: "Name", flex: 1 },
@@ -23,12 +25,12 @@ function Warehouse() {
     <div className="">
       <div className="flex justify-between">
         <div className="">
-          <h2 className="text-3xl font-bold">Warehouses</h2>
-          <p className="text-gray-400">Manage your storage locations.</p>
+          <h2 className="text-3xl font-bold">{t("wareHousePage.name")}</h2>
+          <p className="text-gray-400">{t("wareHousePage.desc")}</p>
         </div>
         <div className="">
           <Button variant="contained" color="error">
-            + Add
+           + {t("actions.addButton")}
           </Button>
         </div>
       </div>

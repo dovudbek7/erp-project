@@ -2,34 +2,38 @@ import { RiDashboardFill } from "react-icons/ri";
 import { FaWarehouse } from "react-icons/fa";
 import { BsFillBoxSeamFill } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+
+const Dashboard = () => {
+  const { t } = useTranslation();
 
 const sideItems = [
   {
     id: 1,
     icon: <RiDashboardFill />,
-    name: "Dashboard",
+    name: t("sidebar.dashboard"),
     route: "/",
   },
   {
     id: 2,
     icon: <FaWarehouse />,
-    name: "WareHouse",
+    name: t("sidebar.wareHouse"),
     route: "/warehouses",
   },
   {
     id: 3,
     icon: <BsFillBoxSeamFill />,
-    name: "Lots",
+    name: t("sidebar.lots"),
     route: "/lots",
   },
   {
     id: 4,
     icon: <BsFillBoxSeamFill />,
-    name: "Products",
+    name: t("sidebar.products"),
     route: "/products",
   },
 ];
-const Dashboard = () => {
   return (
     <div className="bg-sidebar text-white  py-5 h-screen max-w-[300px]">
       <div className="border-b pl-5 pb-3 border-gray-400">

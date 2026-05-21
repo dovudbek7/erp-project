@@ -1,0 +1,23 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "wareHouse": "Ware House",
+    "lots": "Lots",
+    "products": "Products"
+  },
+  "productPage": {
+    "name": "Product",
+    "desc": "Raw materials and finished goods catalogue."
+  },
+  "wareHousePage": {
+    "name": "Ware House",
+    "desc": "Manage your storage locations."
+  },
+  "lotsPage": {
+    "name": "Lots",
+    "desc": "All inventory batches with cost and expiry tracking."
+  },
+  "actions": {
+    "addButton": "ADD"
+  }
+}

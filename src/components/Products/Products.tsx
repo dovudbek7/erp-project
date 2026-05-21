@@ -1,14 +1,12 @@
-import {
-  Button,
-  Paper
-} from "@mui/material";
+import { Button, Paper } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
-import useProducts from "../hooks/useProducts";
+import useProducts from "../../hooks/useProducts";
+import { useTranslation } from "react-i18next";
 
 function Products() {
   const { data = [] } = useProducts();
-  const paginationModel = { page: 0, pageSize: 10 };
-
+  const paginationModel = { page: 0, pageSize: 5 };
+  const { t } = useTranslation();
   const columns: GridColDef[] = [
     { field: "sku", headerName: "SKU", flex: 1 },
     { field: "name", headerName: "Name", flex: 1 },
@@ -21,12 +19,12 @@ function Products() {
     <div className="">
       <div className="flex justify-between">
         <div className="">
-          <h2 className="text-3xl font-bold">Warehouses</h2>
-          <p className="text-gray-400">Manage your storage locations.</p>
+          <h2 className="text-3xl font-bold">{t("productPage.desc")}</h2>
+          <p className="text-gray-400">{t("productPage.desc")}</p>
         </div>
         <div className="">
           <Button variant="contained" color="error">
-            + Add
+            + {t("actions.addButton")}
           </Button>
         </div>
       </div>
@@ -37,7 +35,7 @@ function Products() {
               rows={data}
               columns={columns}
               initialState={{ pagination: { paginationModel } }}
-              pageSizeOptions={[5, 10]}
+              pageSizeOptions={[5, 10, 15]}
               sx={{ border: 0 }}
             />
           </Paper>

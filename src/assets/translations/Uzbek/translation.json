@@ -1,0 +1,23 @@
+{
+  "sidebar": {
+    "dashboard": "Boshqaruv paneli",
+    "wareHouse": "Omborlar",
+    "lots": "Partiyalar",
+    "products": "Mahsulotlar"
+  },
+  "productPage": {
+    "name": "Mahsulotlar",
+    "desc": "Xomashyo va tayyor mahsulotlar katalogi."
+  },
+  "wareHousePage": {
+    "name": "Omborlar",
+    "desc": "Saqlash joylarini boshqarish."
+  },
+  "lotsPage": {
+    "name": "Partiyalar",
+    "desc": "Tannarx va amal qilish muddatini kuzatish imkoniyatiga ega barcha inventar partiyalari."
+  },
+  "actions": {
+    "addButton": "QO'SHISH"
+  }
+}

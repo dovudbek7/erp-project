@@ -63,6 +63,13 @@ export const handlers = [
   http.get("/api/lots", () => {
     return HttpResponse.json(mockData.lots);
   }),
+  http.get("/api/lots/:id", ({ params }) => {
+    const { id } = params;
+    const lots = mockData.lots.find((p: any) => p.id === id);
+    return lots
+      ? HttpResponse.json(lots)
+      : new HttpResponse(null, { status: 404 });
+  }),
 
   http.get("/api/inventory-movements", () => {
     return HttpResponse.json(mockData.inventoryMovements);

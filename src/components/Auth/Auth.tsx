@@ -1,35 +1,36 @@
-import { Button, FormControl, Input, InputLabel } from "@mui/material"
-import z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, type FieldValues } from "react-hook-form"
-import { useNavigate } from "react-router"
+import { Button, FormControl, Input, InputLabel } from "@mui/material";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, type FieldValues } from "react-hook-form";
+import { useNavigate } from "react-router";
 function Auth() {
   // type Auth = {
   //   email: string
   //   password: string
   // }
 
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+
   const schema = z.object({
     email: z.string(),
-    password: z.string().min(6, {message: "Password must be at least 6 characters"}),
-  })
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters" }),
+  });
   // const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
   //   e.preventDefault()
   //   console.log("Clicked")
   // }
   const onSubmit = (data: FieldValues) => {
-    console.log("Data", data)
-    navigate('/')
+    console.log("Data", data);
+    navigate("/");
+  };
 
-  }
-
-  type FormData = z.infer<typeof schema>
+  type FormData = z.infer<typeof schema>;
 
   const { handleSubmit, register } = useForm<FormData>({
     resolver: zodResolver(schema),
-  })
+  });
 
   return (
     <>
@@ -71,7 +72,7 @@ function Auth() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Auth
+export default Auth;
