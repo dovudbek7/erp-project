@@ -17,6 +17,20 @@
     "name": "Lots",
     "desc": "All inventory batches with cost and expiry tracking."
   },
+  "lotsDetail": {
+    "detail":"Lots Detail",
+    "unitCost": "Unit Cost",
+    "initialQuantity": "Initinal QTY",
+    "totalVal": "Toal value",
+    "productionDate": "Production Date",
+    "expiryDate": "Expiry Date",
+    "receivedAt": "Received At",
+    "currency": "Currency",
+    "supplierLotRef": "Supplier LotRef",
+    "stockMovements": "Stock movements",
+    "newFirst": "Newest First",
+    "entries": "entries"
+  },
   "actions": {
     "addButton": "ADD"
   }

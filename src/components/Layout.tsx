@@ -7,9 +7,9 @@ function Layout() {
     <div>
       <div className="grid grid-cols-[300px_1fr]">
         <Dashboard />
-        <div className="col">
+        <div className="col bg-background h-screen">
           <Navbar />
-          <div className="container p-[35px_60px]">
+          <div className="container p-[35px_60px] ">
             <Outlet />
           </div>
         </div>

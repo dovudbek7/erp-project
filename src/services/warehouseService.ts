@@ -1,4 +1,4 @@
-import { type warehouse } from "../types";
+import { type Warehouse } from "../types";
 import APICLIENT from "./apiClient";
 
-export default new APICLIENT<warehouse>("warehouses");
+export default new APICLIENT<Warehouse>("warehouses");

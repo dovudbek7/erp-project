@@ -35,7 +35,7 @@ const sideItems = [
   },
 ];
   return (
-    <div className="bg-sidebar text-white  py-5 h-screen max-w-[300px]">
+    <div className="bg-sidebar text-white  py-5 h-screen max-w-[300px] ">
       <div className="border-b pl-5 pb-3 border-gray-400">
         <h2 className="font-bold">Andijan Meat Co</h2>
         <p className="font-thin text-gray-400">Meat ERP</p>

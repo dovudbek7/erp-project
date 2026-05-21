@@ -1,11 +1,14 @@
 import { Button, Chip, Paper } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import moment from "moment";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useLots from "../../hooks/useLots";
 import { useTranslation } from "react-i18next";
+import ExpiryBadge from "../common/ExpiryBadge";
+import Status from "../common/StatusBadge";
 function Lots() {
   const { data, error, isLoading } = useLots();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 1 },
@@ -28,31 +31,7 @@ function Lots() {
       description: "This column has a value getter and is not sortable.",
       flex: 1,
       renderCell: (params) => {
-        const status = params.value;
-
-        // Statusga qarab ranglarni belgilaymiz
-        let color:
-          | "default"
-          | "primary"
-          | "secondary"
-          | "error"
-          | "info"
-          | "success"
-          | "warning" = "default";
-
-        if (status === "AVAILABLE") color = "success";
-        if (status === "RESERVED") color = "warning";
-        if (status === "SOLD_OUT") color = "error";
-
-        return (
-          <Chip
-            label={status}
-            color={color}
-            variant="outlined"
-            size="small"
-            sx={{ fontWeight: "bold", textTransform: "capitalize" }}
-          />
-        );
+        return <Status status={params.value} />;
       },
     },
     {
@@ -77,27 +56,9 @@ function Lots() {
       headerName: "Expiry Date",
       flex: 1,
       renderCell: (param) => {
-        let d = new Date();
-        let year = d.getFullYear();
-        let month = d.getMonth() + 1;
-        let day = d.getUTCDate();
-        const now = year + "-" + month + "-" + day;
-
-        const eDate = moment(param.row.expiryDate);
-
-        const total = eDate.diff(now, "days");
-
-        const expired = total > 0 ? total + "D Left" : "Expired";
-
         return (
           <div className="flex flex-col items-center justify-center text-center pt-2">
-            <Chip
-              label={expired}
-              color={total < 0 ? "error" : "default"}
-              variant="outlined"
-              size="small"
-              className=""
-            />
+            <ExpiryBadge expiryDate={param.row.expiryDate} />
             <p className="text-gray-400 text-[12px] text-sm  top-9 ">
               {param.value}
             </p>
@@ -134,19 +95,24 @@ function Lots() {
             </Button>
           </div>
         </div>
-        <div className="mt-5 shadow shadow-md">
-          <Paper sx={{ height: "auto" }}>
-            <DataGrid
-              rows={data || []}
-              getRowId={(row) => row.id}
-              columns={columns}
-              initialState={{ pagination: { paginationModel } }}
-              pageSizeOptions={[5, 10]}
-              checkboxSelection
-              sx={{ border: 0 }}
-            />
-          </Paper>
-        </div>
+        {data ? (
+          <div className="mt-5 shadow shadow-md">
+            <Paper sx={{ height: "auto" }}>
+              <DataGrid
+                rows={data || []}
+                getRowId={(row) => row.id}
+                onRowClick={(params) => navigate(`/lots/${params.id}`)}
+                columns={columns}
+                initialState={{ pagination: { paginationModel } }}
+                pageSizeOptions={[5, 10]}
+                checkboxSelection
+                sx={{ border: 0 }}
+              />
+            </Paper>
+          </div>
+        ) : (
+          <p className="mt-5">No Lots Found</p>
+        )}
       </div>
     </>
   );
