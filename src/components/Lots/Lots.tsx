@@ -1,11 +1,17 @@
 import { Button, Chip, Paper } from "@mui/material";
-import { DataGrid, type GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  type GridColDef,
+  type GridRowId,
+  type GridRowSelectionModel,
+} from "@mui/x-data-grid";
 import moment from "moment";
 import { Link, useNavigate } from "react-router";
 import useLots from "../../hooks/useLots";
 import { useTranslation } from "react-i18next";
 import ExpiryBadge from "../common/ExpiryBadge";
 import Status from "../common/StatusBadge";
+import React from "react";
 function Lots() {
   const { data, error, isLoading } = useLots();
   const navigate = useNavigate();
@@ -76,6 +82,12 @@ function Lots() {
     },
   ];
 
+  const [rowSelectionModel, setRowSelectionModel] =
+    React.useState<GridRowSelectionModel>({
+      type: "include", // or 'exclude'
+      ids: new Set<GridRowId>([""]),
+    });
+  console.log(rowSelectionModel);
   const paginationModel = { page: 0, pageSize: 5 };
 
   if (isLoading) return <p>Loading...</p>;
@@ -97,8 +109,9 @@ function Lots() {
         </div>
         {data ? (
           <div className="mt-5 shadow shadow-md">
-            <Paper sx={{ height: "auto" }}>
+            <Paper sx={{ height: "auto" }} style={{ borderRadius: "20px" }}>
               <DataGrid
+                style={{ borderRadius: "20px" }}
                 rows={data || []}
                 getRowId={(row) => row.id}
                 onRowClick={(params) => navigate(`/lots/${params.id}`)}
@@ -107,6 +120,11 @@ function Lots() {
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 sx={{ border: 0 }}
+                showToolbar
+                onRowSelectionModelChange={(newRowSelectionModel) => {
+                  setRowSelectionModel(newRowSelectionModel);
+                }}
+                rowSelectionModel={rowSelectionModel}
               />
             </Paper>
           </div>

@@ -30,14 +30,17 @@ function Warehouse() {
         </div>
         <div className="">
           <Button variant="contained" color="error">
-           + {t("actions.addButton")}
+            + {t("actions.addButton")}
           </Button>
         </div>
       </div>
       <div className="">
         <div className="mt-5 shadow shadow-md">
-          <Paper sx={{ height: "auto" }}>
+          <Paper sx={{ height: "auto" }} style={{ borderRadius: "20px" }}>
             <DataGrid
+              showToolbar
+              checkboxSelection
+              style={{ borderRadius: "20px" }}
               rows={data}
               // getRowId={}
               columns={columns}
