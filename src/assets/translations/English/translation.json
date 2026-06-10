@@ -7,11 +7,13 @@
   },
   "productPage": {
     "name": "Product",
-    "desc": "Raw materials and finished goods catalogue."
+    "desc": "Raw materials and finished goods catalogue.",
+    "addTitle": "Add a new Product"
   },
   "wareHousePage": {
     "name": "Ware House",
-    "desc": "Manage your storage locations."
+    "desc": "Manage your storage locations.",
+    "addTitle": "Add a new Warehouse"
   },
   "lotsPage": {
     "name": "Lots",

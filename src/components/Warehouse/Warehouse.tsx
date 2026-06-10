@@ -19,7 +19,7 @@ import useWarehouse from "../../hooks/useWarehouse";
 import { type Warehouse as WarehouseType } from "../../types";
 
 const schema = z.object({
-  name: z.string().min(5, { message: "Name is required" }),
+  name: z.string().min(5, { message: "Min 5 characters required" }),
   type: z.string().min(1, "Type is required"),
 });
 
@@ -40,10 +40,11 @@ const AddWarehouse = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
-
+  const { t } = useTranslation();
   return (
     <>
-      <div className="mt-4 w-full py-[50px] border p-[20px] rounded-2xl border-gray-400">
+      <div className="mt-4 w-[300px] right-[60px] absolute z-10 py-[35px] border p-[20px] rounded-2xl border-gray-400 bg-white">
+        <p className="text-xl mb-5">{t("wareHousePage.addTitle")}</p>
         <form
           action=""
           onSubmit={handleSubmit(onSubmit)}

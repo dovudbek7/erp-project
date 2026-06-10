@@ -7,11 +7,13 @@
   },
   "productPage": {
     "name": "Mahsulotlar",
-    "desc": "Xomashyo va tayyor mahsulotlar katalogi."
+    "desc": "Xomashyo va tayyor mahsulotlar katalogi.",
+    "addTitle": "Yangi mahsulot qo'shish"
   },
   "wareHousePage": {
     "name": "Omborlar",
-    "desc": "Saqlash joylarini boshqarish."
+    "desc": "Saqlash joylarini boshqarish.",
+    "addTitle": "Yangi ombor qo'shish"
   },
   "lotsPage": {
     "name": "Partiyalar",
@@ -36,5 +38,19 @@
     "updatedAt": "Yangilangan",
     "information": "Ma'lumot",
     "noNotes": "Izoh yo'q"
+  },
+  "lotsDetail": {
+    "detail": "Partiya tafsiloti",
+    "unitCost": "Birlik narxi",
+    "initialQuantity": "Boshlang'ich miqdor",
+    "totalVal": "Umumiy qiymat",
+    "productionDate": "Ishlab chiqarilgan sana",
+    "expiryDate": "Amal qilish muddati",
+    "receivedAt": "Qabul qilingan",
+    "currency": "Valyuta",
+    "supplierLotRef": "Yetkazib beruvchi partiya ref.",
+    "stockMovements": "Ombor harakatlari",
+    "newFirst": "Avval yangilari",
+    "entries": "yozuv"
   }
 }
