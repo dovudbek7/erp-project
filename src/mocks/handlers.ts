@@ -1,8 +1,22 @@
 import { http, HttpResponse, delay } from "msw";
 import mockDataRaw from "./mock-data.json";
-import type { MockData } from "../types";
+import type {
+  CreatePurchaseOrderPayload,
+  GoodsReceipt,
+  GoodsReceiptLine,
+  Lot,
+  MockData,
+  PurchaseOrder,
+  PurchaseOrderLine,
+  ReceiveGoodsPayload,
+} from "../types";
+import { add, money, mul, qty, gte, sum } from "../utilties/money";
 
 const mockData = mockDataRaw as unknown as MockData;
+
+const TENANT_ID = mockData.tenant?.id ?? "t-andijan-001";
+const rand = () => Math.random().toString(36).slice(2, 8);
+const pad = (n: number) => String(n).padStart(4, "0");
 
 export const handlers = [
   // ─── Tenant ───────────────────────────────────────────────
@@ -278,6 +292,154 @@ export const handlers = [
     let payments = mockData.payments;
     if (invoiceId) payments = payments.filter((p) => p.invoiceId === invoiceId);
     return HttpResponse.json(payments);
+  }),
+
+  // ─── Create Purchase Order (stateful) ─────────────────────
+  // Must precede the generic POST so it wins for /api/purchase-orders.
+  http.post("/api/purchase-orders", async ({ request }) => {
+    const body = (await request.json()) as CreatePurchaseOrderPayload;
+    const now = new Date().toISOString();
+    const today = now.slice(0, 10);
+    const year = today.slice(0, 4);
+    const poId = `po-new-${rand()}`;
+    const poNumber = `PO-${year}-${pad(mockData.purchaseOrders.length + 1)}`;
+
+    const lineTotals: string[] = [];
+    body.lines.forEach((l, i) => {
+      const lineTotal = money(mul(qty(l.orderedQuantity), money(l.unitPrice)));
+      lineTotals.push(lineTotal);
+      const line: PurchaseOrderLine = {
+        id: `pol-${poId}-${i + 1}`,
+        tenantId: TENANT_ID,
+        purchaseOrderId: poId,
+        productId: l.productId,
+        orderedQuantity: qty(l.orderedQuantity),
+        receivedQuantity: "0.000",
+        uom: l.uom,
+        unitPrice: money(l.unitPrice),
+        lineTotal,
+      };
+      mockData.purchaseOrderLines.push(line);
+    });
+
+    const order: PurchaseOrder = {
+      id: poId,
+      tenantId: TENANT_ID,
+      poNumber,
+      supplierId: body.supplierId,
+      warehouseId: body.warehouseId,
+      status: "DRAFT",
+      currency: body.currency,
+      orderDate: today,
+      expectedDate: body.expectedDate,
+      totalAmount: money(sum(lineTotals)),
+      notes: body.notes ?? null,
+      createdBy: "u-001",
+      createdAt: now,
+      updatedAt: now,
+    };
+    mockData.purchaseOrders.unshift(order);
+    console.log("[MSW] POST /purchase-orders (created)", order.id);
+    return HttpResponse.json(order, { status: 201 });
+  }),
+
+  // ─── Receive Goods against a PO (stateful) ────────────────
+  http.post("/api/purchase-orders/:id/receive", async ({ params, request }) => {
+    const order = mockData.purchaseOrders.find((o) => o.id === params.id);
+    if (!order) return new HttpResponse(null, { status: 404 });
+
+    const body = (await request.json()) as ReceiveGoodsPayload;
+    const now = new Date().toISOString();
+    const grId = `gr-new-${rand()}`;
+    const receiptNumber = `GR-${now.slice(0, 4)}-${pad(
+      mockData.goodsReceipts.length + 1,
+    )}`;
+
+    const receipt: GoodsReceipt = {
+      id: grId,
+      tenantId: TENANT_ID,
+      receiptNumber,
+      purchaseOrderId: order.id,
+      warehouseId: body.warehouseId,
+      receivedAt: now,
+      receivedBy: "u-001",
+      notes: body.notes ?? null,
+      createdAt: now,
+      updatedAt: now,
+    };
+    mockData.goodsReceipts.push(receipt);
+
+    const receiptLines: GoodsReceiptLine[] = [];
+    body.lines.forEach((line, i) => {
+      const lotId = `lot-new-${rand()}`;
+      const lot: Lot = {
+        id: lotId,
+        tenantId: TENANT_ID,
+        lotNumber: `LOT-${now.slice(0, 10)}-${rand()}`,
+        productId: line.productId,
+        warehouseId: body.warehouseId,
+        status: "AVAILABLE",
+        initialQuantity: qty(line.quantity),
+        currentQuantity: qty(line.quantity),
+        uom: line.uom,
+        unitCost: money(line.unitCost),
+        currency: order.currency,
+        productionDate: line.productionDate,
+        expiryDate: line.expiryDate,
+        receivedAt: now,
+        source: "PURCHASE",
+        purchaseOrderLineId: line.purchaseOrderLineId,
+        productionOrderId: null,
+        parentLotIds: [],
+        supplierLotRef: line.supplierLotRef,
+        notes: null,
+        createdAt: now,
+        updatedAt: now,
+      };
+      mockData.lots.unshift(lot);
+
+      const grLine: GoodsReceiptLine = {
+        id: `grl-${grId}-${i + 1}`,
+        tenantId: TENANT_ID,
+        goodsReceiptId: grId,
+        purchaseOrderLineId: line.purchaseOrderLineId,
+        productId: line.productId,
+        quantity: qty(line.quantity),
+        uom: line.uom,
+        unitCost: money(line.unitCost),
+        supplierLotRef: line.supplierLotRef,
+        productionDate: line.productionDate,
+        expiryDate: line.expiryDate,
+        lotId,
+      };
+      receiptLines.push(grLine);
+      mockData.goodsReceiptLines.push(grLine);
+
+      const poLine = mockData.purchaseOrderLines.find(
+        (l) => l.id === line.purchaseOrderLineId,
+      );
+      if (poLine) {
+        poLine.receivedQuantity = qty(
+          add(poLine.receivedQuantity, line.quantity),
+        );
+      }
+    });
+
+    // PO status transition based on ALL of its lines.
+    const poLines = mockData.purchaseOrderLines.filter(
+      (l) => l.purchaseOrderId === order.id,
+    );
+    const allFull = poLines.every((l) =>
+      gte(l.receivedQuantity, l.orderedQuantity),
+    );
+    order.status = allFull ? "RECEIVED" : "PARTIALLY_RECEIVED";
+    order.updatedAt = now;
+
+    console.log("[MSW] POST /purchase-orders/:id/receive", order.id, order.status);
+    return HttpResponse.json(
+      { ...receipt, lines: receiptLines },
+      { status: 201 },
+    );
   }),
 
   // ─── Generic POST ─────────────────────────────────────────

@@ -430,3 +430,45 @@ export interface MockData {
   invoices: Invoice[];
   payments: Payment[];
 }
+
+// ─── Purchase Order request/response helpers ──────────────────
+export type PurchaseOrderWithLines = PurchaseOrder & {
+  lines: PurchaseOrderLine[];
+};
+export type GoodsReceiptWithLines = GoodsReceipt & {
+  lines: GoodsReceiptLine[];
+};
+
+export interface CreatePurchaseOrderLine {
+  productId: string;
+  orderedQuantity: string;
+  uom: string;
+  unitPrice: string;
+}
+
+export interface CreatePurchaseOrderPayload {
+  supplierId: string;
+  warehouseId: string;
+  expectedDate: string;
+  currency: string;
+  notes?: string | null;
+  status: PurchaseOrderStatus;
+  lines: CreatePurchaseOrderLine[];
+}
+
+export interface ReceiveGoodsLine {
+  purchaseOrderLineId: string;
+  productId: string;
+  quantity: string;
+  uom: string;
+  unitCost: string;
+  supplierLotRef: string;
+  productionDate: string;
+  expiryDate: string;
+}
+
+export interface ReceiveGoodsPayload {
+  warehouseId: string;
+  notes?: string | null;
+  lines: ReceiveGoodsLine[];
+}

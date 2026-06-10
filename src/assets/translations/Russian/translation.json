@@ -3,7 +3,8 @@
     "dashboard": "Панель управления",
     "wareHouse": "Склады",
     "lots": "Партии",
-    "products": "Товары"
+    "products": "Товары",
+    "purchaseOrders": "Заказы на закупку"
   },
   "productPage": {
     "name": "Товары",
@@ -53,5 +54,58 @@
     "stockMovements": "Движения запасов",
     "newFirst": "Сначала новые",
     "entries": "записей"
+  },
+  "poPage": {
+    "name": "Заказы на закупку",
+    "desc": "Управление заказами поставщикам и приёмкой товаров.",
+    "createButton": "СОЗДАТЬ ЗАКАЗ"
+  },
+  "poCreate": {
+    "title": "Создать заказ на закупку",
+    "supplier": "Поставщик",
+    "warehouse": "Склад",
+    "expectedDate": "Ожидаемая дата",
+    "currency": "Валюта",
+    "lines": "Позиции",
+    "product": "Товар",
+    "qty": "Количество",
+    "unitPrice": "Цена за единицу",
+    "lineTotal": "Сумма строки",
+    "addLine": "Добавить строку",
+    "total": "Итого",
+    "saveDraft": "Сохранить черновик",
+    "submit": "Отправить",
+    "success": "Заказ создан",
+    "error": "Не удалось создать заказ"
+  },
+  "poDetail": {
+    "supplier": "Поставщик",
+    "warehouse": "Склад",
+    "expectedDate": "Ожидаемая дата",
+    "total": "Итого",
+    "lines": "Позиции",
+    "product": "Товар",
+    "ordered": "Заказано",
+    "received": "Принято",
+    "remaining": "Остаток",
+    "receiveGoods": "Принять товар",
+    "history": "История приёмок",
+    "receipts": "приёмок",
+    "noReceipts": "Приёмок пока нет"
+  },
+  "poReceive": {
+    "title": "Приёмка товара",
+    "quantity": "Принято кол-во",
+    "unitCost": "Цена за единицу",
+    "supplierLotRef": "Реф. партии поставщика",
+    "productionDate": "Дата производства",
+    "expiryDate": "Срок годности",
+    "receiveLine": "Принять",
+    "remaining": "Остаток",
+    "totalReceived": "Общая принятая стоимость",
+    "submit": "Подтвердить приёмку",
+    "nothingToReceive": "Все позиции уже приняты.",
+    "success": "Товар принят",
+    "error": "Не удалось принять товар"
   }
 }

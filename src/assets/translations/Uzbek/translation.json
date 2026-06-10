@@ -3,7 +3,8 @@
     "dashboard": "Boshqaruv paneli",
     "wareHouse": "Omborlar",
     "lots": "Partiyalar",
-    "products": "Mahsulotlar"
+    "products": "Mahsulotlar",
+    "purchaseOrders": "Xarid buyurtmalari"
   },
   "productPage": {
     "name": "Mahsulotlar",
@@ -53,5 +54,58 @@
     "stockMovements": "Ombor harakatlari",
     "newFirst": "Avval yangilari",
     "entries": "yozuv"
+  },
+  "poPage": {
+    "name": "Xarid buyurtmalari",
+    "desc": "Yetkazib beruvchi buyurtmalari va mol qabulini boshqarish.",
+    "createButton": "BUYURTMA YARATISH"
+  },
+  "poCreate": {
+    "title": "Xarid buyurtmasi yaratish",
+    "supplier": "Yetkazib beruvchi",
+    "warehouse": "Ombor",
+    "expectedDate": "Kutilgan sana",
+    "currency": "Valyuta",
+    "lines": "Qatorlar",
+    "product": "Mahsulot",
+    "qty": "Miqdor",
+    "unitPrice": "Birlik narxi",
+    "lineTotal": "Qator jami",
+    "addLine": "Qator qo'shish",
+    "total": "Jami",
+    "saveDraft": "Qoralama saqlash",
+    "submit": "Yuborish",
+    "success": "Buyurtma yaratildi",
+    "error": "Buyurtma yaratib bo'lmadi"
+  },
+  "poDetail": {
+    "supplier": "Yetkazib beruvchi",
+    "warehouse": "Ombor",
+    "expectedDate": "Kutilgan sana",
+    "total": "Jami",
+    "lines": "Qatorlar",
+    "product": "Mahsulot",
+    "ordered": "Buyurtma",
+    "received": "Qabul qilingan",
+    "remaining": "Qolgan",
+    "receiveGoods": "Mol qabul qilish",
+    "history": "Qabul tarixi",
+    "receipts": "qabul",
+    "noReceipts": "Hali qabul yo'q"
+  },
+  "poReceive": {
+    "title": "Mol qabul qilish",
+    "quantity": "Qabul miqdori",
+    "unitCost": "Birlik narxi",
+    "supplierLotRef": "Yetkazib beruvchi partiya ref.",
+    "productionDate": "Ishlab chiqarilgan sana",
+    "expiryDate": "Amal qilish muddati",
+    "receiveLine": "Qabul qilish",
+    "remaining": "Qolgan",
+    "totalReceived": "Umumiy qabul qiymati",
+    "submit": "Qabulni tasdiqlash",
+    "nothingToReceive": "Barcha qatorlar qabul qilingan.",
+    "success": "Mol qabul qilindi",
+    "error": "Mol qabul qilib bo'lmadi"
   }
 }

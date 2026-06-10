@@ -3,7 +3,8 @@
     "dashboard": "Dashboard",
     "wareHouse": "Ware House",
     "lots": "Lots",
-    "products": "Products"
+    "products": "Products",
+    "purchaseOrders": "Purchase Orders"
   },
   "productPage": {
     "name": "Product",
@@ -53,5 +54,58 @@
     "updatedAt": "Updated At",
     "information": "Information",
     "noNotes": "No notes"
+  },
+  "poPage": {
+    "name": "Purchase Orders",
+    "desc": "Manage supplier orders and goods receiving.",
+    "createButton": "CREATE PO"
+  },
+  "poCreate": {
+    "title": "Create Purchase Order",
+    "supplier": "Supplier",
+    "warehouse": "Warehouse",
+    "expectedDate": "Expected Date",
+    "currency": "Currency",
+    "lines": "Line Items",
+    "product": "Product",
+    "qty": "Quantity",
+    "unitPrice": "Unit Price",
+    "lineTotal": "Line Total",
+    "addLine": "Add Line",
+    "total": "Total",
+    "saveDraft": "Save as Draft",
+    "submit": "Submit",
+    "success": "Purchase order created",
+    "error": "Failed to create purchase order"
+  },
+  "poDetail": {
+    "supplier": "Supplier",
+    "warehouse": "Warehouse",
+    "expectedDate": "Expected Date",
+    "total": "Total",
+    "lines": "Line Items",
+    "product": "Product",
+    "ordered": "Ordered",
+    "received": "Received",
+    "remaining": "Remaining",
+    "receiveGoods": "Receive Goods",
+    "history": "Receipt History",
+    "receipts": "receipts",
+    "noReceipts": "No receipts yet"
+  },
+  "poReceive": {
+    "title": "Receive Goods",
+    "quantity": "Qty Received",
+    "unitCost": "Unit Cost",
+    "supplierLotRef": "Supplier Lot Ref",
+    "productionDate": "Production Date",
+    "expiryDate": "Expiry Date",
+    "receiveLine": "Receive",
+    "remaining": "Remaining",
+    "totalReceived": "Total Received Value",
+    "submit": "Confirm Receipt",
+    "nothingToReceive": "All lines already received.",
+    "success": "Goods received",
+    "error": "Failed to receive goods"
   }
 }

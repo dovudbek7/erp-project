@@ -16,6 +16,11 @@ const Status = ({ status }: Props) => {
   if (status === "AVAILABLE") color = "success";
   if (status === "RESERVED") color = "warning";
   if (status === "SOLD_OUT") color = "error";
+  // Purchase order statuses
+  if (status === "RECEIVED") color = "success";
+  if (status === "PARTIALLY_RECEIVED") color = "warning";
+  if (status === "DRAFT") color = "info";
+  if (status === "CANCELLED") color = "error";
 
   return (
     <Chip

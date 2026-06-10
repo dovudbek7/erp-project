@@ -1,6 +1,7 @@
 import { RiDashboardFill } from "react-icons/ri";
-import { FaWarehouse } from "react-icons/fa";
+import { FaWarehouse, FaFileInvoiceDollar } from "react-icons/fa";
 import { BsFillBoxSeamFill } from "react-icons/bs";
+import { GiMeatCleaver, GiCook } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -31,6 +32,24 @@ const Dashboard = () => {
       icon: <BsFillBoxSeamFill />,
       name: t("sidebar.products"),
       route: "/products",
+    },
+    {
+      id: 5,
+      icon: <FaFileInvoiceDollar />,
+      name: t("sidebar.purchaseOrders"),
+      route: "/purchase-orders",
+    },
+    {
+      id: 6,
+      icon: <GiMeatCleaver />,
+      name: "Production",
+      route: "/production/orders",
+    },
+    {
+      id: 7,
+      icon: <GiCook />,
+      name: "Recipes",
+      route: "/recipes",
     },
   ];
   return (
