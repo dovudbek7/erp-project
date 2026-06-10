@@ -16,7 +16,7 @@ const StockMovements = () => {
   // console.log(data);
   return (
     <>
-      <div className="bg-white max-w-[500px] rounded-xl border border-border">
+      <div className="bg-white max-w-[800px] rounded-xl border border-border">
         <div className="border-b border-border py-[15px] flex justify-between items-center px-[25px]">
           <p className="">{t("lotsDetail.stockMovements")}</p>
           <p className="font-thing text-gray-500 text-sm">
@@ -24,12 +24,12 @@ const StockMovements = () => {
             {t("lotsDetail.entries")}
           </p>
         </div>
-        <div className="p-[15px_20px]">
+        <div className="p-[20px_20px]">
           <div className="border-l-2 border-border pl-3 flex flex-col gap-5 ">
             {data?.map((d) => (
               <div className="flex items-start justify-between" key={d.id}>
                 <div className="flex items-start ">
-                  <MovementIcon type={ d?.type } />
+                  <MovementIcon type={d?.type} />
                   <div className="pl-5">
                     <p className="font-semibold text-sm ">{d.type}</p>
                     <p className="text-gray-400 text-sm">
@@ -57,9 +57,9 @@ const LDetail = () => {
   const { id } = useParams();
 
   const { t } = useTranslation();
-  const { data, error, isLoading } = useLotsDetail(id || "");
+  const { data } = useLotsDetail(id || "");
   return (
-    <div className="bg-white max-w-[500px] rounded-xl border border-border">
+    <div className="bg-white max-w-[800px] rounded-xl border border-border">
       <div className="border-b border-border py-[15px]">
         <p className="pl-[25px]">{t("lotsDetail.detail")}</p>
       </div>
@@ -140,7 +140,7 @@ function LotsDetail() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 mt-4 gap-3">
+        <div className="grid grid-cols-[1fr_1fr] mt-4 gap-3">
           <StockMovements />
           <LDetail />
         </div>

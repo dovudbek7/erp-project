@@ -40,7 +40,7 @@ export type ProductType = "RAW_MATERIAL" | "PACKAGING" | "FINISHED_GOOD";
 export interface Product {
   id: string;
   tenantId: string;
-  sku: string;
+  sku: string
   name: string;
   type: ProductType;
   uom: string;

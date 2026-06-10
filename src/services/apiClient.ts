@@ -17,7 +17,7 @@ class APICLIENT<T> {
   get = () => {
     return axiosInstance.get<T>(this.endpoint).then((res) => res.data);
   };
-  post = (data: T) => {
+  post = (data: Partial<T>) => {
     return axiosInstance.post<T>(this.endpoint, data).then((res) => res.data);
   };
 }

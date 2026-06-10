@@ -5,7 +5,6 @@ import {
   type GridRowId,
   type GridRowSelectionModel,
 } from "@mui/x-data-grid";
-import moment from "moment";
 import { Link, useNavigate } from "react-router";
 import useLots from "../../hooks/useLots";
 import { useTranslation } from "react-i18next";
@@ -111,6 +110,7 @@ function Lots() {
           <div className="mt-5 shadow shadow-md">
             <Paper sx={{ height: "auto" }} style={{ borderRadius: "20px" }}>
               <DataGrid
+                
                 style={{ borderRadius: "20px" }}
                 rows={data || []}
                 getRowId={(row) => row.id}

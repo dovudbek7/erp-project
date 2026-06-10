@@ -5,11 +5,11 @@ import Dashboard from "./Dashboard";
 function Layout() {
   return (
     <div>
-      <div className="grid grid-cols-[300px_1fr]">
+      <div className="grid grid-cols-[300px_1fr] max-h-[100px]">
         <Dashboard />
         <div className="col bg-background h-screen">
           <Navbar />
-          <div className="container p-[35px_60px] ">
+          <div className="container p-[35px_60px] max-h-[800px]  overflow-scroll scrollbar-none mt-5">
             <Outlet />
           </div>
         </div>
