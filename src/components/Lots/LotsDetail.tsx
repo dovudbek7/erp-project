@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { TbTruckDelivery } from "react-icons/tb";
 import { useParams } from "react-router";
 import useLotsDetail from "../../hooks/useLotsDetail";
 import useMovements from "../../hooks/useMovements";

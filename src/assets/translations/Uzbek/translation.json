@@ -19,5 +19,22 @@
   },
   "actions": {
     "addButton": "QO'SHISH"
+  },
+  "productDetail": {
+    "detail": "Mahsulot tafsiloti",
+    "sku": "SKU",
+    "type": "Turi",
+    "uom": "O'lchov birligi",
+    "category": "Kategoriya",
+    "shelfLife": "Saqlash muddati",
+    "days": "kun",
+    "barcode": "Shtrix kod",
+    "active": "Faol",
+    "inactive": "Nofaol",
+    "notes": "Izohlar",
+    "createdAt": "Yaratilgan",
+    "updatedAt": "Yangilangan",
+    "information": "Ma'lumot",
+    "noNotes": "Izoh yo'q"
   }
 }

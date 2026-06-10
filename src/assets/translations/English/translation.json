@@ -18,7 +18,7 @@
     "desc": "All inventory batches with cost and expiry tracking."
   },
   "lotsDetail": {
-    "detail":"Lots Detail",
+    "detail": "Lots Detail",
     "unitCost": "Unit Cost",
     "initialQuantity": "Initinal QTY",
     "totalVal": "Toal value",
@@ -33,5 +33,22 @@
   },
   "actions": {
     "addButton": "ADD"
+  },
+  "productDetail": {
+    "detail": "Product Detail",
+    "sku": "SKU",
+    "type": "Type",
+    "uom": "UOM",
+    "category": "Category",
+    "shelfLife": "Shelf Life",
+    "days": "days",
+    "barcode": "Barcode",
+    "active": "Active",
+    "inactive": "Inactive",
+    "notes": "Notes",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "information": "Information",
+    "noNotes": "No notes"
   }
 }

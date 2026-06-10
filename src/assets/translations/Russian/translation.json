@@ -19,5 +19,22 @@
   },
   "actions": {
     "addButton": "ДОБАВИТЬ"
+  },
+  "productDetail": {
+    "detail": "Детали продукта",
+    "sku": "Артикул",
+    "type": "Тип",
+    "uom": "Ед. изм.",
+    "category": "Категория",
+    "shelfLife": "Срок годности",
+    "days": "дней",
+    "barcode": "Штрихкод",
+    "active": "Активен",
+    "inactive": "Неактивен",
+    "notes": "Заметки",
+    "createdAt": "Создан",
+    "updatedAt": "Обновлён",
+    "information": "Информация",
+    "noNotes": "Нет заметок"
   }
 }

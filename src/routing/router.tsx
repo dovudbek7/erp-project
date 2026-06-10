@@ -6,6 +6,7 @@ import Lots from "../components/Lots/Lots";
 import Products from "../components/Products/Products";
 import Warehouse from "../components/Warehouse/Warehouse";
 import LotsDetail from "../components/Lots/LotsDetail";
+import ProductDetail from "../components/Products/ProductDetail";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       },
       { path: "/lots/:id", element: <LotsDetail /> },
       { path: "/products", element: <Products /> },
+      { path: "/products/:id", element: <ProductDetail /> },
       { path: "/warehouses", element: <Warehouse /> },
     ],
   },

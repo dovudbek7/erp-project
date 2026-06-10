@@ -2,9 +2,11 @@ import { Button, Paper } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import useProducts from "../../hooks/useProducts";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 
 function Products() {
   const { data = [] } = useProducts();
+  const navigate = useNavigate();
   const paginationModel = { page: 0, pageSize: 5 };
   const { t } = useTranslation();
   const columns: GridColDef[] = [
@@ -32,6 +34,7 @@ function Products() {
         <div className="mt-5 shadow shadow-md">
           <Paper sx={{ height: "auto" }} style={{ borderRadius: "20px" }}>
             <DataGrid
+              onRowClick={(params) => navigate(`/products/${params.id}`)}
               showToolbar
               checkboxSelection
               style={{ borderRadius: "20px" }}
