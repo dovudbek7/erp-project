@@ -15,39 +15,41 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import z from "zod";
-import useAddWarehouse from "../../hooks/useAddWarehouse";
 import useWarehouse from "../../hooks/useWarehouse";
+import { type Warehouse as WarehouseType } from "../../types";
 
-const AddWarehouse = () => {
-  // const { data: tenant } = useTenant();
-  const addWarehouse = useAddWarehouse();
+const schema = z.object({
+  name: z.string().min(5, { message: "Name is required" }),
+  type: z.string().min(1, "Type is required"),
+});
 
-  const schema = z.object({
-    name: z.string(),
-    type: z.string(),
-  });
+type FormData = z.infer<typeof schema>;
 
-  type FormData = z.infer<typeof schema>;
-
+const AddWarehouse = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
   const onSubmit = (data: FormData) => {
-    addWarehouse.mutate(data, {
-      onSuccess: () => reset(),
-    });
+    onAdd(data);
+    reset();
   };
 
-  const { handleSubmit, register, control, reset } = useForm<FormData>({
+  const {
+    handleSubmit,
+    register,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
   return (
     <>
-      <div className="mt-4 w-full h-[300px] border p-[20px] rounded-2xl border-gray-400">
+      <div className="mt-4 w-full py-[50px] border p-[20px] rounded-2xl border-gray-400">
         <form
           action=""
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-10"
+          className="flex flex-col gap-5"
         >
-          <div className="grid grid-col-">
+          <div className="flex flex-col gap-5">
             <div className="form-group ">
               <FormControl className="w-full">
                 <InputLabel htmlFor="my-input">
@@ -58,6 +60,9 @@ const AddWarehouse = () => {
                   aria-describedby="my-helper-text"
                   {...register("name")}
                 />
+                <span className="text-red-500 text-sm">
+                  {errors.name?.message}
+                </span>
               </FormControl>
             </div>
 
@@ -77,17 +82,13 @@ const AddWarehouse = () => {
                     </Select>
                   )}
                 />
+                <span className="text-red-500">{errors.type?.message}</span>
               </FormControl>
             </div>
           </div>
 
-          <Button
-            type="submit"
-            className="bg-blue-500"
-            variant="contained"
-            disabled={addWarehouse.isPending}
-          >
-            {addWarehouse.isPending ? "Saving..." : "Submit"}
+          <Button type="submit" className="bg-blue-500" variant="contained">
+            Submit
           </Button>
         </form>
       </div>
@@ -97,7 +98,18 @@ const AddWarehouse = () => {
 
 function Warehouse() {
   const { data } = useWarehouse();
-  console.log(data);
+  const [added, setAdded] = useState<WarehouseType[]>([]);
+  const addRow = (form: FormData) => {
+    const newRow = {
+      id: `wh-00${String(added.length + 1).padStart(3, "0")}`,
+      name: form.name,
+      type: form.type,
+    } as WarehouseType;
+    setAdded((prev) => [newRow, ...prev]);
+  };
+
+  const rows = [...added, ...(data ?? [])];
+
   const { t } = useTranslation();
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 1 },
@@ -133,7 +145,7 @@ function Warehouse() {
             </Button>
           </div>
         </div>
-        {addW ? <AddWarehouse /> : ""}
+        {addW ? <AddWarehouse onAdd={addRow} /> : ""}
         <div className="">
           <div className="mt-5 shadow shadow-md">
             <Paper sx={{ height: "auto" }} style={{ borderRadius: "20px" }}>
@@ -141,8 +153,7 @@ function Warehouse() {
                 showToolbar
                 checkboxSelection
                 style={{ borderRadius: "20px" }}
-                rows={data}
-                // getRowId={}
+                rows={rows}
                 columns={columns}
                 initialState={{ pagination: { paginationModel } }}
                 pageSizeOptions={[5, 10]}

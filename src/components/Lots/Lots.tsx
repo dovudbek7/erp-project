@@ -86,7 +86,7 @@ function Lots() {
       type: "include", // or 'exclude'
       ids: new Set<GridRowId>([""]),
     });
-  console.log(rowSelectionModel);
+
   const paginationModel = { page: 0, pageSize: 5 };
 
   if (isLoading) return <p>Loading...</p>;
