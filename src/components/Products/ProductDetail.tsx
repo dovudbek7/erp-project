@@ -35,10 +35,6 @@ const Detail = () => {
           <p className="text-gray-600">{t("productDetail.createdAt")}</p>
           <p className="font-bold">{formatDate(data?.createdAt)}</p>
         </div>
-        <div className="flex items-center justify-between">
-          <p className="text-gray-600">{t("productDetail.updatedAt")}</p>
-          <p className="font-bold">{formatDate(data?.updatedAt)}</p>
-        </div>
       </div>
     </div>
   );

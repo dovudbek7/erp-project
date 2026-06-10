@@ -17,7 +17,8 @@
   },
   "lotsPage": {
     "name": "Lots",
-    "desc": "All inventory batches with cost and expiry tracking."
+    "desc": "All inventory batches with cost and expiry tracking.",
+    "addTitle": "Add a new Lot"
   },
   "lotsDetail": {
     "detail": "Lots Detail",

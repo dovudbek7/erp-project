@@ -17,7 +17,8 @@
   },
   "lotsPage": {
     "name": "Partiyalar",
-    "desc": "Tannarx va amal qilish muddatini kuzatish imkoniyatiga ega barcha inventar partiyalari."
+    "desc": "Tannarx va amal qilish muddatini kuzatish imkoniyatiga ega barcha inventar partiyalari.",
+    "addTitle": "Yangi partiya qo'shish"
   },
   "actions": {
     "addButton": "QO'SHISH"
