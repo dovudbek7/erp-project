@@ -1,9 +1,11 @@
 import { Chip } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   status: string;
 }
 const Status = ({ status }: Props) => {
+  const { t } = useTranslation();
   let color:
     | "default"
     | "primary"
@@ -22,9 +24,12 @@ const Status = ({ status }: Props) => {
   if (status === "DRAFT") color = "info";
   if (status === "CANCELLED") color = "error";
 
+  // Translate known enum values; fall back to the raw value for the rest.
+  const label = t(`enums.${status}`, { defaultValue: status });
+
   return (
     <Chip
-      label={status}
+      label={label}
       color={color}
       variant="outlined"
       size="small"

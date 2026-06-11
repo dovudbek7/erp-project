@@ -2,8 +2,10 @@ import { Button, FormControl, Input, InputLabel } from "@mui/material";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type FieldValues } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 function Auth() {
+  const { t } = useTranslation();
   // type Auth = {
   //   email: string
   //   password: string
@@ -36,7 +38,7 @@ function Auth() {
     <>
       <div className="flex justify-center items-center h-screen bg-gray-200text-center">
         <div className="">
-          <h2 className="text-3xl px-7 py-6">Sign in to your tenant</h2>
+          <h2 className="text-3xl px-7 py-6">{t("auth.title")}</h2>
 
           <form
             action=""
@@ -45,7 +47,7 @@ function Auth() {
           >
             <div className="form-group ">
               <FormControl className="w-full">
-                <InputLabel htmlFor="my-input">Email</InputLabel>
+                <InputLabel htmlFor="my-input">{t("auth.email")}</InputLabel>
                 <Input
                   id="my-input"
                   aria-describedby="my-helper-text"
@@ -55,7 +57,7 @@ function Auth() {
             </div>
             <div className="form-group ">
               <FormControl className="w-full">
-                <InputLabel htmlFor="my-input">Password</InputLabel>
+                <InputLabel htmlFor="my-input">{t("auth.password")}</InputLabel>
                 <Input
                   id="my-input"
                   aria-describedby="my-helper-text"
@@ -66,7 +68,7 @@ function Auth() {
             </div>
 
             <Button type="submit" className="bg-blue-500" variant="contained">
-              Submit
+              {t("common.submit")}
             </Button>
           </form>
         </div>

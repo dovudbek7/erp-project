@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link, useParams } from "react-router";
+import { useTranslation } from "react-i18next";
 import useProductionOrder from "../../hooks/useProductionOrder";
 import useProducts from "../../hooks/useProducts";
 import type { Product } from "../../types";
@@ -8,6 +9,7 @@ import InProgressView from "./InProgressView";
 import CompletedView from "./CompletedView";
 
 function ProductionOrderDetail() {
+  const { t } = useTranslation();
   const { id = "" } = useParams();
   const { data: order, error, isLoading } = useProductionOrder(id);
   const { data: products = [] } = useProducts();
@@ -18,14 +20,14 @@ function ProductionOrderDetail() {
     return m;
   }, [products]);
 
-  if (isLoading) return <p>Loading…</p>;
+  if (isLoading) return <p>{t("production.loading")}</p>;
   if (error) return <p>{error.message}</p>;
-  if (!order) return <p>Order not found.</p>;
+  if (!order) return <p>{t("production.notFound")}</p>;
 
   return (
     <div>
       <Link to="/production/orders" className="text-blue-600 text-sm">
-        ← Production orders
+        ← {t("production.ordersBack")}
       </Link>
       <div className="mt-3">
         {order.status === "DRAFT" && (

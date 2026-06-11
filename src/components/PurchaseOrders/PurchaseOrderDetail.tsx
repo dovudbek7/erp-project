@@ -8,6 +8,7 @@ import useSuppliers from "../../hooks/useSuppliers";
 import useWarehouse from "../../hooks/useWarehouse";
 import formatDate from "../../utilties/formatDate";
 import { gte, remaining } from "../../utilties/money";
+import BackButton from "../common/BackButton";
 import Status from "../common/StatusBadge";
 
 function PurchaseOrderDetail() {
@@ -35,6 +36,7 @@ function PurchaseOrderDetail() {
 
   return (
     <div className="">
+      <BackButton />
       <div className="flex items-center justify-between">
         <p className="text-xl font-semibold">{order.poNumber}</p>
         {!fullyReceived && order.status !== "CANCELLED" && (

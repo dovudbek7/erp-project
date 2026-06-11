@@ -442,6 +442,38 @@ export const handlers = [
     );
   }),
 
+  // ─── Generic DELETE (mockData-backed collections) ─────────
+  // Stateful collections (sales-orders, recipes, production-orders) have their
+  // own DELETE handlers spread earlier in browser.ts and win the match; this
+  // only ever services the read-only mockData collections below.
+  http.delete("/api/:collection/:id", ({ params }) => {
+    const { collection, id } = params as { collection: string; id: string };
+    const keyMap: Record<string, keyof MockData> = {
+      products: "products",
+      lots: "lots",
+      warehouses: "warehouses",
+      customers: "customers",
+      suppliers: "suppliers",
+      "purchase-orders": "purchaseOrders",
+    };
+    const key = keyMap[collection];
+    if (!key) return new HttpResponse(null, { status: 404 });
+
+    const arr = mockData[key] as Array<{ id: string }>;
+    const idx = arr.findIndex((r) => r.id === id);
+    if (idx === -1) return new HttpResponse(null, { status: 404 });
+    arr.splice(idx, 1);
+
+    // Clean child rows to avoid orphans.
+    if (collection === "purchase-orders") {
+      mockData.purchaseOrderLines = mockData.purchaseOrderLines.filter(
+        (l) => l.purchaseOrderId !== id,
+      );
+    }
+    console.log(`[MSW] DELETE /${collection}/${id}`);
+    return new HttpResponse(null, { status: 204 });
+  }),
+
   // ─── Generic POST ─────────────────────────────────────────
   http.post("/api/:collection", async ({ params, request }) => {
     const body = await request.json();

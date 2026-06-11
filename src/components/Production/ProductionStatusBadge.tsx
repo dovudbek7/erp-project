@@ -1,4 +1,5 @@
 import { Chip } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import type { ProductionOrderStatus } from "../../types";
 
 const COLORS: Record<
@@ -11,25 +12,21 @@ const COLORS: Record<
   CANCELLED: "error",
 };
 
-const LABELS: Record<ProductionOrderStatus, string> = {
-  DRAFT: "Draft",
-  IN_PROGRESS: "In progress",
-  COMPLETED: "Completed",
-  CANCELLED: "Cancelled",
-};
-
 const ProductionStatusBadge = ({
   status,
 }: {
   status: ProductionOrderStatus;
-}) => (
-  <Chip
-    label={LABELS[status] ?? status}
-    color={COLORS[status] ?? "default"}
-    variant="outlined"
-    size="small"
-    sx={{ fontWeight: "bold" }}
-  />
-);
+}) => {
+  const { t } = useTranslation();
+  return (
+    <Chip
+      label={t(`production.status${status}`)}
+      color={COLORS[status] ?? "default"}
+      variant="outlined"
+      size="small"
+      sx={{ fontWeight: "bold" }}
+    />
+  );
+};
 
 export default ProductionStatusBadge;

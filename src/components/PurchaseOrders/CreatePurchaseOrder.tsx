@@ -19,6 +19,7 @@ import useSuppliers from "../../hooks/useSuppliers";
 import useWarehouse from "../../hooks/useWarehouse";
 import { type CreatePurchaseOrderPayload } from "../../types";
 import { gt, gte, money, mul, sum } from "../../utilties/money";
+import BackButton from "../common/BackButton";
 import { useToast } from "../common/ToastContext";
 
 const lineSchema = z.object({
@@ -122,6 +123,7 @@ function CreatePurchaseOrder() {
 
   return (
     <div className="max-w-[900px]">
+      <BackButton />
       <p className="text-xl font-semibold">{t("poCreate.title")}</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-3">

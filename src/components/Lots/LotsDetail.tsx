@@ -5,6 +5,7 @@ import useMovements from "../../hooks/useMovements";
 import formatDate from "../../utilties/formatDate";
 import ExpiryBadge from "../common/ExpiryBadge";
 import Status from "../common/StatusBadge";
+import BackButton from "../common/BackButton";
 import MovementIcon from "./MovementTypeIcon";
 
 const StockMovements = () => {
@@ -93,12 +94,13 @@ function LotsDetail() {
   const { t } = useTranslation();
   const { data, error, isLoading } = useLotsDetail(id || "");
 
-  if (isLoading) return <p>Loading</p>;
+  if (isLoading) return <p>{t("common.loading")}</p>;
   if (error) return <p>{error.message}</p>;
 
   return (
     <>
       <div className="">
+        <BackButton />
         <p className="text-xl font-semibold">{data?.lotNumber}</p>
         <div className="bg-white w-full rounded-2xl border border-border mt-3 p-[25px_20px]">
           <div className="flex gap-3 items-center">

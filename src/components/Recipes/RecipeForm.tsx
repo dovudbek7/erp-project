@@ -13,12 +13,14 @@ import {
 } from "@mui/material";
 import { FiTrash2, FiPlus } from "react-icons/fi";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router";
 import z from "zod";
 import useProducts from "../../hooks/useProducts";
 import useRecipe from "../../hooks/useRecipe";
 import useCreateRecipe from "../../hooks/useCreateRecipe";
 import useUpdateRecipe from "../../hooks/useUpdateRecipe";
+import BackButton from "../common/BackButton";
 
 const UOMS = ["KG", "G", "LITER", "PIECE"];
 
@@ -52,6 +54,7 @@ const emptyIngredient = {
 };
 
 function RecipeForm() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
   const isEdit = !!id;
@@ -133,13 +136,12 @@ function RecipeForm() {
 
   return (
     <div className="max-w-[820px]">
+      <BackButton />
       <h2 className="text-3xl font-bold">
-        {isEdit ? "Edit recipe (new version)" : "New recipe"}
+        {isEdit ? t("recipes.editTitle") : t("recipes.newTitle")}
       </h2>
       <p className="text-gray-400">
-        {isEdit
-          ? "Saving publishes a new version; the current version is retired."
-          : "Define the output and ingredient lines."}
+        {isEdit ? t("recipes.editDesc") : t("recipes.newDesc")}
       </p>
 
       <form
@@ -147,18 +149,18 @@ function RecipeForm() {
         className="mt-6 flex flex-col gap-6"
       >
         <div className="bg-white border border-border rounded-2xl p-[25px] grid grid-cols-2 gap-5">
-          <TextField label="Code" {...register("code")} error={!!errors.code}
+          <TextField label={t("recipes.code")} {...register("code")} error={!!errors.code}
             helperText={errors.code?.message} />
-          <TextField label="Name" {...register("name")} error={!!errors.name}
+          <TextField label={t("recipes.name")} {...register("name")} error={!!errors.name}
             helperText={errors.name?.message} />
 
           <FormControl fullWidth error={!!errors.outputProductId}>
-            <InputLabel id="out-prod">Output product</InputLabel>
+            <InputLabel id="out-prod">{t("recipes.outputProduct")}</InputLabel>
             <Controller
               name="outputProductId"
               control={control}
               render={({ field }) => (
-                <Select labelId="out-prod" label="Output product" {...field}>
+                <Select labelId="out-prod" label={t("recipes.outputProduct")} {...field}>
                   {products
                     .filter((p) => p.type === "FINISHED_GOOD")
                     .map((p) => (
@@ -176,19 +178,19 @@ function RecipeForm() {
 
           <div className="grid grid-cols-2 gap-3">
             <TextField
-              label="Output qty"
+              label={t("recipes.outputQty")}
               type="number"
               {...register("outputQuantity")}
               error={!!errors.outputQuantity}
               helperText={errors.outputQuantity?.message}
             />
             <FormControl fullWidth>
-              <InputLabel id="out-uom">UOM</InputLabel>
+              <InputLabel id="out-uom">{t("recipes.uom")}</InputLabel>
               <Controller
                 name="outputUom"
                 control={control}
                 render={({ field }) => (
-                  <Select labelId="out-uom" label="UOM" {...field}>
+                  <Select labelId="out-uom" label={t("recipes.uom")} {...field}>
                     {UOMS.map((u) => (
                       <MenuItem key={u} value={u}>
                         {u}
@@ -201,31 +203,31 @@ function RecipeForm() {
           </div>
 
           <TextField
-            label="Expected yield %"
+            label={t("recipes.expectedYield")}
             type="number"
             {...register("expectedYieldPercent")}
             error={!!errors.expectedYieldPercent}
             helperText={errors.expectedYieldPercent?.message}
           />
-          <TextField label="Notes" {...register("notes")} />
+          <TextField label={t("recipes.notes")} {...register("notes")} />
         </div>
 
         {/* Ingredients */}
         <div className="bg-white border border-border rounded-2xl p-[25px]">
           <div className="flex items-center justify-between mb-4">
-            <p className="font-semibold">Ingredients</p>
+            <p className="font-semibold">{t("recipes.ingredients")}</p>
             <Button
               size="small"
               startIcon={<FiPlus />}
               onClick={() => append({ ...emptyIngredient })}
             >
-              Add ingredient
+              {t("recipes.addIngredient")}
             </Button>
           </div>
 
           {typeof errors.ingredients?.message === "string" && (
             <p className="text-red-500 text-sm mb-2">
-              {errors.ingredients.message}
+              {t("recipes.atLeastOne")}
             </p>
           )}
 
@@ -236,14 +238,16 @@ function RecipeForm() {
                 className="grid grid-cols-[2fr_1fr_1fr_auto_auto] gap-3 items-center"
               >
                 <FormControl fullWidth size="small">
-                  <InputLabel id={`ing-prod-${idx}`}>Product</InputLabel>
+                  <InputLabel id={`ing-prod-${idx}`}>
+                    {t("recipes.product")}
+                  </InputLabel>
                   <Controller
                     name={`ingredients.${idx}.productId`}
                     control={control}
                     render={({ field: f }) => (
                       <Select
                         labelId={`ing-prod-${idx}`}
-                        label="Product"
+                        label={t("recipes.product")}
                         {...f}
                       >
                         {products
@@ -261,17 +265,19 @@ function RecipeForm() {
                 <TextField
                   size="small"
                   type="number"
-                  label="Quantity"
+                  label={t("recipes.quantity")}
                   {...register(`ingredients.${idx}.quantity`)}
                 />
 
                 <FormControl size="small">
-                  <InputLabel id={`ing-uom-${idx}`}>UOM</InputLabel>
+                  <InputLabel id={`ing-uom-${idx}`}>
+                    {t("recipes.uom")}
+                  </InputLabel>
                   <Controller
                     name={`ingredients.${idx}.uom`}
                     control={control}
                     render={({ field: f }) => (
-                      <Select labelId={`ing-uom-${idx}`} label="UOM" {...f}>
+                      <Select labelId={`ing-uom-${idx}`} label={t("recipes.uom")} {...f}>
                         {UOMS.map((u) => (
                           <MenuItem key={u} value={u}>
                             {u}
@@ -293,7 +299,7 @@ function RecipeForm() {
                           onChange={(e) => f.onChange(e.target.checked)}
                         />
                       }
-                      label="Opt."
+                      label={t("recipes.opt")}
                     />
                   )}
                 />
@@ -311,7 +317,9 @@ function RecipeForm() {
         </div>
 
         {mutation.isError && (
-          <p className="text-red-500 text-sm">Could not save the recipe.</p>
+          <p className="text-red-500 text-sm" role="alert">
+            {t("recipes.saveError")}
+          </p>
         )}
 
         <div className="flex gap-3">
@@ -322,13 +330,13 @@ function RecipeForm() {
             disabled={mutation.isPending}
           >
             {mutation.isPending
-              ? "Saving…"
+              ? t("recipes.saving")
               : isEdit
-                ? "Publish new version"
-                : "Create recipe"}
+                ? t("recipes.publishNewVersion")
+                : t("recipes.createRecipe")}
           </Button>
           <Button variant="outlined" onClick={() => navigate("/recipes")}>
-            Cancel
+            {t("recipes.cancel")}
           </Button>
         </div>
       </form>

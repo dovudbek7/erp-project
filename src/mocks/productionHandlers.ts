@@ -362,20 +362,26 @@ export const productionHandlers = [
     return HttpResponse.json(hydrateOrder(order));
   }),
 
-  // ─── Delete a DRAFT order ─────────────────────────────────
+  // ─── Delete an order (any status — bulk delete from the grid) ─
   http.delete("/api/production-orders/:id", ({ params }) => {
     const order = store.productionOrders.find((o) => o.id === params.id);
     if (!order) return new HttpResponse(null, { status: 404 });
-    if (order.status !== "DRAFT")
-      return HttpResponse.json(
-        { message: "Only DRAFT orders can be deleted" },
-        { status: 409 },
-      );
     store.productionOrders = store.productionOrders.filter(
       (o) => o.id !== order.id,
     );
     store.productionOrderInputs = store.productionOrderInputs.filter(
       (i) => i.productionOrderId !== order.id,
+    );
+    return new HttpResponse(null, { status: 204 });
+  }),
+
+  // ─── Delete a recipe ──────────────────────────────────────
+  http.delete("/api/recipes/:id", ({ params }) => {
+    const idx = store.recipes.findIndex((r) => r.id === params.id);
+    if (idx === -1) return new HttpResponse(null, { status: 404 });
+    store.recipes.splice(idx, 1);
+    store.recipeIngredients = store.recipeIngredients.filter(
+      (i) => i.recipeId !== params.id,
     );
     return new HttpResponse(null, { status: 204 });
   }),

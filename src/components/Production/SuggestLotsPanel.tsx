@@ -1,5 +1,6 @@
 import { Button, Chip, IconButton } from "@mui/material";
 import { FiX } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 import useSuggestLots from "../../hooks/useSuggestLots";
 import ExpiryBadge from "../common/ExpiryBadge";
 import type { ConsumedLot } from "../../types";
@@ -33,6 +34,7 @@ function SuggestLotsPanel({
   onUse,
   onClose,
 }: Props) {
+  const { t } = useTranslation();
   const { data, isLoading } = useSuggestLots(
     orderId,
     productId,
@@ -56,7 +58,10 @@ function SuggestLotsPanel({
     };
     const override =
       top && lot.lotId !== top.lotId
-        ? `Operator override: used ${lot.lotNumber} instead of suggested ${top.lotNumber}`
+        ? t("production.override", {
+            used: lot.lotNumber,
+            suggested: top.lotNumber,
+          })
         : undefined;
     onUse([consumed], override);
   };
@@ -65,7 +70,9 @@ function SuggestLotsPanel({
     <div className="bg-white border border-border rounded-2xl overflow-hidden">
       <div className="border-b border-border px-4 py-3 flex items-center justify-between">
         <div>
-          <p className="font-semibold text-sm">Suggested lots</p>
+          <p className="font-semibold text-sm">
+            {t("production.suggestedLots")}
+          </p>
           <p className="text-gray-400 text-xs">{productName} · FEFO</p>
         </div>
         <IconButton size="small" onClick={onClose}>
@@ -74,9 +81,11 @@ function SuggestLotsPanel({
       </div>
 
       <div className="p-3 flex flex-col gap-2 max-h-[340px] overflow-y-auto">
-        {isLoading && <p className="text-gray-400 text-sm">Loading…</p>}
+        {isLoading && (
+          <p className="text-gray-400 text-sm">{t("production.loading")}</p>
+        )}
         {!isLoading && suggestions.length === 0 && (
-          <p className="text-gray-400 text-sm">No available lots.</p>
+          <p className="text-gray-400 text-sm">{t("production.noLotsYet")}</p>
         )}
 
         {suggestions.map((lot) => (
@@ -87,11 +96,13 @@ function SuggestLotsPanel({
             <div className="flex items-center justify-between">
               <span className="font-medium text-sm">{lot.lotNumber}</span>
               {top && lot.lotId === top.lotId && (
-                <Chip label="Best" color="success" size="small" />
+                <Chip label={t("production.best")} color="success" size="small" />
               )}
             </div>
             <div className="flex items-center justify-between text-xs text-gray-500">
-              <span>Avail: {lot.availableQuantity}</span>
+              <span>
+                {t("production.avail")}: {lot.availableQuantity}
+              </span>
               <ExpiryBadge expiryDate={lot.expiryDate} />
             </div>
             <div className="flex items-center justify-between mt-1">
@@ -99,12 +110,12 @@ function SuggestLotsPanel({
                 {lot.unitCost} /unit
                 {Number(lot.suggestedQuantity) > 0 && (
                   <span className="ml-2 text-gray-700">
-                    take {lot.suggestedQuantity}
+                    {t("production.take")} {lot.suggestedQuantity}
                   </span>
                 )}
               </span>
               <Button size="small" variant="contained" onClick={() => pickLot(lot)}>
-                Use
+                {t("production.use")}
               </Button>
             </div>
           </div>
@@ -123,14 +134,13 @@ function SuggestLotsPanel({
               )
             }
           >
-            Use all suggested
+            {t("production.useAllSuggested")}
           </Button>
         )}
 
         {data && Number(data.shortfall) > 0 && (
           <p className="text-amber-600 text-xs mt-1">
-            ⚠ Shortfall of {data.shortfall} — not enough stock for the full
-            quantity.
+            ⚠ {t("production.shortfall", { qty: data.shortfall })}
           </p>
         )}
       </div>

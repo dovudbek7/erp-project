@@ -9,10 +9,15 @@ import {
 } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { Link, useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import useProductionOrders from "../../hooks/useProductionOrders";
 import useRecipes from "../../hooks/useRecipes";
 import formatDate from "../../utilties/formatDate";
 import type { ProductionOrderStatus } from "../../types";
+import { CACHE_KEY_PRODUCTION_ORDERS } from "../../constants.production";
+import useGridSelection from "../../hooks/useGridSelection";
+import BackButton from "../common/BackButton";
+import DeleteSelectedBar from "../common/DeleteSelectedBar";
 import ProductionStatusBadge from "./ProductionStatusBadge";
 
 const STATUSES: ProductionOrderStatus[] = [
@@ -24,11 +29,14 @@ const STATUSES: ProductionOrderStatus[] = [
 
 function ProductionOrders() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [status, setStatus] = useState<string>("");
   const { data = [], error, isLoading } = useProductionOrders(
     status ? { status } : {},
   );
   const { data: recipes = [] } = useRecipes();
+  const { rowSelectionModel, onRowSelectionModelChange, selectedIds, clear } =
+    useGridSelection();
 
   const recipeName = useMemo(() => {
     const m = new Map(recipes.map((r) => [r.id, r.name]));
@@ -38,7 +46,7 @@ function ProductionOrders() {
   const columns: GridColDef[] = [
     {
       field: "orderNumber",
-      headerName: "Order #",
+      headerName: t("production.colOrder"),
       flex: 1,
       renderCell: (p) => (
         <Link
@@ -51,19 +59,19 @@ function ProductionOrders() {
     },
     {
       field: "recipeId",
-      headerName: "Recipe",
+      headerName: t("production.colRecipe"),
       flex: 1.4,
       valueGetter: (_v, row) => recipeName(row.recipeId),
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: t("production.colStatus"),
       flex: 1,
       renderCell: (p) => <ProductionStatusBadge status={p.value} />,
     },
     {
       field: "plannedOutputQuantity",
-      headerName: "Planned output",
+      headerName: t("production.colPlanned"),
       flex: 1,
       renderCell: (p) => (
         <span>
@@ -73,7 +81,7 @@ function ProductionOrders() {
     },
     {
       field: "actualOutputQuantity",
-      headerName: "Actual output",
+      headerName: t("production.colActual"),
       flex: 1,
       renderCell: (p) =>
         p.value ? (
@@ -86,13 +94,13 @@ function ProductionOrders() {
     },
     {
       field: "scheduledFor",
-      headerName: "Scheduled",
+      headerName: t("production.colScheduled"),
       flex: 1,
       valueGetter: (v) => formatDate(v),
     },
     {
       field: "yieldPercent",
-      headerName: "Yield",
+      headerName: t("production.colYield"),
       flex: 0.8,
       renderCell: (p) =>
         p.value ? (
@@ -107,42 +115,50 @@ function ProductionOrders() {
 
   return (
     <div>
+      <BackButton />
       <div className="flex justify-between items-start">
         <div>
-          <h2 className="text-3xl font-bold">Production orders</h2>
-          <p className="text-gray-400">
-            Plan, run and close out production batches.
-          </p>
+          <h2 className="text-3xl font-bold">{t("production.ordersTitle")}</h2>
+          <p className="text-gray-400">{t("production.ordersDesc")}</p>
         </div>
         <Button
           variant="contained"
           color="error"
           onClick={() => navigate("/production/orders/new")}
         >
-          + New production order
+          + {t("production.newOrder")}
         </Button>
       </div>
 
       <div className="mt-5 flex gap-3">
         <FormControl size="small" sx={{ minWidth: 200 }}>
-          <InputLabel id="po-status-filter">Status</InputLabel>
+          <InputLabel id="po-status-filter">
+            {t("production.statusFilter")}
+          </InputLabel>
           <Select
             labelId="po-status-filter"
-            label="Status"
+            label={t("production.statusFilter")}
             value={status}
             onChange={(e) => setStatus(e.target.value)}
           >
-            <MenuItem value="">All</MenuItem>
+            <MenuItem value="">{t("production.all")}</MenuItem>
             {STATUSES.map((s) => (
               <MenuItem key={s} value={s}>
-                {s}
+                {t(`production.status${s}`)}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
       </div>
 
-      <div className="mt-5 shadow-md">
+      <div className="mt-5">
+        <DeleteSelectedBar
+          selectedIds={selectedIds}
+          endpoint="production-orders"
+          queryKey={CACHE_KEY_PRODUCTION_ORDERS}
+          label="order"
+          onDone={clear}
+        />
         <Paper style={{ borderRadius: "20px" }}>
           <DataGrid
             style={{ borderRadius: "20px" }}
@@ -155,6 +171,9 @@ function ProductionOrders() {
             pageSizeOptions={[10, 25]}
             sx={{ border: 0, cursor: "pointer" }}
             showToolbar
+            checkboxSelection
+            onRowSelectionModelChange={onRowSelectionModelChange}
+            rowSelectionModel={rowSelectionModel}
           />
         </Paper>
       </div>

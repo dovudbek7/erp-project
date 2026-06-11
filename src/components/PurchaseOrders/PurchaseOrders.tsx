@@ -2,8 +2,12 @@ import { Button, Paper } from "@mui/material";
 import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
+import { CACHE_KEY_PURCHASE_ORDERS } from "../../constants";
+import useGridSelection from "../../hooks/useGridSelection";
 import usePurchaseOrders from "../../hooks/usePurchaseOrders";
 import formatDate from "../../utilties/formatDate";
+import BackButton from "../common/BackButton";
+import DeleteSelectedBar from "../common/DeleteSelectedBar";
 import Status from "../common/StatusBadge";
 
 function PurchaseOrders() {
@@ -11,6 +15,8 @@ function PurchaseOrders() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const paginationModel = { page: 0, pageSize: 5 };
+  const { rowSelectionModel, onRowSelectionModelChange, selectedIds, clear } =
+    useGridSelection();
 
   const columns: GridColDef[] = [
     {
@@ -58,6 +64,7 @@ function PurchaseOrders() {
 
   return (
     <div className="">
+      <BackButton />
       <div className="flex justify-between">
         <div className="">
           <h2 className="text-3xl font-bold">{t("poPage.name")}</h2>
@@ -73,7 +80,14 @@ function PurchaseOrders() {
           </Button>
         </div>
       </div>
-      <div className="mt-5 shadow shadow-md">
+      <div className="mt-5">
+        <DeleteSelectedBar
+          selectedIds={selectedIds}
+          endpoint="purchase-orders"
+          queryKey={CACHE_KEY_PURCHASE_ORDERS}
+          label="order"
+          onDone={clear}
+        />
         <Paper sx={{ height: "auto" }} style={{ borderRadius: "20px" }}>
           <DataGrid
             style={{ borderRadius: "20px" }}
@@ -85,6 +99,9 @@ function PurchaseOrders() {
             pageSizeOptions={[5, 10, 15]}
             sx={{ border: 0 }}
             showToolbar
+            checkboxSelection
+            onRowSelectionModelChange={onRowSelectionModelChange}
+            rowSelectionModel={rowSelectionModel}
           />
         </Paper>
       </div>

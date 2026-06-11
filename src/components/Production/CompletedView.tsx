@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 import type { Lot, Product } from "../../types";
 import type { ProductionOrderWithDetail } from "../../types/production";
 import useLots from "../../hooks/useLots";
@@ -27,6 +28,7 @@ interface Props {
 }
 
 function CompletedView({ order, productsById }: Props) {
+  const { t } = useTranslation();
   const { data: users = [] } = useUsers();
   const { data: allLots = [] } = useLots();
   const [traceOpen, setTraceOpen] = useState(false);
@@ -63,15 +65,20 @@ function CompletedView({ order, productsById }: Props) {
           <div>
             <div className="flex items-center gap-3">
               <h2 className="text-2xl font-bold">{order.orderNumber}</h2>
-              <Chip label="Completed" color="success" size="small" />
+              <Chip
+                label={t("production.statusCOMPLETED")}
+                color="success"
+                size="small"
+              />
             </div>
             <p className="text-gray-500 mt-1">
-              {order.recipe?.name} · completed {formatDate(order.completedAt)} ·
-              by {completedByName}
+              {order.recipe?.name} · {t("production.completed")}{" "}
+              {formatDate(order.completedAt)} · {t("production.completedBy")}{" "}
+              {completedByName}
             </p>
           </div>
           <Button variant="outlined" onClick={() => setTraceOpen(true)}>
-            View traceability
+            {t("production.viewTraceability")}
           </Button>
         </div>
       </div>
@@ -79,30 +86,30 @@ function CompletedView({ order, productsById }: Props) {
       {/* Three insight cards */}
       <div className="grid grid-cols-3 gap-5">
         <div className="bg-white border border-border rounded-2xl p-5">
-          <p className="text-gray-500 text-sm">Yield</p>
+          <p className="text-gray-500 text-sm">{t("production.yield")}</p>
           <p className="text-3xl font-bold mt-1">{order.yieldPercent}%</p>
           <p className="text-gray-400 text-sm mt-2">
-            planned {order.plannedOutputQuantity} kg → actual{" "}
-            {order.actualOutputQuantity} kg
+            {t("production.plannedKg")} {order.plannedOutputQuantity} kg →{" "}
+            {t("production.actualKg")} {order.actualOutputQuantity} kg
           </p>
           <p className="text-gray-400 text-xs mt-1">
-            recipe target {order.recipe?.expectedYieldPercent}%
+            {t("production.recipeTarget")} {order.recipe?.expectedYieldPercent}%
           </p>
         </div>
 
         <div className="bg-white border border-border rounded-2xl p-5">
-          <p className="text-gray-500 text-sm">Cost</p>
+          <p className="text-gray-500 text-sm">{t("production.cost")}</p>
           <p className="text-3xl font-bold mt-1">
             {fmtMoney(order.unitOutputCost ?? 0)}
           </p>
-          <p className="text-gray-400 text-sm mt-2">per kg output</p>
+          <p className="text-gray-400 text-sm mt-2">{t("production.perKg")}</p>
           <p className="text-gray-400 text-xs mt-1">
-            total input {fmtMoney(order.totalInputCost ?? 0)}
+            {t("production.totalInput")} {fmtMoney(order.totalInputCost ?? 0)}
           </p>
         </div>
 
         <div className="bg-white border border-border rounded-2xl p-5">
-          <p className="text-gray-500 text-sm">Output</p>
+          <p className="text-gray-500 text-sm">{t("production.output")}</p>
           <p className="text-lg font-bold mt-1">
             {order.outputLot?.lotNumber ?? "—"}
           </p>
@@ -112,7 +119,7 @@ function CompletedView({ order, productsById }: Props) {
               to={`/lots/${order.outputLot.id}`}
               className="text-blue-600 text-sm inline-block mt-2"
             >
-              View lot record →
+              {t("production.viewLot")}
             </Link>
           )}
         </div>
@@ -121,17 +128,17 @@ function CompletedView({ order, productsById }: Props) {
       {/* Planned vs actual */}
       <div className="bg-white border border-border rounded-2xl overflow-hidden">
         <div className="border-b border-border px-[25px] py-[15px]">
-          <p className="font-semibold">Inputs — planned vs actual</p>
+          <p className="font-semibold">{t("production.plannedVsActual")}</p>
         </div>
         <Paper elevation={0}>
-          <Table>
+          <Table aria-label={t("production.plannedVsActual")}>
             <TableHead>
               <TableRow>
-                <TableCell>Product</TableCell>
-                <TableCell align="right">Planned</TableCell>
-                <TableCell align="right">Actual</TableCell>
-                <TableCell align="right">Variance</TableCell>
-                <TableCell>Lots</TableCell>
+                <TableCell>{t("production.product")}</TableCell>
+                <TableCell align="right">{t("production.planned")}</TableCell>
+                <TableCell align="right">{t("production.actualCol")}</TableCell>
+                <TableCell align="right">{t("production.variance")}</TableCell>
+                <TableCell>{t("production.lotsCol")}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -184,19 +191,21 @@ function CompletedView({ order, productsById }: Props) {
       {/* Stock movements created by this order */}
       <div className="bg-white border border-border rounded-2xl overflow-hidden">
         <div className="border-b border-border px-[25px] py-[15px]">
-          <p className="font-semibold">Stock movements</p>
+          <p className="font-semibold">{t("production.stockMovements")}</p>
           <p className="text-gray-400 text-xs">
-            Created when this order was completed.
+            {t("production.movementsHint")}
           </p>
         </div>
         <Paper elevation={0}>
-          <Table>
+          <Table aria-label={t("production.stockMovements")}>
             <TableHead>
               <TableRow>
-                <TableCell>Type</TableCell>
-                <TableCell>Lot</TableCell>
-                <TableCell align="right">Quantity</TableCell>
-                <TableCell align="right">Total cost</TableCell>
+                <TableCell>{t("production.type")}</TableCell>
+                <TableCell>{t("production.lot")}</TableCell>
+                <TableCell align="right">{t("production.quantity")}</TableCell>
+                <TableCell align="right">
+                  {t("production.totalCostCol")}
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -229,7 +238,7 @@ function CompletedView({ order, productsById }: Props) {
               {order.movements.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={4} className="text-gray-400">
-                    No movements recorded.
+                    {t("production.noMovements")}
                   </TableCell>
                 </TableRow>
               )}
@@ -245,12 +254,16 @@ function CompletedView({ order, productsById }: Props) {
         fullWidth
         maxWidth="md"
       >
-        <DialogTitle>Traceability — {order.outputLot?.lotNumber}</DialogTitle>
+        <DialogTitle>
+          {t("production.traceModalTitle")} — {order.outputLot?.lotNumber}
+        </DialogTitle>
         <DialogContent>
           <div className="flex items-center gap-6 py-4">
             {/* Input lots */}
             <div className="flex-1 flex flex-col gap-2">
-              <p className="text-gray-500 text-sm">Consumed lots (inputs)</p>
+              <p className="text-gray-500 text-sm">
+                {t("production.consumedLots")}
+              </p>
               {parentLots.map((lot) => (
                 <div
                   key={lot!.id}
@@ -264,7 +277,9 @@ function CompletedView({ order, productsById }: Props) {
                 </div>
               ))}
               {parentLots.length === 0 && (
-                <p className="text-gray-400 text-sm">No parent lots.</p>
+                <p className="text-gray-400 text-sm">
+                  {t("production.noParents")}
+                </p>
               )}
             </div>
 
@@ -272,7 +287,9 @@ function CompletedView({ order, productsById }: Props) {
 
             {/* Output lot */}
             <div className="flex-1">
-              <p className="text-gray-500 text-sm">Output lot</p>
+              <p className="text-gray-500 text-sm">
+                {t("production.outputLot")}
+              </p>
               {order.outputLot && (
                 <div className="border-2 border-green-500 rounded-xl p-3 mt-2">
                   <p className="font-semibold">{order.outputLot.lotNumber}</p>

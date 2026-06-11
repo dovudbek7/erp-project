@@ -11,6 +11,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import type { Product } from "../../types";
 import type { ProductionOrderWithDetail } from "../../types/production";
 import useWarehouse from "../../hooks/useWarehouse";
@@ -35,6 +36,7 @@ interface Props {
 const today = () => new Date().toISOString().slice(0, 10);
 
 function CompleteModal({ order, productsById, open, onClose }: Props) {
+  const { t } = useTranslation();
   const { data: warehouses = [] } = useWarehouse();
   const complete = useCompleteProduction(order.id);
 
@@ -91,11 +93,13 @@ function CompleteModal({ order, productsById, open, onClose }: Props) {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Complete production — {order.orderNumber}</DialogTitle>
+      <DialogTitle>
+        {t("production.completeTitle")} — {order.orderNumber}
+      </DialogTitle>
       <DialogContent>
         <div className="flex flex-col gap-5 pt-2">
           <TextField
-            label="Actual output (KG)"
+            label={t("production.actualOutputKg")}
             type="number"
             value={actualOutput}
             onChange={(e) => setActualOutput(e.target.value)}
@@ -103,32 +107,36 @@ function CompleteModal({ order, productsById, open, onClose }: Props) {
           />
 
           <TextField
-            label="Output lot number"
+            label={t("production.outputLotNumber")}
             value={lotNumber}
             onChange={(e) => setLotNumber(e.target.value)}
-            helperText="Auto-suggested — editable"
+            helperText={t("production.autoSuggested")}
             required
           />
 
           <TextField
-            label="Expiry date"
+            label={t("production.expiryDate")}
             type="date"
             value={expiryDate}
             onChange={(e) => setExpiryDate(e.target.value)}
             slotProps={{ inputLabel: { shrink: true } }}
             helperText={
               outputProduct?.shelfLifeDays
-                ? `From shelf life of ${outputProduct.shelfLifeDays} days`
+                ? t("production.fromShelfLife", {
+                    days: outputProduct.shelfLifeDays,
+                  })
                 : undefined
             }
             required
           />
 
           <FormControl fullWidth>
-            <InputLabel id="out-wh-label">Output warehouse</InputLabel>
+            <InputLabel id="out-wh-label">
+              {t("production.outputWarehouse")}
+            </InputLabel>
             <Select
               labelId="out-wh-label"
-              label="Output warehouse"
+              label={t("production.outputWarehouse")}
               value={warehouseId}
               onChange={(e) => setWarehouseId(e.target.value)}
             >
@@ -141,7 +149,7 @@ function CompleteModal({ order, productsById, open, onClose }: Props) {
           </FormControl>
 
           <TextField
-            label="Notes"
+            label={t("production.notes")}
             multiline
             minRows={2}
             value={notes}
@@ -151,37 +159,42 @@ function CompleteModal({ order, productsById, open, onClose }: Props) {
           {/* Live preview */}
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-xl border border-border p-4 bg-gray-50">
-              <p className="text-gray-500 text-sm">Yield</p>
+              <p className="text-gray-500 text-sm">{t("production.yield")}</p>
               <p className="text-2xl font-bold">{fmtPct(previewYield)}%</p>
               <p className="text-gray-400 text-xs">
-                {actualOutput || 0} / {meatMass.toFixed(3)} kg meat input
+                {actualOutput || 0} / {meatMass.toFixed(3)}{" "}
+                {t("production.meatInput")}
               </p>
             </div>
             <div className="rounded-xl border border-border p-4 bg-gray-50">
-              <p className="text-gray-500 text-sm">Unit output cost</p>
+              <p className="text-gray-500 text-sm">
+                {t("production.unitOutputCost")}
+              </p>
               <p className="text-2xl font-bold">{fmtMoney(previewUnitCost)}</p>
               <p className="text-gray-400 text-xs">
-                total input {fmtMoney(inputCostTotal)}
+                {t("production.totalInput")} {fmtMoney(inputCostTotal)}
               </p>
             </div>
           </div>
 
           {complete.isError && (
-            <p className="text-red-500 text-sm">
-              Could not complete the order. Try again.
+            <p className="text-red-500 text-sm" role="alert">
+              {t("production.completeError")}
             </p>
           )}
         </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t("production.cancel")}</Button>
         <Button
           variant="contained"
           color="error"
           disabled={!valid || complete.isPending}
           onClick={submit}
         >
-          {complete.isPending ? "Completing…" : "Complete production"}
+          {complete.isPending
+            ? t("production.completing")
+            : t("production.completeProduction")}
         </Button>
       </DialogActions>
     </Dialog>

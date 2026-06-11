@@ -324,6 +324,7 @@ export interface ProductionOrderInput {
 export type SalesOrderStatus =
   | "DRAFT"
   | "CONFIRMED"
+  | "PICKED"
   | "INVOICED"
   | "SHIPPED"
   | "DELIVERED"

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import useProductsDetail from "../../hooks/useProductsDetail";
 import formatDate from "../../utilties/formatDate";
+import BackButton from "../common/BackButton";
 
 const Detail = () => {
   const { id } = useParams();
@@ -64,12 +65,13 @@ function ProductDetail() {
   const { t } = useTranslation();
   const { data, error, isLoading } = useProductsDetail(id || "");
 
-  if (isLoading) return <p>Loading</p>;
+  if (isLoading) return <p>{t("common.loading")}</p>;
   if (error) return <p>{error.message}</p>;
 
   return (
     <>
       <div className="">
+        <BackButton />
         <p className="text-xl font-semibold">{data?.name}</p>
         <div className="bg-white w-full rounded-2xl border border-border mt-3 p-[25px_20px]">
           <div className="flex gap-3 items-center">

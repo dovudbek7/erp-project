@@ -6,6 +6,7 @@ import {
   Input,
 } from "@mui/material";
 import { FiClock } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 import type { ConsumedLot, Lot, Product } from "../../types";
 import type { ProductionOrderWithDetail } from "../../types/production";
 import useLots from "../../hooks/useLots";
@@ -48,16 +49,17 @@ function useElapsed(startedAt: string | null) {
 }
 
 function SaveIndicator({ state }: { state?: SaveState }) {
+  const { t } = useTranslation();
   if (!state) return null;
   if (state === "saving")
     return (
       <span className="text-gray-400 text-xs flex items-center gap-1">
-        <CircularProgress size={10} /> Saving…
+        <CircularProgress size={10} /> {t("production.saving")}
       </span>
     );
   if (state === "saved")
-    return <span className="text-green-600 text-xs">✓ Saved</span>;
-  return <span className="text-red-500 text-xs">Save failed</span>;
+    return <span className="text-green-600 text-xs">✓ {t("production.saved")}</span>;
+  return <span className="text-red-500 text-xs">{t("production.saveFailed")}</span>;
 }
 
 function VarianceChip({
@@ -67,6 +69,7 @@ function VarianceChip({
   planned: string;
   actual: string | null;
 }) {
+  const { t } = useTranslation();
   const v = variancePercent(planned, actual);
   if (v === null || Math.abs(v) <= 5) return null;
   const sign = v > 0 ? "+" : "";
@@ -74,12 +77,15 @@ function VarianceChip({
     <Chip
       size="small"
       color={Math.abs(v) > 15 ? "error" : "warning"}
-      label={`⚠ ${sign}${v.toFixed(0)}% ${v > 0 ? "over" : "under"} plan`}
+      label={`⚠ ${sign}${v.toFixed(0)}% ${
+        v > 0 ? t("production.over") : t("production.under")
+      }`}
     />
   );
 }
 
 function InProgressView({ order, productsById }: Props) {
+  const { t } = useTranslation();
   const elapsed = useElapsed(order.startedAt);
   const { save, flushAll, status } = useInputAutoSave(order.id);
   const { data: allLots = [] } = useLots();
@@ -148,12 +154,13 @@ function InProgressView({ order, productsById }: Props) {
               <ProductionStatusBadge status={order.status} />
             </div>
             <p className="text-gray-500 mt-1">
-              {order.recipe?.name} · started {formatDate(order.startedAt)}
+              {order.recipe?.name} · {t("production.started")}{" "}
+              {formatDate(order.startedAt)}
             </p>
           </div>
           <div className="text-right">
             <p className="text-gray-400 text-xs flex items-center gap-1 justify-end">
-              <FiClock /> Elapsed
+              <FiClock /> {t("production.elapsed")}
             </p>
             <p className="text-3xl font-mono font-bold tabular-nums">
               {elapsed}
@@ -166,9 +173,9 @@ function InProgressView({ order, productsById }: Props) {
         {/* Inputs table */}
         <div className="bg-white border border-border rounded-2xl overflow-hidden">
           <div className="border-b border-border px-[25px] py-[15px]">
-            <p className="font-semibold">Inputs</p>
+            <p className="font-semibold">{t("production.inputs")}</p>
             <p className="text-gray-400 text-xs">
-              Enter actual quantities — focus a row to see suggested lots.
+              {t("production.inputsHint")}
             </p>
           </div>
 
@@ -187,14 +194,15 @@ function InProgressView({ order, productsById }: Props) {
                         {product?.name ?? input.productId}
                       </p>
                       <p className="text-gray-400 text-xs">
-                        Planned {input.plannedQuantity} {input.plannedUom}
+                        {t("production.planned")} {input.plannedQuantity}{" "}
+                        {input.plannedUom}
                       </p>
                     </div>
 
                     <div className="flex items-center gap-2">
                       <Input
                         type="number"
-                        placeholder="Actual"
+                        placeholder={t("production.actual")}
                         value={actuals[input.id] ?? ""}
                         onFocus={() => setActiveInputId(input.id)}
                         onChange={(e) =>
@@ -230,7 +238,7 @@ function InProgressView({ order, productsById }: Props) {
                         />
                       ))}
                       <span className="text-xs text-gray-400 self-center">
-                        cost {fmtMoney(inputCost(input))}
+                        {t("production.cost")} {fmtMoney(inputCost(input))}
                       </span>
                     </div>
                   )}
@@ -253,7 +261,7 @@ function InProgressView({ order, productsById }: Props) {
                 setCompleteOpen(true);
               }}
             >
-              Complete production
+              {t("production.completeProduction")}
             </Button>
           </div>
         </div>
@@ -280,19 +288,23 @@ function InProgressView({ order, productsById }: Props) {
 
           {/* Cumulative summary */}
           <div className="bg-white border border-border rounded-2xl p-5">
-            <p className="font-semibold mb-4">Batch so far</p>
+            <p className="font-semibold mb-4">{t("production.batchSoFar")}</p>
             <div className="flex justify-between mb-2">
-              <span className="text-gray-500">Total mass consumed</span>
+              <span className="text-gray-500">{t("production.totalMass")}</span>
               <span className="font-semibold">{fmtQty(massSoFar)} kg</span>
             </div>
             <div className="flex justify-between mb-4">
-              <span className="text-gray-500">Total cost</span>
+              <span className="text-gray-500">{t("production.totalCost")}</span>
               <span className="font-semibold">{fmtMoney(costSoFar)}</span>
             </div>
 
-            <p className="text-gray-500 text-sm mb-2">Lots being consumed</p>
+            <p className="text-gray-500 text-sm mb-2">
+              {t("production.lotsConsuming")}
+            </p>
             {consumedByLot.size === 0 && (
-              <p className="text-gray-400 text-sm">No lots consumed yet.</p>
+              <p className="text-gray-400 text-sm">
+                {t("production.noLotsYet")}
+              </p>
             )}
             <div className="flex flex-col gap-3">
               {Array.from(consumedByLot.entries()).map(([lotId, used]) => {

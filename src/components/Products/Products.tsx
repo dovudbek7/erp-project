@@ -14,8 +14,12 @@ import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import z from "zod";
+import { CACHE_KEY_PRODUCTS } from "../../constants";
+import useGridSelection from "../../hooks/useGridSelection";
 import useProducts from "../../hooks/useProducts";
 import { type Product } from "../../types";
+import BackButton from "../common/BackButton";
+import DeleteSelectedBar from "../common/DeleteSelectedBar";
 
 const schema = z.object({
   sku: z.string().min(1, "SKU is required"),
@@ -65,7 +69,7 @@ const AddProduct = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
             <div className="form-group">
               <FormControl className="w-full">
-                <InputLabel htmlFor="product-name">Name</InputLabel>
+                <InputLabel htmlFor="product-name">{t("common.name")}</InputLabel>
                 <Input id="product-name" {...register("name")} />
                 <span className="text-red-500 text-sm">
                   {errors.name?.message}
@@ -75,16 +79,16 @@ const AddProduct = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
             <div className="form-group">
               <FormControl fullWidth>
-                <InputLabel id="type-label">Type</InputLabel>
+                <InputLabel id="type-label">{t("common.type")}</InputLabel>
                 <Controller
                   name="type"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <Select labelId="type-label" label="Type" {...field}>
-                      <MenuItem value="RAW_MATERIAL">RAW MATERIAL</MenuItem>
-                      <MenuItem value="PACKAGING">PACKAGING</MenuItem>
-                      <MenuItem value="FINISHED_GOOD">FINISHED GOOD</MenuItem>
+                    <Select labelId="type-label" label={t("common.type")} {...field}>
+                      <MenuItem value="RAW_MATERIAL">{t("enums.RAW_MATERIAL")}</MenuItem>
+                      <MenuItem value="PACKAGING">{t("enums.PACKAGING")}</MenuItem>
+                      <MenuItem value="FINISHED_GOOD">{t("enums.FINISHED_GOOD")}</MenuItem>
                     </Select>
                   )}
                 />
@@ -94,18 +98,18 @@ const AddProduct = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
             <div className="form-group">
               <FormControl fullWidth>
-                <InputLabel id="uom-label">UOM</InputLabel>
+                <InputLabel id="uom-label">{t("productPage.uom")}</InputLabel>
                 <Controller
                   name="uom"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <Select labelId="uom-label" label="UOM" {...field}>
-                      <MenuItem value="KG">Kg</MenuItem>
-                      <MenuItem value="G">g</MenuItem>
-                      <MenuItem value="TONNE">Tonne</MenuItem>
-                      <MenuItem value="LITER">Liter</MenuItem>
-                      <MenuItem value="PIECE">Piece</MenuItem>
+                    <Select labelId="uom-label" label={t("productPage.uom")} {...field}>
+                      <MenuItem value="KG">{t("enums.KG")}</MenuItem>
+                      <MenuItem value="G">{t("enums.G")}</MenuItem>
+                      <MenuItem value="TONNE">{t("enums.TONNE")}</MenuItem>
+                      <MenuItem value="LITER">{t("enums.LITER")}</MenuItem>
+                      <MenuItem value="PIECE">{t("enums.PIECE")}</MenuItem>
                     </Select>
                   )}
                 />
@@ -115,7 +119,7 @@ const AddProduct = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
             <div className="form-group">
               <FormControl fullWidth>
-                <InputLabel id="category-label">Category</InputLabel>
+                <InputLabel id="category-label">{t("productPage.category")}</InputLabel>
                 <Controller
                   name="category"
                   control={control}
@@ -123,17 +127,17 @@ const AddProduct = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
                   render={({ field }) => (
                     <Select
                       labelId="category-label"
-                      label="Category"
+                      label={t("productPage.category")}
                       {...field}
                     >
-                      <MenuItem value="Beef">Beef</MenuItem>
-                      <MenuItem value="Pork">Pork</MenuItem>
-                      <MenuItem value="Lamb">Lamb</MenuItem>
-                      <MenuItem value="Mince">Mince</MenuItem>
-                      <MenuItem value="Sausage">Sausage</MenuItem>
-                      <MenuItem value="Prepared">Prepared</MenuItem>
-                      <MenuItem value="Spices">Spices</MenuItem>
-                      <MenuItem value="Packaging">Packaging</MenuItem>
+                      <MenuItem value="Beef">{t("enums.cat_Beef")}</MenuItem>
+                      <MenuItem value="Pork">{t("enums.cat_Pork")}</MenuItem>
+                      <MenuItem value="Lamb">{t("enums.cat_Lamb")}</MenuItem>
+                      <MenuItem value="Mince">{t("enums.cat_Mince")}</MenuItem>
+                      <MenuItem value="Sausage">{t("enums.cat_Sausage")}</MenuItem>
+                      <MenuItem value="Prepared">{t("enums.cat_Prepared")}</MenuItem>
+                      <MenuItem value="Spices">{t("enums.cat_Spices")}</MenuItem>
+                      <MenuItem value="Packaging">{t("enums.cat_Packaging")}</MenuItem>
                     </Select>
                   )}
                 />
@@ -143,7 +147,7 @@ const AddProduct = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
           </div>
 
           <Button type="submit" className="bg-blue-500" variant="contained">
-            Submit
+            {t("common.submit")}
           </Button>
         </form>
       </div>
@@ -173,17 +177,35 @@ function Products() {
   const rows = [...added, ...data];
 
   const columns: GridColDef[] = [
-    { field: "sku", headerName: "SKU", flex: 1 },
-    { field: "name", headerName: "Name", flex: 1 },
-    { field: "type", headerName: "Type", flex: 1 },
-    { field: "category", headerName: "Category", flex: 1 },
-    { field: "uom", headerName: "UOM", flex: 1 },
+    { field: "sku", headerName: t("productPage.sku"), flex: 1 },
+    { field: "name", headerName: t("common.name"), flex: 1 },
+    {
+      field: "type",
+      headerName: t("common.type"),
+      flex: 1,
+      valueGetter: (v) => t(`enums.${v}`, { defaultValue: v }),
+    },
+    {
+      field: "category",
+      headerName: t("productPage.category"),
+      flex: 1,
+      valueGetter: (v) => t(`enums.cat_${v}`, { defaultValue: v }),
+    },
+    {
+      field: "uom",
+      headerName: t("productPage.uom"),
+      flex: 1,
+      valueGetter: (v) => t(`enums.${v}`, { defaultValue: v }),
+    },
   ];
 
   const [addP, setAddP] = useState(false);
+  const { rowSelectionModel, onRowSelectionModelChange, selectedIds, clear } =
+    useGridSelection();
 
   return (
     <div className="">
+      <BackButton />
       <div className="flex justify-between">
         <div className="">
           <h2 className="text-3xl font-bold">{t("productPage.name")}</h2>
@@ -201,7 +223,14 @@ function Products() {
       </div>
       {addP && <AddProduct onAdd={addRow} />}
       <div className="">
-        <div className="mt-5 shadow shadow-md">
+        <div className="mt-5">
+          <DeleteSelectedBar
+            selectedIds={selectedIds}
+            endpoint="products"
+            queryKey={CACHE_KEY_PRODUCTS}
+            label="product"
+            onDone={clear}
+          />
           <Paper sx={{ height: "auto" }} style={{ borderRadius: "20px" }}>
             <DataGrid
               onRowClick={(params) => navigate(`/products/${params.id}`)}
@@ -213,6 +242,8 @@ function Products() {
               initialState={{ pagination: { paginationModel } }}
               pageSizeOptions={[5, 10, 15]}
               sx={{ border: 0 }}
+              onRowSelectionModelChange={onRowSelectionModelChange}
+              rowSelectionModel={rowSelectionModel}
             />
           </Paper>
         </div>

@@ -9,21 +9,20 @@ import {
   Paper,
   Select,
 } from "@mui/material";
-import {
-  DataGrid,
-  type GridColDef,
-  type GridRowId,
-  type GridRowSelectionModel,
-} from "@mui/x-data-grid";
+import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
 import z from "zod";
 import React from "react";
+import { CACHE_KEY_LOTS } from "../../constants";
+import useGridSelection from "../../hooks/useGridSelection";
 import useLots from "../../hooks/useLots";
 import useProducts from "../../hooks/useProducts";
 import useWarehouse from "../../hooks/useWarehouse";
 import { type Lot } from "../../types";
+import BackButton from "../common/BackButton";
+import DeleteSelectedBar from "../common/DeleteSelectedBar";
 import ExpiryBadge from "../common/ExpiryBadge";
 import Status from "../common/StatusBadge";
 
@@ -73,7 +72,7 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
         <div className="flex flex-col gap-5">
           <div className="form-group">
             <FormControl className="w-full">
-              <InputLabel htmlFor="lot-number">Lot Number</InputLabel>
+              <InputLabel htmlFor="lot-number">{t("lotsPage.lotNumber")}</InputLabel>
               <Input id="lot-number" {...register("lotNumber")} />
               <span className="text-red-500 text-sm">
                 {errors.lotNumber?.message}
@@ -83,13 +82,13 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
           <div className="form-group">
             <FormControl fullWidth>
-              <InputLabel id="product-label">Product</InputLabel>
+              <InputLabel id="product-label">{t("common.product")}</InputLabel>
               <Controller
                 name="productId"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <Select labelId="product-label" label="Product" {...field}>
+                  <Select labelId="product-label" label={t("common.product")} {...field}>
                     {products.map((p) => (
                       <MenuItem key={p.id} value={p.id}>
                         {p.name}
@@ -104,7 +103,7 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
           <div className="form-group">
             <FormControl fullWidth>
-              <InputLabel id="warehouse-label">Warehouse</InputLabel>
+              <InputLabel id="warehouse-label">{t("common.warehouse")}</InputLabel>
               <Controller
                 name="warehouseId"
                 control={control}
@@ -112,7 +111,7 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
                 render={({ field }) => (
                   <Select
                     labelId="warehouse-label"
-                    label="Warehouse"
+                    label={t("common.warehouse")}
                     {...field}
                   >
                     {warehouses.map((w) => (
@@ -131,16 +130,16 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
           <div className="form-group">
             <FormControl fullWidth>
-              <InputLabel id="status-label">Status</InputLabel>
+              <InputLabel id="status-label">{t("lotsPage.status")}</InputLabel>
               <Controller
                 name="status"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <Select labelId="status-label" label="Status" {...field}>
-                    <MenuItem value="AVAILABLE">AVAILABLE</MenuItem>
-                    <MenuItem value="RESERVED">RESERVED</MenuItem>
-                    <MenuItem value="SOLD_OUT">SOLD OUT</MenuItem>
+                  <Select labelId="status-label" label={t("lotsPage.status")} {...field}>
+                    <MenuItem value="AVAILABLE">{t("enums.AVAILABLE")}</MenuItem>
+                    <MenuItem value="RESERVED">{t("enums.RESERVED")}</MenuItem>
+                    <MenuItem value="SOLD_OUT">{t("enums.SOLD_OUT")}</MenuItem>
                   </Select>
                 )}
               />
@@ -150,15 +149,15 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
           <div className="form-group">
             <FormControl fullWidth>
-              <InputLabel id="source-label">Source</InputLabel>
+              <InputLabel id="source-label">{t("lotsPage.source")}</InputLabel>
               <Controller
                 name="source"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <Select labelId="source-label" label="Source" {...field}>
-                    <MenuItem value="PURCHASE">PURCHASE</MenuItem>
-                    <MenuItem value="PRODUCTION">PRODUCTION</MenuItem>
+                  <Select labelId="source-label" label={t("lotsPage.source")} {...field}>
+                    <MenuItem value="PURCHASE">{t("enums.PURCHASE")}</MenuItem>
+                    <MenuItem value="PRODUCTION">{t("enums.PRODUCTION")}</MenuItem>
                   </Select>
                 )}
               />
@@ -168,7 +167,7 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
           <div className="form-group">
             <FormControl className="w-full">
-              <InputLabel htmlFor="lot-initial">Initial QTY</InputLabel>
+              <InputLabel htmlFor="lot-initial">{t("lotsPage.initialQty")}</InputLabel>
               <Input
                 id="lot-initial"
                 type="number"
@@ -182,7 +181,7 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
           <div className="form-group">
             <FormControl className="w-full">
-              <InputLabel htmlFor="lot-current">Current QTY</InputLabel>
+              <InputLabel htmlFor="lot-current">{t("lotsPage.currentQty")}</InputLabel>
               <Input
                 id="lot-current"
                 type="number"
@@ -196,18 +195,18 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
           <div className="form-group">
             <FormControl fullWidth>
-              <InputLabel id="uom-label">UOM</InputLabel>
+              <InputLabel id="uom-label">{t("productPage.uom")}</InputLabel>
               <Controller
                 name="uom"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <Select labelId="uom-label" label="UOM" {...field}>
-                    <MenuItem value="KG">Kg</MenuItem>
-                    <MenuItem value="G">g</MenuItem>
-                    <MenuItem value="TONNE">Tonne</MenuItem>
-                    <MenuItem value="LITER">Liter</MenuItem>
-                    <MenuItem value="PIECE">Piece</MenuItem>
+                  <Select labelId="uom-label" label={t("productPage.uom")} {...field}>
+                    <MenuItem value="KG">{t("enums.KG")}</MenuItem>
+                    <MenuItem value="G">{t("enums.G")}</MenuItem>
+                    <MenuItem value="TONNE">{t("enums.TONNE")}</MenuItem>
+                    <MenuItem value="LITER">{t("enums.LITER")}</MenuItem>
+                    <MenuItem value="PIECE">{t("enums.PIECE")}</MenuItem>
                   </Select>
                 )}
               />
@@ -217,7 +216,7 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
           <div className="form-group">
             <FormControl className="w-full">
-              <InputLabel htmlFor="lot-unitcost">Unit Cost</InputLabel>
+              <InputLabel htmlFor="lot-unitcost">{t("lotsPage.unitCost")}</InputLabel>
               <Input
                 id="lot-unitcost"
                 type="number"
@@ -231,13 +230,13 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
           <div className="form-group">
             <FormControl fullWidth>
-              <InputLabel id="currency-label">Currency</InputLabel>
+              <InputLabel id="currency-label">{t("lotsPage.currency")}</InputLabel>
               <Controller
                 name="currency"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <Select labelId="currency-label" label="Currency" {...field}>
+                  <Select labelId="currency-label" label={t("lotsPage.currency")} {...field}>
                     <MenuItem value="UZS">UZS</MenuItem>
                     <MenuItem value="USD">USD</MenuItem>
                     <MenuItem value="EUR">EUR</MenuItem>
@@ -251,7 +250,7 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
           <div className="form-group">
             <FormControl className="w-full">
               <InputLabel shrink htmlFor="lot-prod-date">
-                Production Date
+                {t("lotsPage.productionDate")}
               </InputLabel>
               <Input
                 id="lot-prod-date"
@@ -268,7 +267,7 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
           <div className="form-group">
             <FormControl className="w-full">
               <InputLabel shrink htmlFor="lot-exp-date">
-                Expiry Date
+                {t("lotsPage.expiryDate")}
               </InputLabel>
               <Input
                 id="lot-exp-date"
@@ -283,7 +282,7 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
         </div>
 
         <Button type="submit" className="bg-blue-500" variant="contained">
-          Submit
+          {t("common.submit")}
         </Button>
       </form>
     </div>
@@ -295,24 +294,23 @@ function Lots() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", flex: 1 },
+    { field: "id", headerName: t("common.id"), flex: 1 },
     {
       field: "lotNumber",
-      headerName: "Lot Number",
+      headerName: t("lotsPage.lotNumber"),
       flex: 1,
       renderCell(params) {
         return <Link to={`/lots/${params.id}`}>{params.row.lotNumber}</Link>;
       },
     },
-    { field: "productId", headerName: "Product", flex: 1 },
+    { field: "productId", headerName: t("common.product"), flex: 1 },
     {
       field: "warehouseId",
-      headerName: "Warehouse",
+      headerName: t("common.warehouse"),
     },
     {
       field: "status",
-      headerName: "Status",
-      description: "This column has a value getter and is not sortable.",
+      headerName: t("lotsPage.status"),
       flex: 1,
       renderCell: (params) => {
         return <Status status={params.value} />;
@@ -320,7 +318,7 @@ function Lots() {
     },
     {
       field: "unitCost",
-      headerName: "Unit Cost",
+      headerName: t("lotsPage.unitCost"),
       flex: 1,
       renderCell: (param) => {
         return <p>{param.value} UZS</p>;
@@ -328,7 +326,7 @@ function Lots() {
     },
     {
       field: "currentQuantity",
-      headerName: "Current QTY",
+      headerName: t("lotsPage.currentQty"),
       flex: 1,
       renderCell: (param) => {
         return <p>{param.value} KG</p>;
@@ -337,7 +335,7 @@ function Lots() {
 
     {
       field: "expiryDate",
-      headerName: "Expiry Date",
+      headerName: t("lotsPage.expiryDate"),
       flex: 1,
       renderCell: (param) => {
         return (
@@ -352,19 +350,26 @@ function Lots() {
     },
     {
       field: "source",
-      headerName: "Source",
+      headerName: t("lotsPage.source"),
       flex: 1,
       renderCell: (param) => {
-        return <Chip label={param.value} size="small" variant="outlined" />;
+        return (
+          <Chip
+            label={t(`enums.${param.value}`, { defaultValue: param.value })}
+            size="small"
+            variant="outlined"
+          />
+        );
       },
     },
   ];
 
-  const [rowSelectionModel, setRowSelectionModel] =
-    React.useState<GridRowSelectionModel>({
-      type: "include", // or 'exclude'
-      ids: new Set<GridRowId>([""]),
-    });
+  const {
+    rowSelectionModel,
+    onRowSelectionModelChange,
+    selectedIds,
+    clear,
+  } = useGridSelection();
 
   const [added, setAdded] = React.useState<Lot[]>([]);
   const addRow = (form: FormData) => {
@@ -381,12 +386,13 @@ function Lots() {
 
   const paginationModel = { page: 0, pageSize: 5 };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p>{t("common.loading")}</p>;
   if (error) return <p>{error.message}</p>;
 
   return (
     <>
       <div className="">
+        <BackButton />
         <div className="flex justify-between">
           <div className="">
             <h2 className="text-3xl font-bold ">{t("lotsPage.name")}</h2>
@@ -404,10 +410,16 @@ function Lots() {
         </div>
         {addL && <AddLot onAdd={addRow} />}
         {data ? (
-          <div className="mt-5 shadow shadow-md">
+          <div className="mt-5">
+            <DeleteSelectedBar
+              selectedIds={selectedIds}
+              endpoint="lots"
+              queryKey={CACHE_KEY_LOTS}
+              label="lot"
+              onDone={clear}
+            />
             <Paper sx={{ height: "auto" }} style={{ borderRadius: "20px" }}>
               <DataGrid
-                
                 style={{ borderRadius: "20px" }}
                 rows={rows}
                 getRowId={(row) => row.id}
@@ -418,15 +430,13 @@ function Lots() {
                 checkboxSelection
                 sx={{ border: 0 }}
                 showToolbar
-                onRowSelectionModelChange={(newRowSelectionModel) => {
-                  setRowSelectionModel(newRowSelectionModel);
-                }}
+                onRowSelectionModelChange={onRowSelectionModelChange}
                 rowSelectionModel={rowSelectionModel}
               />
             </Paper>
           </div>
         ) : (
-          <p className="mt-5">No Lots Found</p>
+          <p className="mt-5">{t("lotsPage.noLotsFound")}</p>
         )}
       </div>
     </>

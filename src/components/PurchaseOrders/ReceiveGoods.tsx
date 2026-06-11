@@ -18,6 +18,7 @@ import usePurchaseOrder from "../../hooks/usePurchaseOrder";
 import useReceiveGoods from "../../hooks/useReceiveGoods";
 import { type ReceiveGoodsPayload } from "../../types";
 import { gt, lte, money, mul, qty, remaining, sum } from "../../utilties/money";
+import BackButton from "../common/BackButton";
 import { useToast } from "../common/ToastContext";
 
 const today = new Date().toISOString().split("T")[0];
@@ -164,6 +165,7 @@ function ReceiveGoods() {
 
   return (
     <div className="max-w-[1000px]">
+      <BackButton />
       <p className="text-xl font-semibold">
         {t("poReceive.title")} · {order.poNumber}
       </p>

@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import Auth from "../components/Auth/Auth";
-import HomePage from "../components/HomePage";
 import Layout from "../components/Layout";
 import Lots from "../components/Lots/Lots";
 import Products from "../components/Products/Products";
@@ -17,13 +16,20 @@ import ProductionOrderDetail from "../components/Production/ProductionOrderDetai
 import Recipes from "../components/Recipes/Recipes";
 import RecipeDetail from "../components/Recipes/RecipeDetail";
 import RecipeForm from "../components/Recipes/RecipeForm";
+import SalesOrders from "../components/Sales/SalesOrders";
+import NewSalesOrder from "../components/Sales/NewSalesOrder";
+import SalesOrderDetail from "../components/Sales/SalesOrderDetail";
+import ReportsDashboard from "../components/Reports/ReportsDashboard";
+import YieldReport from "../components/Reports/YieldReport";
+import InventoryValuation from "../components/Reports/InventoryValuation";
+import Traceability from "../components/Reports/Traceability";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { path: "/", element: <HomePage /> },
+      { path: "/", element: <ReportsDashboard /> },
       {
         path: "/lots/",
         element: <Lots />,
@@ -43,6 +49,12 @@ const router = createBrowserRouter([
       { path: "/recipes/new", element: <RecipeForm /> },
       { path: "/recipes/:id", element: <RecipeDetail /> },
       { path: "/recipes/:id/edit", element: <RecipeForm /> },
+      { path: "/sales/orders", element: <SalesOrders /> },
+      { path: "/sales/orders/new", element: <NewSalesOrder /> },
+      { path: "/sales/orders/:id", element: <SalesOrderDetail /> },
+      { path: "/reports/yield", element: <YieldReport /> },
+      { path: "/reports/inventory-valuation", element: <InventoryValuation /> },
+      { path: "/reports/traceability", element: <Traceability /> },
     ],
   },
   { path: "/register", element: <Auth /> },
