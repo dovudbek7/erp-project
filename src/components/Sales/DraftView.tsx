@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import useConfirmSalesOrder from "../../hooks/useConfirmSalesOrder";
 import type { AllocatedLot } from "../../types";
 import type { SalesOrderWithLines } from "../../types/sales";
@@ -21,6 +22,7 @@ const mergeLots = (existing: AllocatedLot[], incoming: AllocatedLot[]) => {
 };
 
 function DraftView({ order, customerName, productName }: Props) {
+  const { t } = useTranslation();
   const toast = useToast();
   const { mutate, isPending } = useConfirmSalesOrder(order.id);
   const [alloc, setAlloc] = useState<Record<string, AllocatedLot[]>>({});
@@ -37,8 +39,8 @@ function DraftView({ order, customerName, productName }: Props) {
     mutate(
       { lines },
       {
-        onSuccess: () => toast.success("Order confirmed"),
-        onError: () => toast.error("Failed to confirm order"),
+        onSuccess: () => toast.success(t("sales.draft.confirmedSuccess")),
+        onError: () => toast.error(t("sales.draft.confirmError")),
       },
     );
   };
@@ -50,8 +52,8 @@ function DraftView({ order, customerName, productName }: Props) {
       <div className="grid grid-cols-[1.5fr_1fr] gap-4 mt-4 items-start">
         {/* Lines + allocate */}
         <div className="bg-white rounded-xl border border-border">
-          <div className="border-b border-border py-[15px] px-[25px]">
-            <p>Allocate lots (FEFO)</p>
+          <div className="border-b border-border py-[15px] px-4 md:px-[25px]">
+            <p>{t("sales.draft.allocateTitle")}</p>
           </div>
           <div className="p-[15px_20px] text-sm flex flex-col gap-3">
             {order.lines.map((l) => {
@@ -67,7 +69,10 @@ function DraftView({ order, customerName, productName }: Props) {
                     <div>
                       <p className="font-medium">{productName(l.productId)}</p>
                       <p className="text-gray-500 text-xs">
-                        Ordered {l.orderedQuantity} {l.uom}
+                        {t("sales.draft.ordered", {
+                          qty: l.orderedQuantity,
+                          uom: l.uom,
+                        })}
                       </p>
                     </div>
                     <Button
@@ -77,7 +82,9 @@ function DraftView({ order, customerName, productName }: Props) {
                         setPanelLine(panelLine === l.id ? null : l.id)
                       }
                     >
-                      {picked.length ? "Re-allocate" : "Allocate"}
+                      {picked.length
+                        ? t("sales.draft.reAllocate")
+                        : t("sales.draft.allocate")}
                     </Button>
                   </div>
                   {picked.length > 0 && (
@@ -124,7 +131,7 @@ function DraftView({ order, customerName, productName }: Props) {
             })()
           ) : (
             <div className="bg-white border border-border rounded-2xl p-5 text-sm text-gray-400">
-              Select a line to see FEFO lot suggestions.
+              {t("sales.draft.selectLineHint")}
             </div>
           )}
         </div>
@@ -138,12 +145,12 @@ function DraftView({ order, customerName, productName }: Props) {
           disabled={isPending || !allAllocated}
           onClick={confirm}
         >
-          Confirm order
+          {t("sales.draft.confirmOrder")}
         </Button>
       </div>
       {!allAllocated && (
         <p className="text-right text-xs text-gray-400 mt-1">
-          Allocate every line to confirm.
+          {t("sales.draft.allocateEveryLine")}
         </p>
       )}
     </div>

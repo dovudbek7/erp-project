@@ -12,7 +12,12 @@ import { FiGitBranch } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const Dashboard = () => {
+interface Props {
+  open?: boolean;
+  onClose?: () => void;
+}
+
+const Dashboard = ({ open = false, onClose }: Props) => {
   const { t } = useTranslation();
 
   const sideItems = [
@@ -85,7 +90,19 @@ const Dashboard = () => {
   ];
   return (
     <div className="">
-      <div className="fixed bg-sidebar h-screen bg-sidebar text-white py-5 w-[300px]">
+      {/* Mobile backdrop */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
+      <div
+        className={`fixed top-0 left-0 bg-sidebar h-screen text-white py-5 w-[280px] md:w-[300px] z-50 overflow-y-auto scrollbar-none transition-transform duration-300 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0`}
+      >
         <div className="border-b pl-5 pb-3 border-gray-400">
           <h2 className="font-bold">Andijan Meat Co</h2>
           <p className="font-thin text-gray-400">{t("sidebar.tagline")}</p>
@@ -96,6 +113,7 @@ const Dashboard = () => {
             <NavLink
               to={item.route}
               key={item.id}
+              onClick={onClose}
               className="hover:outline hover:outline-2 p-2 rounded-md hover:border-gray-400"
             >
               <div className="flex items-center gap-3 text-gray-400 hover:text-white">

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { SalesOrderWithLines } from "../../types/sales";
 import { HeaderCard, LinesCard } from "./SalesOrderParts";
 
@@ -15,6 +16,7 @@ function DeliveredView({
   productName,
   terminalNote,
 }: Props) {
+  const { t } = useTranslation();
   return (
     <div>
       <HeaderCard order={order} customerName={customerName} />
@@ -24,8 +26,7 @@ function DeliveredView({
         showAllocations
       />
       <p className="text-xs text-gray-400 mt-2">
-        {terminalNote ??
-          "Delivered. COGS and gross margin are now final. Invoicing is handled in the next phase."}
+        {terminalNote ?? t("sales.delivered.finalNote")}
       </p>
     </div>
   );

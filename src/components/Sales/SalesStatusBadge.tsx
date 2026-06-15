@@ -1,4 +1,5 @@
 import { Chip } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import type { SalesOrderStatus } from "../../types";
 
 type Color =
@@ -20,24 +21,17 @@ const COLORS: Record<SalesOrderStatus, Color> = {
   CANCELLED: "error",
 };
 
-const LABELS: Record<SalesOrderStatus, string> = {
-  DRAFT: "Draft",
-  CONFIRMED: "Confirmed",
-  PICKED: "Picked",
-  DELIVERED: "Delivered",
-  INVOICED: "Invoiced",
-  SHIPPED: "Shipped",
-  CANCELLED: "Cancelled",
+const SalesStatusBadge = ({ status }: { status: SalesOrderStatus }) => {
+  const { t } = useTranslation();
+  return (
+    <Chip
+      label={t(`enums.${status}`, { defaultValue: status })}
+      color={COLORS[status] ?? "default"}
+      variant="outlined"
+      size="small"
+      sx={{ fontWeight: "bold" }}
+    />
+  );
 };
-
-const SalesStatusBadge = ({ status }: { status: SalesOrderStatus }) => (
-  <Chip
-    label={LABELS[status] ?? status}
-    color={COLORS[status] ?? "default"}
-    variant="outlined"
-    size="small"
-    sx={{ fontWeight: "bold" }}
-  />
-);
 
 export default SalesStatusBadge;

@@ -20,7 +20,7 @@ function EmptyState({ title, description, icon, action }: Props) {
       </div>
       <p className="text-lg font-semibold text-gray-700">{title}</p>
       {description && (
-        <p className="text-gray-400 mt-1 max-w-[420px]">{description}</p>
+        <p className="text-gray-400 mt-1 w-full max-w-[420px]">{description}</p>
       )}
       {action && <div className="mt-5">{action}</div>}
     </div>

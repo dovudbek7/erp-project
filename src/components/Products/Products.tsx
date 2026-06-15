@@ -19,6 +19,7 @@ import useGridSelection from "../../hooks/useGridSelection";
 import useProducts from "../../hooks/useProducts";
 import { type Product } from "../../types";
 import BackButton from "../common/BackButton";
+import DataGridToolbar from "../common/DataGridToolbar";
 import DeleteSelectedBar from "../common/DeleteSelectedBar";
 
 const schema = z.object({
@@ -50,7 +51,7 @@ const AddProduct = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
   return (
     <>
-      <div className="mt-4 w-[300px] right-[60px] absolute z-10 py-[35px] border p-[20px] rounded-2xl border-gray-400 bg-white">
+      <div className="mt-4 w-[90vw] max-w-[300px] right-2 md:right-[60px] absolute z-10 py-[35px] border p-[20px] rounded-2xl border-gray-400 bg-white">
         <p className="text-xl mb-5">{t("productPage.addTitle")}</p>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -206,7 +207,7 @@ function Products() {
   return (
     <div className="">
       <BackButton />
-      <div className="flex justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="">
           <h2 className="text-3xl font-bold">{t("productPage.name")}</h2>
           <p className="text-gray-400">{t("productPage.desc")}</p>
@@ -235,6 +236,7 @@ function Products() {
             <DataGrid
               onRowClick={(params) => navigate(`/products/${params.id}`)}
               showToolbar
+              slots={{ toolbar: DataGridToolbar }}
               checkboxSelection
               style={{ borderRadius: "20px" }}
               rows={rows}

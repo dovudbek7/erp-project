@@ -172,7 +172,7 @@ function InProgressView({ order, productsById }: Props) {
       <div className="grid grid-cols-[1fr_340px] gap-5 items-start">
         {/* Inputs table */}
         <div className="bg-white border border-border rounded-2xl overflow-hidden">
-          <div className="border-b border-border px-[25px] py-[15px]">
+          <div className="border-b border-border px-4 md:px-[25px] py-[15px]">
             <p className="font-semibold">{t("production.inputs")}</p>
             <p className="text-gray-400 text-xs">
               {t("production.inputsHint")}
@@ -186,7 +186,7 @@ function InProgressView({ order, productsById }: Props) {
               return (
                 <div
                   key={input.id}
-                  className={`px-[25px] py-4 ${isActive ? "bg-blue-50" : ""}`}
+                  className={`px-4 md:px-[25px] py-4 ${isActive ? "bg-blue-50" : ""}`}
                 >
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex-1">
@@ -251,7 +251,7 @@ function InProgressView({ order, productsById }: Props) {
             })}
           </div>
 
-          <div className="px-[25px] py-4 border-t border-border">
+          <div className="px-4 md:px-[25px] py-4 border-t border-border">
             <Button
               variant="contained"
               color="error"

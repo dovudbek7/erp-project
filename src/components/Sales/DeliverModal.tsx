@@ -7,6 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import useDeliverSalesOrder from "../../hooks/useDeliverSalesOrder";
 import { useToast } from "../common/ToastContext";
 
@@ -19,6 +20,7 @@ interface Props {
 }
 
 function DeliverModal({ orderId, open, onClose }: Props) {
+  const { t } = useTranslation();
   const toast = useToast();
   const { mutate, isPending } = useDeliverSalesOrder(orderId);
   const [deliveredDate, setDeliveredDate] = useState(today);
@@ -29,29 +31,29 @@ function DeliverModal({ orderId, open, onClose }: Props) {
       { deliveredDate, notes: notes || null },
       {
         onSuccess: () => {
-          toast.success("Order delivered");
+          toast.success(t("sales.deliver.deliveredSuccess"));
           onClose();
         },
-        onError: () => toast.error("Failed to deliver order"),
+        onError: () => toast.error(t("sales.deliver.deliverError")),
       },
     );
   };
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-      <DialogTitle>Deliver order</DialogTitle>
+      <DialogTitle>{t("sales.deliver.title")}</DialogTitle>
       <DialogContent>
         <div className="flex flex-col gap-4 mt-1">
           <TextField
             type="date"
-            label="Delivered date"
+            label={t("sales.deliver.deliveredDate")}
             slotProps={{ inputLabel: { shrink: true } }}
             value={deliveredDate}
             onChange={(e) => setDeliveredDate(e.target.value)}
             fullWidth
           />
           <TextField
-            label="Notes"
+            label={t("sales.deliver.notes")}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             multiline
@@ -62,7 +64,7 @@ function DeliverModal({ orderId, open, onClose }: Props) {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="inherit">
-          Cancel
+          {t("common.cancel")}
         </Button>
         <Button
           onClick={submit}
@@ -70,7 +72,7 @@ function DeliverModal({ orderId, open, onClose }: Props) {
           color="error"
           disabled={isPending || !deliveredDate}
         >
-          Confirm delivery
+          {t("sales.deliver.confirmDelivery")}
         </Button>
       </DialogActions>
     </Dialog>

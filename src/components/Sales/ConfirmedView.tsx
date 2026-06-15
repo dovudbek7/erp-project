@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import usePickSalesOrder from "../../hooks/usePickSalesOrder";
 import type { SalesOrderWithLines } from "../../types/sales";
 import { useToast } from "../common/ToastContext";
@@ -11,6 +12,7 @@ interface Props {
 }
 
 function ConfirmedView({ order, customerName, productName }: Props) {
+  const { t } = useTranslation();
   const toast = useToast();
   const { mutate, isPending } = usePickSalesOrder(order.id);
 
@@ -24,12 +26,12 @@ function ConfirmedView({ order, customerName, productName }: Props) {
           disabled={isPending}
           onClick={() =>
             mutate(undefined, {
-              onSuccess: () => toast.success("Order picked"),
-              onError: () => toast.error("Failed to pick order"),
+              onSuccess: () => toast.success(t("sales.confirmed.pickedSuccess")),
+              onError: () => toast.error(t("sales.confirmed.pickError")),
             })
           }
         >
-          Pick
+          {t("sales.confirmed.pick")}
         </Button>
       </div>
       <HeaderCard order={order} customerName={customerName} />
@@ -39,7 +41,7 @@ function ConfirmedView({ order, customerName, productName }: Props) {
         showAllocations
       />
       <p className="text-xs text-gray-400 mt-2">
-        Lots are reserved. Stock is not drawn down until delivery.
+        {t("sales.confirmed.reservedNote")}
       </p>
     </div>
   );

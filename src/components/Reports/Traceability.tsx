@@ -35,7 +35,7 @@ function TraceTreeNode({
   const { t } = useTranslation();
   return (
     <li className="list-none">
-      <div className="border border-border rounded-xl p-3 bg-white inline-block min-w-[260px]">
+      <div className="border border-border rounded-xl p-3 bg-white inline-block w-full sm:w-auto sm:min-w-[260px]">
         <div className="flex items-center justify-between gap-3">
           <button
             type="button"

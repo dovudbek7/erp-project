@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import Lots from "../components/Lots/Lots";
 import Products from "../components/Products/Products";
 import Warehouse from "../components/Warehouse/Warehouse";
+import WarehouseDetail from "../components/Warehouse/WarehouseDetail";
 import LotsDetail from "../components/Lots/LotsDetail";
 import ProductDetail from "../components/Products/ProductDetail";
 import PurchaseOrders from "../components/PurchaseOrders/PurchaseOrders";
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
       { path: "/products", element: <Products /> },
       { path: "/products/:id", element: <ProductDetail /> },
       { path: "/warehouses", element: <Warehouse /> },
+      { path: "/warehouses/:id", element: <WarehouseDetail /> },
       { path: "/purchase-orders", element: <PurchaseOrders /> },
       { path: "/purchase-orders/new", element: <CreatePurchaseOrder /> },
       { path: "/purchase-orders/:id", element: <PurchaseOrderDetail /> },

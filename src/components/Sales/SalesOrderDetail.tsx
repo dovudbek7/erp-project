@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router";
 import useCustomers from "../../hooks/useCustomers";
 import useProducts from "../../hooks/useProducts";
@@ -10,6 +11,7 @@ import PickedView from "./PickedView";
 import { productMap } from "./SalesOrderParts";
 
 function SalesOrderDetail() {
+  const { t } = useTranslation();
   const { id = "" } = useParams();
   const { data: order, isLoading, error } = useSalesOrder(id);
   const { data: products = [] } = useProducts();
@@ -21,16 +23,16 @@ function SalesOrderDetail() {
     return (cid: string) => m.get(cid) ?? cid;
   }, [customers]);
 
-  if (isLoading) return <p>Loading…</p>;
+  if (isLoading) return <p>{t("sales.detail.loading")}</p>;
   if (error) return <p>{error.message}</p>;
-  if (!order) return <p>Order not found.</p>;
+  if (!order) return <p>{t("sales.detail.notFound")}</p>;
 
   const cname = customerName(order.customerId);
 
   return (
     <div>
       <Link to="/sales/orders" className="text-blue-600 text-sm">
-        ← Sales orders
+        {t("sales.detail.backToOrders")}
       </Link>
       <div className="mt-3">
         {order.status === "DRAFT" && (
@@ -68,7 +70,11 @@ function SalesOrderDetail() {
             order={order}
             customerName={cname}
             productName={productName}
-            terminalNote={`Order ${order.status.toLowerCase()}.`}
+            terminalNote={t("sales.detail.terminalNote", {
+              status: t(`enums.${order.status}`, {
+                defaultValue: order.status,
+              }),
+            })}
           />
         )}
       </div>

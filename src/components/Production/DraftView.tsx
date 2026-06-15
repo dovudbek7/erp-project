@@ -111,7 +111,7 @@ function DraftView({ order, productsById }: Props) {
 
       {/* Inputs (read-only in draft) */}
       <div className="bg-white border border-border rounded-2xl overflow-hidden">
-        <div className="border-b border-border px-[25px] py-[15px]">
+        <div className="border-b border-border px-4 md:px-[25px] py-[15px]">
           <p className="font-semibold">{t("production.inputs")}</p>
         </div>
         <Paper elevation={0}>

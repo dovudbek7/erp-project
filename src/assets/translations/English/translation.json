@@ -14,7 +14,7 @@
   },
   "productPage": {
     "name": "Product",
-    "desc": "Raw materials and finished goods catalogue.",
+    "desc": "Catalogue of raw materials and finished products.",
     "addTitle": "Add a new Product",
     "sku": "SKU",
     "category": "Category",
@@ -22,14 +22,29 @@
   },
   "wareHousePage": {
     "name": "Ware House",
-    "desc": "Manage your storage locations.",
+    "desc": "Your storage locations: cold storage, production floor, shipping.",
     "addTitle": "Add a new Warehouse",
     "nameLabel": "Name of the warehouse",
     "type": "Type"
   },
+  "warehouseDetail": {
+    "subtitle": "Inventory currently held in this warehouse.",
+    "totalLots": "Total lots",
+    "totalValue": "Total value",
+    "available": "Available",
+    "lotNumber": "Lot number",
+    "product": "Product",
+    "status": "Status",
+    "currentQty": "Current qty",
+    "unitCost": "Unit cost",
+    "value": "Value",
+    "expiry": "Expiry",
+    "notFound": "Warehouse not found",
+    "noLots": "No lots in this warehouse"
+  },
   "lotsPage": {
     "name": "Lots",
-    "desc": "All inventory batches with cost and expiry tracking.",
+    "desc": "Every physical inventory batch, each with its own cost and expiry date.",
     "addTitle": "Add a new Lot",
     "lotNumber": "Lot Number",
     "status": "Status",
@@ -62,6 +77,7 @@
   "common": {
     "submit": "Submit",
     "loading": "Loading…",
+    "back": "Back",
     "name": "Name",
     "type": "Type",
     "id": "ID",
@@ -111,6 +127,11 @@
     "SHIPPING": "Shipping",
     "DRAFT": "Draft",
     "CANCELLED": "Cancelled",
+    "CONFIRMED": "Confirmed",
+    "PICKED": "Picked",
+    "DELIVERED": "Delivered",
+    "INVOICED": "Invoiced",
+    "SHIPPED": "Shipped",
     "RECEIVED": "Received",
     "PARTIALLY_RECEIVED": "Partially received"
   },
@@ -137,8 +158,15 @@
   },
   "poPage": {
     "name": "Purchase Orders",
-    "desc": "Manage supplier orders and goods receiving.",
-    "createButton": "CREATE PO"
+    "desc": "Orders to suppliers and receiving goods into stock.",
+    "createButton": "CREATE PO",
+    "colPoNumber": "PO Number",
+    "colSupplier": "Supplier",
+    "colWarehouse": "Warehouse",
+    "colStatus": "Status",
+    "colOrderDate": "Order Date",
+    "colExpected": "Expected",
+    "colTotal": "Total"
   },
   "poCreate": {
     "title": "Create Purchase Order",
@@ -190,7 +218,7 @@
   },
   "production": {
     "ordersTitle": "Production orders",
-    "ordersDesc": "Plan, run and close out production batches.",
+    "ordersDesc": "Plan, run and finish production batches that turn raw materials into finished goods.",
     "newOrder": "New production order",
     "statusFilter": "Status",
     "all": "All",
@@ -296,7 +324,7 @@
   },
   "recipes": {
     "title": "Recipes",
-    "desc": "Bill of materials for each finished good.",
+    "desc": "The bill of materials for each finished product: which raw materials and how much.",
     "newRecipe": "New recipe",
     "code": "Code",
     "name": "Name",
@@ -335,7 +363,7 @@
   },
   "reports": {
     "dashboardTitle": "Dashboard",
-    "dashboardDesc": "Operations at a glance.",
+    "dashboardDesc": "Key operations metrics on one screen.",
     "stockOnHand": "Stock on hand",
     "lotsExpiringSoon": "Lots expiring soon",
     "within7": "within 7 days",
@@ -355,7 +383,7 @@
     "dashboardError": "Could not load the dashboard",
     "output": "Output",
     "yieldTitle": "Yield report",
-    "yieldDesc": "Average yield by recipe vs. the recipe target.",
+    "yieldDesc": "Average production yield per recipe against the target, showing losses.",
     "recipe": "Recipe",
     "allRecipes": "All recipes",
     "from": "From",
@@ -373,7 +401,7 @@
     "batchesInRange_other": "{{count}} completed batches in range.",
     "yieldError": "Could not load the yield report",
     "valuationTitle": "Inventory valuation",
-    "valuationDesc": "On-hand value by warehouse and product type.",
+    "valuationDesc": "Total money value of stock on hand, by warehouse and product type.",
     "warehouse": "Warehouse",
     "allWarehouses": "All warehouses",
     "productType": "Product type",
@@ -388,7 +416,7 @@
     "grandTotal": "Grand total",
     "valuationError": "Could not load valuation",
     "traceTitle": "Traceability",
-    "traceDesc": "Trace a lot's origins or where it ended up — the recall screen.",
+    "traceDesc": "Trace where a lot came from or where it went — the recall screen.",
     "backward": "← Backward (origins)",
     "forward": "Forward (where it went) →",
     "backwardHint": "Reading down: what went into this lot.",
@@ -399,5 +427,112 @@
     "purchased": "Purchased",
     "produced": "Produced",
     "traceError": "Could not load traceability"
+  },
+  "sales": {
+    "list": {
+      "title": "Sales Orders",
+      "subtitle": "Orders from customers for finished goods, with delivery and margin.",
+      "new": "+ New sales order",
+      "status": "Status",
+      "customer": "Customer",
+      "all": "All",
+      "colOrderNumber": "Order #",
+      "colCustomer": "Customer",
+      "colStatus": "Status",
+      "colTotal": "Total",
+      "colOrderDate": "Order date",
+      "colMargin": "Margin",
+      "orderLabel": "order"
+    },
+    "new": {
+      "title": "New Sales Order",
+      "customer": "Customer",
+      "warehouse": "Warehouse",
+      "promisedDate": "Promised date",
+      "product": "Product",
+      "qty": "Qty",
+      "unitPrice": "Unit price",
+      "lineItems": "Line Items",
+      "addLine": "+ Add line",
+      "subtotal": "Subtotal",
+      "tax": "Tax (12%)",
+      "total": "Total",
+      "saveDraft": "Save as draft",
+      "avail": "Avail: {{qty}}",
+      "notEnough": " · not enough!",
+      "createdSuccess": "Sales order created",
+      "createError": "Failed to create sales order",
+      "errProductRequired": "Product is required",
+      "errCustomerRequired": "Customer is required",
+      "errWarehouseRequired": "Warehouse is required",
+      "errPromisedRequired": "Promised date is required",
+      "errAddLine": "Add at least one line",
+      "errRequired": "Required",
+      "errMustBePositive": "Must be > 0"
+    },
+    "detail": {
+      "loading": "Loading…",
+      "notFound": "Order not found.",
+      "backToOrders": "← Sales orders",
+      "terminalNote": "Order {{status}}.",
+      "customer": "Customer",
+      "orderDate": "Order date",
+      "promised": "Promised",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "tax": "Tax",
+      "cogs": "COGS",
+      "grossMargin": "Gross margin",
+      "lineItems": "Line items",
+      "product": "Product",
+      "ordered": "Ordered",
+      "unitPrice": "Unit price",
+      "lineTotal": "Line total"
+    },
+    "draft": {
+      "allocateTitle": "Allocate lots (FEFO)",
+      "ordered": "Ordered {{qty}} {{uom}}",
+      "allocate": "Allocate",
+      "reAllocate": "Re-allocate",
+      "selectLineHint": "Select a line to see FEFO lot suggestions.",
+      "confirmOrder": "Confirm order",
+      "allocateEveryLine": "Allocate every line to confirm.",
+      "confirmedSuccess": "Order confirmed",
+      "confirmError": "Failed to confirm order"
+    },
+    "confirmed": {
+      "pick": "Pick",
+      "reservedNote": "Lots are reserved. Stock is not drawn down until delivery.",
+      "pickedSuccess": "Order picked",
+      "pickError": "Failed to pick order"
+    },
+    "picked": {
+      "deliver": "Deliver"
+    },
+    "delivered": {
+      "finalNote": "Delivered. COGS and gross margin are now final. Invoicing is handled in the next phase."
+    },
+    "allocation": {
+      "suggestedLots": "Suggested lots",
+      "fefo": "FEFO",
+      "loading": "Loading…",
+      "noLots": "No available lots.",
+      "best": "Best",
+      "avail": "Avail: {{qty}}",
+      "perUnit": "{{cost}} /unit",
+      "take": "take {{qty}}",
+      "use": "Use",
+      "useAll": "Use all suggested",
+      "shortfall": "⚠ Shortfall of {{qty}} — not enough stock for the full quantity.",
+      "override": "Operator override: used {{used}} instead of suggested {{suggested}}"
+    },
+    "deliver": {
+      "title": "Deliver order",
+      "deliveredDate": "Delivered date",
+      "notes": "Notes",
+      "confirmDelivery": "Confirm delivery",
+      "deliveredSuccess": "Order delivered",
+      "deliverError": "Failed to deliver order"
+    }
   }
 }

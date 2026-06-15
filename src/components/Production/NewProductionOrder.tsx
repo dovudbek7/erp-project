@@ -66,13 +66,13 @@ function NewProductionOrder() {
   };
 
   return (
-    <div className="max-w-[900px]">
+    <div className="w-full max-w-[900px]">
       <BackButton />
       <h2 className="text-3xl font-bold">{t("production.newOrder")}</h2>
       <p className="text-gray-400">{t("production.newDesc")}</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-5">
-        <div className="bg-white rounded-2xl border border-border p-[25px_20px] grid grid-cols-2 gap-5">
+        <div className="bg-white rounded-2xl border border-border p-[25px_20px] grid grid-cols-1 sm:grid-cols-2 gap-5">
           <FormControl fullWidth>
             <InputLabel id="recipe-label">{t("production.recipe")}</InputLabel>
             <Controller

@@ -65,7 +65,7 @@ function RecipeDetail() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-3 mt-5 gap-4 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-5 gap-4 text-sm">
           <div>
             <p className="text-gray-500">{t("recipes.outputProduct")}</p>
             <p className="font-medium">
@@ -90,7 +90,7 @@ function RecipeDetail() {
       </div>
 
       <div className="mt-5 bg-white border border-border rounded-2xl overflow-hidden">
-        <div className="border-b border-border px-[25px] py-[15px]">
+        <div className="border-b border-border px-4 md:px-[25px] py-[15px]">
           <p className="font-semibold">{t("recipes.ingredients")}</p>
         </div>
         <Paper elevation={0}>

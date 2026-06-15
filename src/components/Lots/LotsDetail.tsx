@@ -16,8 +16,8 @@ const StockMovements = () => {
   // console.log(data);
   return (
     <>
-      <div className="bg-white max-w-[800px] rounded-xl border border-border">
-        <div className="border-b border-border py-[15px] flex justify-between items-center px-[25px]">
+      <div className="bg-white w-full max-w-[800px] rounded-xl border border-border">
+        <div className="border-b border-border py-[15px] flex justify-between items-center px-4 md:px-[25px]">
           <p className="">{t("lotsDetail.stockMovements")}</p>
           <p className="font-thing text-gray-500 text-sm">
             {t("lotsDetail.newFirst")} · {data?.length}{" "}
@@ -109,7 +109,7 @@ function LotsDetail() {
             <Status status={data?.status || ""} />
             <ExpiryBadge expiryDate={data?.expiryDate || ""} />
           </div>
-          <div className="grid grid-cols-4 mt-3 text-gray-500">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-3 text-gray-500">
             <div className="col ">
               <p className="">{t("lotsDetail.unitCost")}</p>
               <p className="text-black mt-2">

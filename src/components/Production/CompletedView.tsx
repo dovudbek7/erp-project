@@ -84,7 +84,7 @@ function CompletedView({ order, productsById }: Props) {
       </div>
 
       {/* Three insight cards */}
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <div className="bg-white border border-border rounded-2xl p-5">
           <p className="text-gray-500 text-sm">{t("production.yield")}</p>
           <p className="text-3xl font-bold mt-1">{order.yieldPercent}%</p>
@@ -127,7 +127,7 @@ function CompletedView({ order, productsById }: Props) {
 
       {/* Planned vs actual */}
       <div className="bg-white border border-border rounded-2xl overflow-hidden">
-        <div className="border-b border-border px-[25px] py-[15px]">
+        <div className="border-b border-border px-4 md:px-[25px] py-[15px]">
           <p className="font-semibold">{t("production.plannedVsActual")}</p>
         </div>
         <Paper elevation={0}>
@@ -190,7 +190,7 @@ function CompletedView({ order, productsById }: Props) {
 
       {/* Stock movements created by this order */}
       <div className="bg-white border border-border rounded-2xl overflow-hidden">
-        <div className="border-b border-border px-[25px] py-[15px]">
+        <div className="border-b border-border px-4 md:px-[25px] py-[15px]">
           <p className="font-semibold">{t("production.stockMovements")}</p>
           <p className="text-gray-400 text-xs">
             {t("production.movementsHint")}

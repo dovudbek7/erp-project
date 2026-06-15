@@ -135,7 +135,7 @@ function RecipeForm() {
   };
 
   return (
-    <div className="max-w-[820px]">
+    <div className="w-full max-w-[820px]">
       <BackButton />
       <h2 className="text-3xl font-bold">
         {isEdit ? t("recipes.editTitle") : t("recipes.newTitle")}
@@ -148,7 +148,7 @@ function RecipeForm() {
         onSubmit={handleSubmit(onSubmit)}
         className="mt-6 flex flex-col gap-6"
       >
-        <div className="bg-white border border-border rounded-2xl p-[25px] grid grid-cols-2 gap-5">
+        <div className="bg-white border border-border rounded-2xl p-[25px] grid grid-cols-1 sm:grid-cols-2 gap-5">
           <TextField label={t("recipes.code")} {...register("code")} error={!!errors.code}
             helperText={errors.code?.message} />
           <TextField label={t("recipes.name")} {...register("name")} error={!!errors.name}
@@ -176,7 +176,7 @@ function RecipeForm() {
             </span>
           </FormControl>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <TextField
               label={t("recipes.outputQty")}
               type="number"

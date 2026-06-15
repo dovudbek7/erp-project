@@ -9,7 +9,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import {
   Controller,
   useFieldArray,
@@ -19,6 +19,7 @@ import {
   type UseFormRegister,
   type UseFormSetValue,
 } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { FiTrash2 } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import z from "zod";
@@ -36,25 +37,29 @@ import { subtotalOf, taxOf, totalOf } from "./salesUtils";
 
 const today = new Date().toISOString().split("T")[0];
 
-const lineSchema = z.object({
-  productId: z.string().min(1, "Product is required"),
-  uom: z.string().min(1),
-  orderedQuantity: z
-    .string()
-    .min(1, "Required")
-    .refine((v) => gt(v, 0), "Must be > 0"),
-  unitPrice: z.string().min(1, "Required"),
-});
+type TFunc = (key: string) => string;
 
-const schema = z.object({
-  customerId: z.string().min(1, "Customer is required"),
-  warehouseId: z.string().min(1, "Warehouse is required"),
-  promisedDate: z.string().min(1, "Promised date is required"),
-  notes: z.string().optional(),
-  lines: z.array(lineSchema).min(1, "Add at least one line"),
-});
+const makeSchema = (t: TFunc) => {
+  const lineSchema = z.object({
+    productId: z.string().min(1, t("sales.new.errProductRequired")),
+    uom: z.string().min(1),
+    orderedQuantity: z
+      .string()
+      .min(1, t("sales.new.errRequired"))
+      .refine((v) => gt(v, 0), t("sales.new.errMustBePositive")),
+    unitPrice: z.string().min(1, t("sales.new.errRequired")),
+  });
 
-type FormData = z.infer<typeof schema>;
+  return z.object({
+    customerId: z.string().min(1, t("sales.new.errCustomerRequired")),
+    warehouseId: z.string().min(1, t("sales.new.errWarehouseRequired")),
+    promisedDate: z.string().min(1, t("sales.new.errPromisedRequired")),
+    notes: z.string().optional(),
+    lines: z.array(lineSchema).min(1, t("sales.new.errAddLine")),
+  });
+};
+
+type FormData = z.infer<ReturnType<typeof makeSchema>>;
 
 const emptyLine = { productId: "", uom: "", orderedQuantity: "", unitPrice: "" };
 
@@ -66,6 +71,7 @@ function AvailabilityNote({
   control: Control<FormData>;
   index: number;
 }) {
+  const { t } = useTranslation();
   const productId = useWatch({ control, name: `lines.${index}.productId` });
   const ordered = useWatch({ control, name: `lines.${index}.orderedQuantity` });
   const { data } = useAvailability(productId || "", !!productId);
@@ -74,8 +80,8 @@ function AvailabilityNote({
   const short = ordered ? gt(ordered, data.available) : false;
   return (
     <span className={`text-xs ${short ? "text-red-600 font-semibold" : "text-gray-500"}`}>
-      Avail: {data.available}
-      {short ? " · not enough!" : ""}
+      {t("sales.new.avail", { qty: data.available })}
+      {short ? t("sales.new.notEnough") : ""}
     </span>
   );
 }
@@ -101,6 +107,7 @@ function LineRow({
   priceFor: (productId: string) => string;
   error?: { productId?: { message?: string }; orderedQuantity?: { message?: string } };
 }) {
+  const { t } = useTranslation();
   return (
     <div className="grid grid-cols-[2.2fr_1fr_1.2fr_1.2fr_auto] gap-3 items-start">
       <Controller
@@ -123,7 +130,7 @@ function LineRow({
               <TextField
                 {...params}
                 size="small"
-                label="Product"
+                label={t("sales.new.product")}
                 error={!!error?.productId}
                 helperText={error?.productId?.message}
               />
@@ -135,7 +142,7 @@ function LineRow({
       <TextField
         size="small"
         type="number"
-        label="Qty"
+        label={t("sales.new.qty")}
         error={!!error?.orderedQuantity}
         helperText={error?.orderedQuantity?.message}
         {...register(`lines.${index}.orderedQuantity`)}
@@ -144,7 +151,7 @@ function LineRow({
       <TextField
         size="small"
         type="number"
-        label="Unit price"
+        label={t("sales.new.unitPrice")}
         {...register(`lines.${index}.unitPrice`)}
       />
 
@@ -165,6 +172,7 @@ function LineRow({
 }
 
 function NewSalesOrder() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const toast = useToast();
   const { data: customers = [] } = useCustomers();
@@ -173,6 +181,8 @@ function NewSalesOrder() {
   const { mutate, isPending } = useCreateSalesOrder();
 
   const fgProducts = allProducts.filter((p) => p.type === "FINISHED_GOOD");
+
+  const schema = useMemo(() => makeSchema(t), [t]);
 
   const {
     control,
@@ -231,21 +241,21 @@ function NewSalesOrder() {
     };
     mutate(payload, {
       onSuccess: (so) => {
-        toast.success("Sales order created");
+        toast.success(t("sales.new.createdSuccess"));
         navigate(`/sales/orders/${so.id}`);
       },
-      onError: () => toast.error("Failed to create sales order"),
+      onError: () => toast.error(t("sales.new.createError")),
     });
   };
 
   return (
-    <div className="max-w-[1000px]">
+    <div className="w-full max-w-[1000px]">
       <BackButton />
-      <h2 className="text-2xl font-bold">New Sales Order</h2>
+      <h2 className="text-2xl font-bold">{t("sales.new.title")}</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
         {/* Header */}
-        <div className="bg-white rounded-2xl border border-border p-[25px] grid grid-cols-3 gap-5">
+        <div className="bg-white rounded-2xl border border-border p-4 md:p-[25px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <Controller
             name="customerId"
             control={control}
@@ -260,7 +270,7 @@ function NewSalesOrder() {
                   <TextField
                     {...params}
                     size="small"
-                    label="Customer"
+                    label={t("sales.new.customer")}
                     error={!!errors.customerId}
                     helperText={errors.customerId?.message}
                   />
@@ -270,12 +280,12 @@ function NewSalesOrder() {
           />
 
           <FormControl size="small" fullWidth>
-            <InputLabel id="wh-label">Warehouse</InputLabel>
+            <InputLabel id="wh-label">{t("sales.new.warehouse")}</InputLabel>
             <Controller
               name="warehouseId"
               control={control}
               render={({ field }) => (
-                <Select labelId="wh-label" label="Warehouse" {...field}>
+                <Select labelId="wh-label" label={t("sales.new.warehouse")} {...field}>
                   {warehouses.map((w) => (
                     <MenuItem key={w.id} value={w.id}>
                       {w.name}
@@ -289,7 +299,7 @@ function NewSalesOrder() {
           <TextField
             size="small"
             type="date"
-            label="Promised date"
+            label={t("sales.new.promisedDate")}
             slotProps={{ inputLabel: { shrink: true } }}
             error={!!errors.promisedDate}
             helperText={errors.promisedDate?.message}
@@ -298,11 +308,11 @@ function NewSalesOrder() {
         </div>
 
         {/* Lines */}
-        <div className="bg-white rounded-2xl border border-border p-[25px] mt-4">
+        <div className="bg-white rounded-2xl border border-border p-4 md:p-[25px] mt-4">
           <div className="flex items-center justify-between mb-4">
-            <p className="font-semibold">Line Items</p>
+            <p className="font-semibold">{t("sales.new.lineItems")}</p>
             <Button size="small" variant="outlined" onClick={() => append(emptyLine)}>
-              + Add line
+              {t("sales.new.addLine")}
             </Button>
           </div>
 
@@ -330,19 +340,23 @@ function NewSalesOrder() {
           <div className="flex justify-end mt-5 border-t border-border pt-4">
             <div className="text-right text-sm flex flex-col gap-1">
               <p className="text-gray-500">
-                Subtotal: <span className="text-black font-medium">{subtotal}</span>
+                {t("sales.new.subtotal")}:{" "}
+                <span className="text-black font-medium">{subtotal}</span>
               </p>
               <p className="text-gray-500">
-                Tax (12%): <span className="text-black font-medium">{tax}</span>
+                {t("sales.new.tax")}:{" "}
+                <span className="text-black font-medium">{tax}</span>
               </p>
-              <p className="text-lg font-bold">Total: {total}</p>
+              <p className="text-lg font-bold">
+                {t("sales.new.total")}: {total}
+              </p>
             </div>
           </div>
         </div>
 
         <div className="flex justify-end mt-4">
           <Button type="submit" variant="contained" color="error" disabled={isPending}>
-            Save as draft
+            {t("sales.new.saveDraft")}
           </Button>
         </div>
       </form>

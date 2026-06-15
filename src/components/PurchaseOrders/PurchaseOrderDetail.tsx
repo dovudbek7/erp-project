@@ -55,7 +55,7 @@ function PurchaseOrderDetail() {
           <p className="text-xl font-semibold">{order.poNumber}</p>
           <Status status={order.status} />
         </div>
-        <div className="grid grid-cols-4 mt-3 text-gray-500">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-3 text-gray-500">
           <div className="col">
             <p>{t("poDetail.supplier")}</p>
             <p className="text-black mt-2">{supplier?.name ?? order.supplierId}</p>
@@ -112,7 +112,7 @@ function PurchaseOrderDetail() {
 
         {/* Receipt history */}
         <div className="bg-white rounded-xl border border-border">
-          <div className="border-b border-border py-[15px] flex justify-between px-[25px]">
+          <div className="border-b border-border py-[15px] flex justify-between px-4 md:px-[25px]">
             <p>{t("poDetail.history")}</p>
             <p className="text-gray-500 text-sm">
               {receipts.length} {t("poDetail.receipts")}

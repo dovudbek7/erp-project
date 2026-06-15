@@ -70,6 +70,7 @@ function ExpiringWidget({
     );
 
   return (
+    <div className="overflow-x-auto">
     <table className="w-full text-sm" aria-label={t("reports.expiringThisWeek")}>
       <caption className="sr-only">{t("reports.expiringThisWeek")}</caption>
       <thead>
@@ -116,6 +117,7 @@ function ExpiringWidget({
         ))}
       </tbody>
     </table>
+    </div>
   );
 }
 

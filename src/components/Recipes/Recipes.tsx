@@ -8,6 +8,7 @@ import useProducts from "../../hooks/useProducts";
 import { CACHE_KEY_RECIPES } from "../../constants.production";
 import useGridSelection from "../../hooks/useGridSelection";
 import BackButton from "../common/BackButton";
+import DataGridToolbar from "../common/DataGridToolbar";
 import DeleteSelectedBar from "../common/DeleteSelectedBar";
 
 function Recipes() {
@@ -76,7 +77,7 @@ function Recipes() {
   return (
     <div>
       <BackButton />
-      <div className="flex justify-between items-start">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-3xl font-bold">{t("recipes.title")}</h2>
           <p className="text-gray-400">{t("recipes.desc")}</p>
@@ -110,6 +111,7 @@ function Recipes() {
             pageSizeOptions={[10, 25]}
             sx={{ border: 0, cursor: "pointer" }}
             showToolbar
+            slots={{ toolbar: DataGridToolbar }}
             checkboxSelection
             onRowSelectionModelChange={onRowSelectionModelChange}
             rowSelectionModel={rowSelectionModel}

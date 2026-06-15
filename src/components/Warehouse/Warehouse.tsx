@@ -14,12 +14,14 @@ import { DataGrid, type GridColDef } from "@mui/x-data-grid";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 import z from "zod";
 import { CACHE_KEY_WAREHOUSE } from "../../constants";
 import useGridSelection from "../../hooks/useGridSelection";
 import useWarehouse from "../../hooks/useWarehouse";
 import { type Warehouse as WarehouseType } from "../../types";
 import BackButton from "../common/BackButton";
+import DataGridToolbar from "../common/DataGridToolbar";
 import DeleteSelectedBar from "../common/DeleteSelectedBar";
 
 const schema = z.object({
@@ -47,7 +49,7 @@ const AddWarehouse = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
   const { t } = useTranslation();
   return (
     <>
-      <div className="mt-4 w-[300px] right-[60px] absolute z-10 py-[35px] border p-[20px] rounded-2xl border-gray-400 bg-white">
+      <div className="mt-4 w-[90vw] max-w-[300px] right-2 md:right-[60px] absolute z-10 py-[35px] border p-[20px] rounded-2xl border-gray-400 bg-white">
         <p className="text-xl mb-5">{t("wareHousePage.addTitle")}</p>
         <form
           action=""
@@ -102,6 +104,7 @@ const AddWarehouse = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
 
 function Warehouse() {
   const { data } = useWarehouse();
+  const navigate = useNavigate();
   const [added, setAdded] = useState<WarehouseType[]>([]);
   const addRow = (form: FormData) => {
     const newRow = {
@@ -143,7 +146,7 @@ function Warehouse() {
     <>
       <div className="">
         <BackButton />
-        <div className="flex justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="">
             <h2 className="text-3xl font-bold">{t("wareHousePage.name")}</h2>
             <p className="text-gray-400">{t("wareHousePage.desc")}</p>
@@ -171,10 +174,12 @@ function Warehouse() {
             <Paper sx={{ height: "auto" }} style={{ borderRadius: "20px" }}>
               <DataGrid
                 showToolbar
+                slots={{ toolbar: DataGridToolbar }}
                 checkboxSelection
                 style={{ borderRadius: "20px" }}
                 rows={rows}
                 columns={columns}
+                onRowClick={(p) => navigate(`/warehouses/${p.id}`)}
                 initialState={{ pagination: { paginationModel } }}
                 pageSizeOptions={[5, 10]}
                 sx={{ border: 0 }}

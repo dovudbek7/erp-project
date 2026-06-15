@@ -93,6 +93,7 @@ function InventoryValuation() {
             />
           )}
           {data && data.rows.length > 0 && (
+            <div className="overflow-x-auto">
             <table className="w-full text-sm" aria-label={t("reports.valuationTitle")}>
               <caption className="sr-only">{t("reports.valuationDesc")}</caption>
               <thead>
@@ -135,6 +136,7 @@ function InventoryValuation() {
                 </tr>
               </tfoot>
             </table>
+            </div>
           )}
         </DelayedSkeleton>
       </div>

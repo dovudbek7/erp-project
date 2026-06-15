@@ -90,6 +90,7 @@ function YieldReport() {
             />
           )}
           {data && data.rows.length > 0 && (
+            <div className="overflow-x-auto">
             <table className="w-full text-sm" aria-label={t("reports.yieldTitle")}>
               <caption className="sr-only">{t("reports.yieldDesc")}</caption>
               <thead>
@@ -135,6 +136,7 @@ function YieldReport() {
                 })}
               </tbody>
             </table>
+            </div>
           )}
         </DelayedSkeleton>
       </div>

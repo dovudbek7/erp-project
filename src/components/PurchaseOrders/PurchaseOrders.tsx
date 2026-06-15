@@ -7,6 +7,7 @@ import useGridSelection from "../../hooks/useGridSelection";
 import usePurchaseOrders from "../../hooks/usePurchaseOrders";
 import formatDate from "../../utilties/formatDate";
 import BackButton from "../common/BackButton";
+import DataGridToolbar from "../common/DataGridToolbar";
 import DeleteSelectedBar from "../common/DeleteSelectedBar";
 import Status from "../common/StatusBadge";
 
@@ -21,35 +22,35 @@ function PurchaseOrders() {
   const columns: GridColDef[] = [
     {
       field: "poNumber",
-      headerName: "PO Number",
+      headerName: t("poPage.colPoNumber"),
       flex: 1,
       renderCell: (params) => (
         <Link to={`/purchase-orders/${params.id}`}>{params.row.poNumber}</Link>
       ),
     },
-    { field: "supplierId", headerName: "Supplier", flex: 1 },
-    { field: "warehouseId", headerName: "Warehouse", flex: 1 },
+    { field: "supplierId", headerName: t("poPage.colSupplier"), flex: 1 },
+    { field: "warehouseId", headerName: t("poPage.colWarehouse"), flex: 1 },
     {
       field: "status",
-      headerName: "Status",
+      headerName: t("poPage.colStatus"),
       flex: 1,
       renderCell: (params) => <Status status={params.value} />,
     },
     {
       field: "orderDate",
-      headerName: "Order Date",
+      headerName: t("poPage.colOrderDate"),
       flex: 1,
       renderCell: (param) => <p>{formatDate(param.value)}</p>,
     },
     {
       field: "expectedDate",
-      headerName: "Expected",
+      headerName: t("poPage.colExpected"),
       flex: 1,
       renderCell: (param) => <p>{formatDate(param.value)}</p>,
     },
     {
       field: "totalAmount",
-      headerName: "Total",
+      headerName: t("poPage.colTotal"),
       flex: 1,
       renderCell: (param) => (
         <p>
@@ -59,13 +60,13 @@ function PurchaseOrders() {
     },
   ];
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p>{t("common.loading")}</p>;
   if (error) return <p>{error.message}</p>;
 
   return (
     <div className="">
       <BackButton />
-      <div className="flex justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="">
           <h2 className="text-3xl font-bold">{t("poPage.name")}</h2>
           <p className="text-gray-400">{t("poPage.desc")}</p>
@@ -99,6 +100,7 @@ function PurchaseOrders() {
             pageSizeOptions={[5, 10, 15]}
             sx={{ border: 0 }}
             showToolbar
+            slots={{ toolbar: DataGridToolbar }}
             checkboxSelection
             onRowSelectionModelChange={onRowSelectionModelChange}
             rowSelectionModel={rowSelectionModel}

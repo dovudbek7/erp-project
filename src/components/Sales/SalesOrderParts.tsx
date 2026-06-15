@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { Product, SalesOrderLine } from "../../types";
 import type { SalesOrderWithLines } from "../../types/sales";
 import formatDate from "../../utilties/formatDate";
@@ -10,50 +11,53 @@ export const HeaderCard = ({
 }: {
   order: SalesOrderWithLines;
   customerName: string;
-}) => (
-  <div className="bg-white w-full rounded-2xl border border-border p-[25px_20px]">
-    <div className="flex gap-3 items-center">
-      <p className="text-xl font-semibold">{order.orderNumber}</p>
-      <SalesStatusBadge status={order.status} />
+}) => {
+  const { t } = useTranslation();
+  return (
+    <div className="bg-white w-full rounded-2xl border border-border p-[25px_20px]">
+      <div className="flex gap-3 items-center">
+        <p className="text-xl font-semibold">{order.orderNumber}</p>
+        <SalesStatusBadge status={order.status} />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-3 text-gray-500 text-sm">
+        <div>
+          <p>{t("sales.detail.customer")}</p>
+          <p className="text-black mt-1">{customerName}</p>
+        </div>
+        <div>
+          <p>{t("sales.detail.orderDate")}</p>
+          <p className="text-black mt-1">{formatDate(order.orderDate)}</p>
+        </div>
+        <div>
+          <p>{t("sales.detail.promised")}</p>
+          <p className="text-black mt-1">{formatDate(order.promisedDate)}</p>
+        </div>
+        <div>
+          <p>{t("sales.detail.total")}</p>
+          <p className="text-black mt-1">
+            {order.totalAmount} {order.currency}
+          </p>
+        </div>
+        <div>
+          <p>{t("sales.detail.subtotal")}</p>
+          <p className="text-black mt-1">{order.subtotal}</p>
+        </div>
+        <div>
+          <p>{t("sales.detail.tax")}</p>
+          <p className="text-black mt-1">{order.taxAmount}</p>
+        </div>
+        <div>
+          <p>{t("sales.detail.cogs")}</p>
+          <p className="text-black mt-1">{displayCogs(order)}</p>
+        </div>
+        <div>
+          <p>{t("sales.detail.grossMargin")}</p>
+          <p className="text-black mt-1 font-semibold">{displayMargin(order)}</p>
+        </div>
+      </div>
     </div>
-    <div className="grid grid-cols-4 gap-4 mt-3 text-gray-500 text-sm">
-      <div>
-        <p>Customer</p>
-        <p className="text-black mt-1">{customerName}</p>
-      </div>
-      <div>
-        <p>Order date</p>
-        <p className="text-black mt-1">{formatDate(order.orderDate)}</p>
-      </div>
-      <div>
-        <p>Promised</p>
-        <p className="text-black mt-1">{formatDate(order.promisedDate)}</p>
-      </div>
-      <div>
-        <p>Total</p>
-        <p className="text-black mt-1">
-          {order.totalAmount} {order.currency}
-        </p>
-      </div>
-      <div>
-        <p>Subtotal</p>
-        <p className="text-black mt-1">{order.subtotal}</p>
-      </div>
-      <div>
-        <p>Tax</p>
-        <p className="text-black mt-1">{order.taxAmount}</p>
-      </div>
-      <div>
-        <p>COGS</p>
-        <p className="text-black mt-1">{displayCogs(order)}</p>
-      </div>
-      <div>
-        <p>Gross margin</p>
-        <p className="text-black mt-1 font-semibold">{displayMargin(order)}</p>
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 export const LinesCard = ({
   lines,
@@ -63,17 +67,19 @@ export const LinesCard = ({
   lines: SalesOrderLine[];
   productName: (id: string) => string;
   showAllocations?: boolean;
-}) => (
+}) => {
+  const { t } = useTranslation();
+  return (
   <div className="bg-white rounded-xl border border-border mt-4">
     <div className="border-b border-border py-[15px]">
-      <p className="pl-[25px]">Line items</p>
+      <p className="pl-[25px]">{t("sales.detail.lineItems")}</p>
     </div>
     <div className="p-[15px_20px] text-sm">
       <div className="grid grid-cols-[2fr_1fr_1fr_1fr] text-gray-500 pb-2 border-b border-border">
-        <p>Product</p>
-        <p className="text-right">Ordered</p>
-        <p className="text-right">Unit price</p>
-        <p className="text-right">Line total</p>
+        <p>{t("sales.detail.product")}</p>
+        <p className="text-right">{t("sales.detail.ordered")}</p>
+        <p className="text-right">{t("sales.detail.unitPrice")}</p>
+        <p className="text-right">{t("sales.detail.lineTotal")}</p>
       </div>
       {lines.map((l) => (
         <div
@@ -101,7 +107,8 @@ export const LinesCard = ({
       ))}
     </div>
   </div>
-);
+  );
+};
 
 export const productMap = (products: Product[]) => {
   const m = new Map(products.map((p) => [p.id, p.name]));

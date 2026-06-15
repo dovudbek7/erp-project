@@ -164,7 +164,7 @@ function ReceiveGoods() {
   if (!order) return <p>Loading...</p>;
 
   return (
-    <div className="max-w-[1000px]">
+    <div className="w-full max-w-[1000px]">
       <BackButton />
       <p className="text-xl font-semibold">
         {t("poReceive.title")} · {order.poNumber}

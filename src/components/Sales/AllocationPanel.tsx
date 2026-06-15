@@ -1,4 +1,5 @@
 import { Button, Chip, IconButton } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { FiX } from "react-icons/fi";
 import useSuggestAllocations from "../../hooks/useSuggestAllocations";
 import type { AllocatedLot } from "../../types";
@@ -33,6 +34,7 @@ function AllocationPanel({
   onUse,
   onClose,
 }: Props) {
+  const { t } = useTranslation();
   const { data, isLoading } = useSuggestAllocations(
     orderId,
     lineId,
@@ -55,7 +57,10 @@ function AllocationPanel({
     };
     const override =
       top && lot.lotId !== top.lotId
-        ? `Operator override: used ${lot.lotNumber} instead of suggested ${top.lotNumber}`
+        ? t("sales.allocation.override", {
+            used: lot.lotNumber,
+            suggested: top.lotNumber,
+          })
         : undefined;
     onUse([consumed], override);
   };
@@ -64,8 +69,12 @@ function AllocationPanel({
     <div className="bg-white border border-border rounded-2xl overflow-hidden">
       <div className="border-b border-border px-4 py-3 flex items-center justify-between">
         <div>
-          <p className="font-semibold text-sm">Suggested lots</p>
-          <p className="text-gray-400 text-xs">{productName} · FEFO</p>
+          <p className="font-semibold text-sm">
+            {t("sales.allocation.suggestedLots")}
+          </p>
+          <p className="text-gray-400 text-xs">
+            {productName} · {t("sales.allocation.fefo")}
+          </p>
         </div>
         <IconButton size="small" onClick={onClose}>
           <FiX />
@@ -73,9 +82,15 @@ function AllocationPanel({
       </div>
 
       <div className="p-3 flex flex-col gap-2 max-h-[340px] overflow-y-auto">
-        {isLoading && <p className="text-gray-400 text-sm">Loading…</p>}
+        {isLoading && (
+          <p className="text-gray-400 text-sm">
+            {t("sales.allocation.loading")}
+          </p>
+        )}
         {!isLoading && suggestions.length === 0 && (
-          <p className="text-gray-400 text-sm">No available lots.</p>
+          <p className="text-gray-400 text-sm">
+            {t("sales.allocation.noLots")}
+          </p>
         )}
 
         {suggestions.map((lot) => (
@@ -86,19 +101,27 @@ function AllocationPanel({
             <div className="flex items-center justify-between">
               <span className="font-medium text-sm">{lot.lotNumber}</span>
               {top && lot.lotId === top.lotId && (
-                <Chip label="Best" color="success" size="small" />
+                <Chip
+                  label={t("sales.allocation.best")}
+                  color="success"
+                  size="small"
+                />
               )}
             </div>
             <div className="flex items-center justify-between text-xs text-gray-500">
-              <span>Avail: {lot.availableQuantity}</span>
+              <span>
+                {t("sales.allocation.avail", { qty: lot.availableQuantity })}
+              </span>
               <ExpiryBadge expiryDate={lot.expiryDate} />
             </div>
             <div className="flex items-center justify-between mt-1">
               <span className="text-xs text-gray-500">
-                {lot.unitCost} /unit
+                {t("sales.allocation.perUnit", { cost: lot.unitCost })}
                 {Number(lot.suggestedQuantity) > 0 && (
                   <span className="ml-2 text-gray-700">
-                    take {lot.suggestedQuantity}
+                    {t("sales.allocation.take", {
+                      qty: lot.suggestedQuantity,
+                    })}
                   </span>
                 )}
               </span>
@@ -107,7 +130,7 @@ function AllocationPanel({
                 variant="contained"
                 onClick={() => pickLot(lot)}
               >
-                Use
+                {t("sales.allocation.use")}
               </Button>
             </div>
           </div>
@@ -126,14 +149,13 @@ function AllocationPanel({
               )
             }
           >
-            Use all suggested
+            {t("sales.allocation.useAll")}
           </Button>
         )}
 
         {data && Number(data.shortfall) > 0 && (
           <p className="text-amber-600 text-xs mt-1">
-            ⚠ Shortfall of {data.shortfall} — not enough stock for the full
-            quantity.
+            {t("sales.allocation.shortfall", { qty: data.shortfall })}
           </p>
         )}
       </div>

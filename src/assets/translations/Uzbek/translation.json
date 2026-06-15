@@ -14,7 +14,7 @@
   },
   "productPage": {
     "name": "Mahsulotlar",
-    "desc": "Xomashyo va tayyor mahsulotlar katalogi.",
+    "desc": "Xom ashyo va tayyor mahsulotlar ro'yxati.",
     "addTitle": "Yangi mahsulot qo'shish",
     "sku": "SKU",
     "category": "Kategoriya",
@@ -22,14 +22,29 @@
   },
   "wareHousePage": {
     "name": "Omborlar",
-    "desc": "Saqlash joylarini boshqarish.",
+    "desc": "Saqlash joylari: sovuq ombor, ishlab chiqarish sexi, jo'natish.",
     "addTitle": "Yangi ombor qo'shish",
     "nameLabel": "Ombor nomi",
     "type": "Turi"
   },
+  "warehouseDetail": {
+    "subtitle": "Hozir ushbu omborda saqlanayotgan tovar zaxirasi.",
+    "totalLots": "Jami partiyalar",
+    "totalValue": "Umumiy qiymat",
+    "available": "Mavjud",
+    "lotNumber": "Partiya raqami",
+    "product": "Mahsulot",
+    "status": "Holati",
+    "currentQty": "Joriy miqdor",
+    "unitCost": "Birlik tannarxi",
+    "value": "Qiymat",
+    "expiry": "Muddati",
+    "notFound": "Ombor topilmadi",
+    "noLots": "Bu omborda partiyalar yo'q"
+  },
   "lotsPage": {
     "name": "Partiyalar",
-    "desc": "Tannarx va amal qilish muddatini kuzatish imkoniyatiga ega barcha inventar partiyalari.",
+    "desc": "Har bir partiya — o'z tannarxi va yaroqlilik muddatiga ega real tovar zaxirasi.",
     "addTitle": "Yangi partiya qo'shish",
     "lotNumber": "Partiya raqami",
     "status": "Holat",
@@ -48,6 +63,7 @@
   "common": {
     "submit": "Yuborish",
     "loading": "Yuklanmoqda…",
+    "back": "Orqaga",
     "name": "Nomi",
     "type": "Turi",
     "id": "ID",
@@ -97,6 +113,11 @@
     "SHIPPING": "Jo'natish",
     "DRAFT": "Qoralama",
     "CANCELLED": "Bekor qilingan",
+    "CONFIRMED": "Tasdiqlangan",
+    "PICKED": "Yig'ilgan",
+    "DELIVERED": "Yetkazilgan",
+    "INVOICED": "Hisob-faktura chiqarilgan",
+    "SHIPPED": "Jo'natilgan",
     "RECEIVED": "Qabul qilingan",
     "PARTIALLY_RECEIVED": "Qisman qabul qilingan"
   },
@@ -137,8 +158,15 @@
   },
   "poPage": {
     "name": "Xarid buyurtmalari",
-    "desc": "Yetkazib beruvchi buyurtmalari va mol qabulini boshqarish.",
-    "createButton": "BUYURTMA YARATISH"
+    "desc": "Yetkazib beruvchilarga buyurtmalar va tovarni qabul qilish.",
+    "createButton": "BUYURTMA YARATISH",
+    "colPoNumber": "Buyurtma raqami",
+    "colSupplier": "Yetkazib beruvchi",
+    "colWarehouse": "Ombor",
+    "colStatus": "Holati",
+    "colOrderDate": "Buyurtma sanasi",
+    "colExpected": "Kutilmoqda",
+    "colTotal": "Jami"
   },
   "poCreate": {
     "title": "Xarid buyurtmasi yaratish",
@@ -190,7 +218,7 @@
   },
   "production": {
     "ordersTitle": "Ishlab chiqarish buyurtmalari",
-    "ordersDesc": "Ishlab chiqarish partiyalarini rejalashtirish, bajarish va yakunlash.",
+    "ordersDesc": "Xom ashyodan tayyor mahsulot tayyorlash: rejalashtirish, ishlab chiqarish va yakunlash.",
     "newOrder": "Yangi ishlab chiqarish buyurtmasi",
     "statusFilter": "Holat",
     "all": "Barchasi",
@@ -296,7 +324,7 @@
   },
   "recipes": {
     "title": "Retseptlar",
-    "desc": "Har bir tayyor mahsulot uchun materiallar ro'yxati.",
+    "desc": "Har bir tayyor mahsulot uchun retsept: qaysi xom ashyo, qancha miqdorda.",
     "newRecipe": "Yangi retsept",
     "code": "Kod",
     "name": "Nomi",
@@ -335,7 +363,7 @@
   },
   "reports": {
     "dashboardTitle": "Boshqaruv paneli",
-    "dashboardDesc": "Operatsiyalar bir qarashda.",
+    "dashboardDesc": "Asosiy ko'rsatkichlar bir ekranda.",
     "stockOnHand": "Mavjud zaxira qiymati",
     "lotsExpiringSoon": "Muddati tugayotgan partiyalar",
     "within7": "7 kun ichida",
@@ -355,7 +383,7 @@
     "dashboardError": "Boshqaruv panelini yuklab bo'lmadi",
     "output": "Natija",
     "yieldTitle": "Hosildorlik hisoboti",
-    "yieldDesc": "Retsept bo'yicha o'rtacha hosildorlik va retsept maqsadi.",
+    "yieldDesc": "Har retsept bo'yicha o'rtacha chiqim — rejaga nisbatan (yo'qotishni ko'rsatadi).",
     "recipe": "Retsept",
     "allRecipes": "Barcha retseptlar",
     "from": "Dan",
@@ -373,7 +401,7 @@
     "batchesInRange_other": "Oraliqda {{count}} ta yakunlangan partiya.",
     "yieldError": "Hosildorlik hisobotini yuklab bo'lmadi",
     "valuationTitle": "Inventar baholash",
-    "valuationDesc": "Ombor va mahsulot turi bo'yicha mavjud qiymat.",
+    "valuationDesc": "Ombordagi tovarning umumiy pul qiymati — ombor va mahsulot turi bo'yicha.",
     "warehouse": "Ombor",
     "allWarehouses": "Barcha omborlar",
     "productType": "Mahsulot turi",
@@ -388,7 +416,7 @@
     "grandTotal": "Umumiy jami",
     "valuationError": "Baholashni yuklab bo'lmadi",
     "traceTitle": "Kuzatuv",
-    "traceDesc": "Partiyaning kelib chiqishi yoki qayerga ketganini kuzating — chaqirib olish ekrani.",
+    "traceDesc": "Partiya qayerdan kelgani yoki qayerga ketganini kuzatish — qaytarib olish (recall) ekrani.",
     "backward": "← Orqaga (kelib chiqishi)",
     "forward": "Oldinga (qayerga ketgani) →",
     "backwardHint": "Pastga o'qing: bu partiyaga nima kirgan.",
@@ -399,5 +427,112 @@
     "purchased": "Sotib olingan",
     "produced": "Ishlab chiqarilgan",
     "traceError": "Kuzatuvni yuklab bo'lmadi"
+  },
+  "sales": {
+    "list": {
+      "title": "Sotuv buyurtmalari",
+      "subtitle": "Mijozlarning tayyor mahsulotga buyurtmalari — yetkazib berish va foyda bilan.",
+      "new": "+ Yangi sotuv buyurtmasi",
+      "status": "Holati",
+      "customer": "Mijoz",
+      "all": "Barchasi",
+      "colOrderNumber": "Buyurtma №",
+      "colCustomer": "Mijoz",
+      "colStatus": "Holati",
+      "colTotal": "Jami",
+      "colOrderDate": "Buyurtma sanasi",
+      "colMargin": "Marja",
+      "orderLabel": "buyurtma"
+    },
+    "new": {
+      "title": "Yangi sotuv buyurtmasi",
+      "customer": "Mijoz",
+      "warehouse": "Ombor",
+      "promisedDate": "Va'da qilingan sana",
+      "product": "Mahsulot",
+      "qty": "Miqdori",
+      "unitPrice": "Birlik narxi",
+      "lineItems": "Pozitsiyalar",
+      "addLine": "+ Pozitsiya qo'shish",
+      "subtotal": "Oraliq jami",
+      "tax": "Soliq (12%)",
+      "total": "Jami",
+      "saveDraft": "Qoralama sifatida saqlash",
+      "avail": "Mavjud: {{qty}}",
+      "notEnough": " · yetarli emas!",
+      "createdSuccess": "Sotuv buyurtmasi yaratildi",
+      "createError": "Sotuv buyurtmasini yaratib bo'lmadi",
+      "errProductRequired": "Mahsulotni tanlang",
+      "errCustomerRequired": "Mijozni tanlang",
+      "errWarehouseRequired": "Omborni tanlang",
+      "errPromisedRequired": "Va'da qilingan sanani kiriting",
+      "errAddLine": "Kamida bitta pozitsiya qo'shing",
+      "errRequired": "Majburiy",
+      "errMustBePositive": "0 dan katta bo'lishi kerak"
+    },
+    "detail": {
+      "loading": "Yuklanmoqda…",
+      "notFound": "Buyurtma topilmadi.",
+      "backToOrders": "← Sotuv buyurtmalari",
+      "terminalNote": "Buyurtma: {{status}}.",
+      "customer": "Mijoz",
+      "orderDate": "Buyurtma sanasi",
+      "promised": "Va'da qilingan",
+      "total": "Jami",
+      "subtotal": "Oraliq jami",
+      "tax": "Soliq",
+      "cogs": "Tannarx",
+      "grossMargin": "Yalpi marja",
+      "lineItems": "Pozitsiyalar",
+      "product": "Mahsulot",
+      "ordered": "Buyurtma qilingan",
+      "unitPrice": "Birlik narxi",
+      "lineTotal": "Pozitsiya jami"
+    },
+    "draft": {
+      "allocateTitle": "Partiyalarni taqsimlash (FEFO)",
+      "ordered": "Buyurtma {{qty}} {{uom}}",
+      "allocate": "Taqsimlash",
+      "reAllocate": "Qayta taqsimlash",
+      "selectLineHint": "FEFO partiya tavsiyalarini ko'rish uchun pozitsiyani tanlang.",
+      "confirmOrder": "Buyurtmani tasdiqlash",
+      "allocateEveryLine": "Tasdiqlash uchun har bir pozitsiyani taqsimlang.",
+      "confirmedSuccess": "Buyurtma tasdiqlandi",
+      "confirmError": "Buyurtmani tasdiqlab bo'lmadi"
+    },
+    "confirmed": {
+      "pick": "Yig'ish",
+      "reservedNote": "Partiyalar band qilingan. Qoldiqlar yetkazib berilgunga qadar yechilmaydi.",
+      "pickedSuccess": "Buyurtma yig'ildi",
+      "pickError": "Buyurtmani yig'ib bo'lmadi"
+    },
+    "picked": {
+      "deliver": "Yetkazib berish"
+    },
+    "delivered": {
+      "finalNote": "Yetkazib berildi. Tannarx va yalpi marja yakuniy. Hisob-faktura keyingi bosqichda chiqariladi."
+    },
+    "allocation": {
+      "suggestedLots": "Tavsiya etilgan partiyalar",
+      "fefo": "FEFO",
+      "loading": "Yuklanmoqda…",
+      "noLots": "Mavjud partiyalar yo'q.",
+      "best": "Eng yaxshi",
+      "avail": "Mavjud: {{qty}}",
+      "perUnit": "{{cost}} /birlik",
+      "take": "{{qty}} olish",
+      "use": "Ishlatish",
+      "useAll": "Barcha tavsiyalarni ishlatish",
+      "shortfall": "⚠ {{qty}} yetishmovchilik — to'liq miqdor uchun qoldiq yetarli emas.",
+      "override": "Operator tanlovi: tavsiya etilgan {{suggested}} o'rniga {{used}} ishlatildi"
+    },
+    "deliver": {
+      "title": "Buyurtmani yetkazib berish",
+      "deliveredDate": "Yetkazib berilgan sana",
+      "notes": "Izohlar",
+      "confirmDelivery": "Yetkazishni tasdiqlash",
+      "deliveredSuccess": "Buyurtma yetkazib berildi",
+      "deliverError": "Buyurtmani yetkazib bo'lmadi"
+    }
   }
 }

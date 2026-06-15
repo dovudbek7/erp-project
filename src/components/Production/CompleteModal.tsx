@@ -157,7 +157,7 @@ function CompleteModal({ order, productsById, open, onClose }: Props) {
           />
 
           {/* Live preview */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="rounded-xl border border-border p-4 bg-gray-50">
               <p className="text-gray-500 text-sm">{t("production.yield")}</p>
               <p className="text-2xl font-bold">{fmtPct(previewYield)}%</p>

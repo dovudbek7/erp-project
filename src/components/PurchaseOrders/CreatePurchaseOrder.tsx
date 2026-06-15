@@ -122,13 +122,13 @@ function CreatePurchaseOrder() {
   };
 
   return (
-    <div className="max-w-[900px]">
+    <div className="w-full max-w-[900px]">
       <BackButton />
       <p className="text-xl font-semibold">{t("poCreate.title")}</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-3">
         {/* Header */}
-        <div className="bg-white rounded-2xl border border-border p-[25px_20px] grid grid-cols-2 gap-5">
+        <div className="bg-white rounded-2xl border border-border p-[25px_20px] grid grid-cols-1 sm:grid-cols-2 gap-5">
           <FormControl fullWidth>
             <InputLabel id="supplier-label">{t("poCreate.supplier")}</InputLabel>
             <Controller

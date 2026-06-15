@@ -22,6 +22,7 @@ import useProducts from "../../hooks/useProducts";
 import useWarehouse from "../../hooks/useWarehouse";
 import { type Lot } from "../../types";
 import BackButton from "../common/BackButton";
+import DataGridToolbar from "../common/DataGridToolbar";
 import DeleteSelectedBar from "../common/DeleteSelectedBar";
 import ExpiryBadge from "../common/ExpiryBadge";
 import Status from "../common/StatusBadge";
@@ -66,7 +67,7 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
   };
 
   return (
-    <div className="mt-4 w-[300px] right-[60px] absolute z-10 py-[35px] border p-[20px] rounded-2xl border-gray-400 bg-white max-h-[80vh] overflow-y-auto">
+    <div className="mt-4 w-[90vw] max-w-[300px] right-2 md:right-[60px] absolute z-10 py-[35px] border p-[20px] rounded-2xl border-gray-400 bg-white max-h-[80vh] overflow-y-auto">
       <p className="text-xl mb-5">{t("lotsPage.addTitle")}</p>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <div className="flex flex-col gap-5">
@@ -393,7 +394,7 @@ function Lots() {
     <>
       <div className="">
         <BackButton />
-        <div className="flex justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="">
             <h2 className="text-3xl font-bold ">{t("lotsPage.name")}</h2>
             <p className="text-gray-400">{t("lotsPage.desc")}</p>
@@ -430,6 +431,7 @@ function Lots() {
                 checkboxSelection
                 sx={{ border: 0 }}
                 showToolbar
+                slots={{ toolbar: DataGridToolbar }}
                 onRowSelectionModelChange={onRowSelectionModelChange}
                 rowSelectionModel={rowSelectionModel}
               />
