@@ -54,7 +54,7 @@ const AddProduct = ({ onClose }: { onClose: () => void }) => {
     mutationFn: (data: FormData) =>
       productService.post({
         name: data.name,
-        type: data.type,
+        type: data.type as any,
         category: data.category,
         uom: data.uom,
       }),

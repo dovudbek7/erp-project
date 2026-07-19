@@ -122,6 +122,12 @@ export const useSuggestLots = (
 ) =>
   useQuery<SuggestLotsResponse, Error>({
     queryKey: CACHE_KEY_SUGGEST_LOTS(orderId, productId, quantity),
-    queryFn: () => Promise.resolve({ suggestions: [] } as SuggestLotsResponse),
+    queryFn: () =>
+      Promise.resolve({
+        productId,
+        requestedQuantity: quantity,
+        shortfall: "0",
+        suggestions: [],
+      } as SuggestLotsResponse),
     enabled: enabled && !!orderId && !!productId,
   });

@@ -1,7 +1,6 @@
 import { axiosInstance } from "./apiClient";
 import { adaptRecipe } from "./adapters";
-import type { Recipe } from "../types";
-import type { RecipeWithIngredients, CreateRecipePayload } from "../types/production";
+import type { CreateRecipePayload } from "../types/production";
 
 const recipeService = {
   list: () =>

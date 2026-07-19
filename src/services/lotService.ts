@@ -1,6 +1,5 @@
 import { axiosInstance } from "./apiClient";
 import { adaptLot, adaptStockMovement } from "./adapters";
-import type { Lot } from "../types";
 
 const lotService = {
   getAll: () =>

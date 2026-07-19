@@ -33,7 +33,7 @@ export const useCustomers = () =>
 // ─── Price / Availability ─────────────────────────────────────────────────────
 
 export const usePriceList = (id: string) =>
-  useQuery<PriceListWithItems, Error>({
+  useQuery<PriceListWithItems | null, Error>({
     queryKey: CACHE_KEY_PRICE_LIST(id),
     queryFn: () => priceListService.get(id),
     enabled: !!id,

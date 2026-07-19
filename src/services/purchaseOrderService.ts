@@ -1,6 +1,5 @@
 import { axiosInstance } from "./apiClient";
 import { adaptPurchaseOrder } from "./adapters";
-import type { PurchaseOrderWithLines } from "../types";
 
 const purchaseOrderService = {
   getAll: () =>

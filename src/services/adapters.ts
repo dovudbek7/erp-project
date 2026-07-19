@@ -1,18 +1,16 @@
 // Adapters: backend snake_case → frontend camelCase types
 
 import type {
-  Product, Warehouse, Supplier, Customer, Lot, Recipe, RecipeIngredient,
-  ProductionOrder, SalesOrder, PurchaseOrder, PurchaseOrderLine,
+  Product, Warehouse, Supplier, Customer, Lot, RecipeIngredient,
+  PurchaseOrderLine,
   StockMovement, User,
 } from "../types";
 import type { RecipeWithIngredients, ProductionOrderWithDetail } from "../types/production";
-import type { SalesOrderWithLines, PriceListWithItems } from "../types/sales";
+import type { SalesOrderWithLines } from "../types/sales";
 import type { PurchaseOrderWithLines } from "../types";
 
 const s = String;
 const now = () => new Date().toISOString();
-
-function toUpperStatus(v: string) { return v?.toUpperCase().replace(/-/g, "_"); }
 
 // ── Product ──────────────────────────────────────────────────
 export function adaptProduct(p: any): Product {

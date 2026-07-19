@@ -1,6 +1,6 @@
 import { axiosInstance } from "./apiClient";
 import { adaptSalesOrder } from "./adapters";
-import type { CreateSalesOrderPayload, SalesOrderWithLines } from "../types/sales";
+import type { CreateSalesOrderPayload } from "../types/sales";
 
 interface ListParams { status?: string; customerId?: string; }
 

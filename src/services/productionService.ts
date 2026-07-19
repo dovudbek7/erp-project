@@ -1,7 +1,6 @@
 import { axiosInstance } from "./apiClient";
 import { adaptProductionOrder } from "./adapters";
-import type { ProductionOrder } from "../types";
-import type { ProductionOrderWithDetail, CreateProductionOrderPayload } from "../types/production";
+import type { CreateProductionOrderPayload } from "../types/production";
 
 interface ListParams { status?: string; recipeId?: string; }
 
