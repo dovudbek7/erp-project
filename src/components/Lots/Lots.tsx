@@ -15,12 +15,14 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
 import z from "zod";
 import React from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 import { CACHE_KEY_LOTS } from "../../constants";
 import useGridSelection from "../../hooks/useGridSelection";
 import useLots from "../../hooks/useLots";
 import useProducts from "../../hooks/useProducts";
 import useWarehouse from "../../hooks/useWarehouse";
-import { type Lot } from "../../types";
+import lotService from "../../services/lotService";
 import BackButton from "../common/BackButton";
 import DataGridToolbar from "../common/DataGridToolbar";
 import DeleteSelectedBar from "../common/DeleteSelectedBar";
@@ -46,7 +48,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
+const AddLot = ({ onClose }: { onClose: () => void }) => {
   const {
     handleSubmit,
     register,
@@ -60,11 +62,20 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
   const { t } = useTranslation();
   const { data: products = [] } = useProducts();
   const { data: warehouses = [] } = useWarehouse();
+  const queryClient = useQueryClient();
 
-  const onSubmit = (data: FormData) => {
-    onAdd(data);
-    reset();
-  };
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: FormData) => lotService.post(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: CACHE_KEY_LOTS });
+      toast.success(t("common.saved"));
+      reset();
+      onClose();
+    },
+    onError: () => toast.error(t("common.error")),
+  });
+
+  const onSubmit = (data: FormData) => mutate(data);
 
   return (
     <div className="mt-4 w-[90vw] max-w-[300px] right-2 md:right-[60px] absolute z-10 py-[35px] border p-[20px] rounded-2xl border-gray-400 bg-white max-h-[80vh] overflow-y-auto">
@@ -282,8 +293,8 @@ const AddLot = ({ onAdd }: { onAdd: (data: FormData) => void }) => {
           </div>
         </div>
 
-        <Button type="submit" className="bg-blue-500" variant="contained">
-          {t("common.submit")}
+        <Button type="submit" variant="contained" disabled={isPending}>
+          {isPending ? t("common.loading") : t("common.submit")}
         </Button>
       </form>
     </div>
@@ -372,17 +383,6 @@ function Lots() {
     clear,
   } = useGridSelection();
 
-  const [added, setAdded] = React.useState<Lot[]>([]);
-  const addRow = (form: FormData) => {
-    const newRow = {
-      id: `lot-${String(added.length + 1).padStart(3, "0")}`,
-      ...form,
-    } as unknown as Lot;
-    setAdded((prev) => [newRow, ...prev]);
-  };
-
-  const rows = [...added, ...(data ?? [])];
-
   const [addL, setAddL] = React.useState(false);
 
   const paginationModel = { page: 0, pageSize: 5 };
@@ -409,7 +409,7 @@ function Lots() {
             </Button>
           </div>
         </div>
-        {addL && <AddLot onAdd={addRow} />}
+        {addL && <AddLot onClose={() => setAddL(false)} />}
         {data ? (
           <div className="mt-5">
             <DeleteSelectedBar
@@ -422,7 +422,7 @@ function Lots() {
             <Paper sx={{ height: "auto" }} style={{ borderRadius: "20px" }}>
               <DataGrid
                 style={{ borderRadius: "20px" }}
-                rows={rows}
+                rows={data ?? []}
                 getRowId={(row) => row.id}
                 onRowClick={(params) => navigate(`/lots/${params.id}`)}
                 columns={columns}

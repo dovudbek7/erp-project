@@ -1,14 +1,1 @@
-import { useQuery } from "@tanstack/react-query";
-import { CACHE_KEY_WAREHOUSE } from "../constants";
-import { type Warehouse } from "../types";
-
-import warehouseService from "../services/warehouseService";
-
-const useWarehouse = () => {
-  return useQuery<Warehouse[], Error>({
-    queryKey: CACHE_KEY_WAREHOUSE,
-    queryFn: warehouseService.getAll,
-  });
-};
-
-export default useWarehouse;
+export { useWarehouse as default } from "./inventory";

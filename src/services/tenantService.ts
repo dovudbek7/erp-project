@@ -1,4 +1,8 @@
-import { type Tenant } from "../types";
-import APICLIENT from "./apiClient";
-
-export default new APICLIENT<Tenant>("tenant");
+// No backend endpoint — stub
+const tenantService = {
+  getAll: () => Promise.resolve([]),
+  get: () => Promise.resolve(null),
+  post: () => Promise.resolve(null),
+  del: () => Promise.resolve(null),
+};
+export default tenantService;

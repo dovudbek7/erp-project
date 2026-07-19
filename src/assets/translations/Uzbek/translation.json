@@ -7,10 +7,27 @@
     "purchaseOrders": "Xarid buyurtmalari",
     "production": "Ishlab chiqarish",
     "recipes": "Retseptlar",
+    "salesOrders": "Sotuv buyurtmalari",
+    "users": "Ishchilar",
+    "logout": "Chiqish",
     "yieldReport": "Hosildorlik hisoboti",
     "valuation": "Baholash",
     "traceability": "Kuzatuv",
     "tagline": "Go'sht ERP"
+  },
+  "usersPage": {
+    "name": "Ishchilar",
+    "desc": "Ishchi accountlari va ularning kirish huquqlari.",
+    "addTitle": "Ishchi qo'shish",
+    "editTitle": "Ishchini tahrirlash",
+    "username": "Login",
+    "email": "Email",
+    "fullName": "Ism familiya",
+    "phone": "Telefon raqami",
+    "password": "Parol",
+    "role": "Roli",
+    "permissions": "Ruxsatlar",
+    "active": "Faol"
   },
   "productPage": {
     "name": "Mahsulotlar",
@@ -77,15 +94,32 @@
     "deleteConfirmTitle": "{{count}} ta tanlangan o'chirilsinmi?",
     "deleteConfirmBody": "Bu tanlanganlarni butunlay o'chiradi. Buni qaytarib bo'lmaydi.",
     "deleteSuccess": "{{count}} ta o'chirildi",
-    "deleteError": "O'chirib bo'lmadi"
+    "deleteError": "O'chirib bo'lmadi",
+    "yes": "Ha",
+    "no": "Yo'q"
   },
   "auth": {
     "title": "Tashkilotingizga kiring",
+    "subtitle": "Davom etish uchun ma'lumotlaringizni kiriting",
     "email": "Email",
-    "password": "Parol"
+    "phone": "Telefon raqami",
+    "password": "Parol",
+    "loginFailed": "Kirib bo'lmadi",
+    "workerTab": "Ishchi",
+    "adminTab": "Admin",
+    "workerDesc": "Sizga biriktirilgan bo'limlarga kirasiz.",
+    "adminDesc": "Tizimni to'liq boshqarasiz va ishchi qo'sha olasiz.",
+    "heroTitle": "Andijan Meat Co",
+    "heroSubtitle": "Go'sht ishlab chiqarish va ombor boshqaruvi uchun ERP.",
+    "heroBullet1": "Ombor va partiyalarni real vaqtda kuzating",
+    "heroBullet2": "Ishlab chiqarish va retseptlarni boshqaring",
+    "heroBullet3": "Xarid va sotuv buyurtmalarini nazorat qiling",
+    "showPassword": "Parolni ko'rsatish",
+    "hidePassword": "Parolni yashirish"
   },
   "navbar": {
-    "content": "Kontent maydoni"
+    "content": "Kontent maydoni",
+    "hello": "Salom"
   },
   "enums": {
     "RAW_MATERIAL": "Xomashyo",
@@ -119,7 +153,13 @@
     "INVOICED": "Hisob-faktura chiqarilgan",
     "SHIPPED": "Jo'natilgan",
     "RECEIVED": "Qabul qilingan",
-    "PARTIALLY_RECEIVED": "Qisman qabul qilingan"
+    "PARTIALLY_RECEIVED": "Qisman qabul qilingan",
+    "admin": "Admin",
+    "production_manager": "Ishlab chiqarish menejeri",
+    "warehouse_operator": "Ombor operatori",
+    "sales": "Savdo",
+    "accountant": "Hisobchi",
+    "staff": "Xodim"
   },
   "expiry": {
     "left": "{{n}} kun qoldi",

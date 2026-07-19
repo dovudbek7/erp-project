@@ -195,7 +195,7 @@ function ReportsDashboard() {
                   {t("reports.last30")}
                 </p>
                 <div style={{ width: "100%", height: 260 }}>
-                  <ResponsiveContainer>
+                  <ResponsiveContainer width="100%" height="100%">
                     <AreaChart
                       data={data.productionOutput30d}
                       margin={{ top: 5, right: 10, bottom: 0, left: -10 }}

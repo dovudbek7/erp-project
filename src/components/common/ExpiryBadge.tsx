@@ -6,15 +6,8 @@ interface Props {
 }
 const ExpiryBadge = ({ expiryDate }: Props) => {
   const { t } = useTranslation();
-  const d = new Date();
-  const year = d.getFullYear();
-  const month = d.getMonth() + 1;
-  const day = d.getUTCDate();
-  const now = year + "-" + month + "-" + day;
-
   const eDate = moment(expiryDate);
-
-  const total = eDate.diff(now, "days");
+  const total = eDate.diff(moment().startOf("day"), "days");
 
   const expired =
     total > 0 ? t("expiry.left", { n: total }) : t("expiry.expired");

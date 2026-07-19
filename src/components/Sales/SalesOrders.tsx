@@ -120,7 +120,7 @@ function SalesOrders() {
       </div>
 
       <div className="flex flex-wrap gap-3 mt-5">
-        <FormControl size="small" className="w-full sm:w-auto sm:min-w-[180px]">
+        <FormControl size="small" sx={{ width: { xs: "100%", sm: 180 } }}>
           <InputLabel id="so-status">{t("sales.list.status")}</InputLabel>
           <Select
             labelId="so-status"
@@ -137,7 +137,7 @@ function SalesOrders() {
           </Select>
         </FormControl>
 
-        <FormControl size="small" className="w-full sm:w-auto sm:min-w-[220px]">
+        <FormControl size="small" sx={{ width: { xs: "100%", sm: 220 } }}>
           <InputLabel id="so-customer">{t("sales.list.customer")}</InputLabel>
           <Select
             labelId="so-customer"

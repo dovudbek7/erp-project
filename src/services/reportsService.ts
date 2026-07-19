@@ -1,36 +1,57 @@
-import axios from "axios";
-import type {
-  DashboardReport,
-  YieldReport,
-  YieldReportParams,
-  ValuationReport,
-  ValuationParams,
-  TraceabilityReport,
-  TraceDirection,
-} from "../types/reports";
+import { axiosInstance } from "./apiClient";
+import type { DashboardReport } from "../types/reports";
 
-// Local axios instance so this file owns the /reports endpoints without
-// editing the shared apiClient.
-const api = axios.create({ baseURL: "/api/" });
+interface BackendDashboard {
+  stock_on_hand: number;
+  lots_expiring_soon: number;
+  active_production: number;
+  todays_output: number;
+  outstanding_ar: number;
+  production_output: Record<string, string>;
+  lots_expiring_this_week: Array<{
+    lot_number: number;
+    product: string;
+    quantity: number;
+    uom: string;
+    expires_at: string;
+    status: string;
+  }>;
+}
+
+function adaptDashboard(d: BackendDashboard): DashboardReport {
+  return {
+    stockOnHandValue: String(d.stock_on_hand ?? 0),
+    activeProductionOrders: d.active_production ?? 0,
+    todayProductionOutput: String(d.todays_output ?? 0),
+    outstandingAR: String(d.outstanding_ar ?? 0),
+    currency: "UZS",
+    lotsExpiringSoon: (d.lots_expiring_this_week ?? []).map((l) => ({
+      lotId: String(l.lot_number),
+      lotNumber: String(l.lot_number),
+      productId: "",
+      productName: l.product,
+      warehouseId: "",
+      currentQuantity: String(l.quantity),
+      uom: l.uom,
+      expiryDate: l.expires_at,
+      daysToExpiry: 0,
+      value: "0",
+    })),
+    productionOutput30d: Object.entries(d.production_output ?? {}).map(([date, qty]) => ({
+      date,
+      quantity: Number(qty),
+    })),
+  };
+}
 
 const reportsService = {
   dashboard: () =>
-    api.get<DashboardReport>("reports/dashboard").then((r) => r.data),
+    axiosInstance.get<BackendDashboard>("dashboard").then((r) => adaptDashboard(r.data)),
 
-  yield: (params: YieldReportParams) =>
-    api.get<YieldReport>("reports/yield", { params }).then((r) => r.data),
-
-  valuation: (params: ValuationParams) =>
-    api
-      .get<ValuationReport>("reports/inventory-valuation", { params })
-      .then((r) => r.data),
-
-  traceability: (lotId: string, direction: TraceDirection) =>
-    api
-      .get<TraceabilityReport>("reports/traceability", {
-        params: { lotId, direction },
-      })
-      .then((r) => r.data),
+  // Not in backend
+  yield: (_params?: any) => Promise.resolve(null),
+  valuation: (_params?: any) => Promise.resolve(null),
+  traceability: (_lotId?: string, _dir?: any) => Promise.resolve(null),
 };
 
 export default reportsService;

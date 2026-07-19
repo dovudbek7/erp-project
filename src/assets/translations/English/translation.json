@@ -7,10 +7,27 @@
     "purchaseOrders": "Purchase Orders",
     "production": "Production",
     "recipes": "Recipes",
+    "salesOrders": "Sales Orders",
+    "users": "Users",
+    "logout": "Log out",
     "yieldReport": "Yield Report",
     "valuation": "Valuation",
     "traceability": "Traceability",
     "tagline": "Meat ERP"
+  },
+  "usersPage": {
+    "name": "Users",
+    "desc": "Worker accounts and what each of them can access.",
+    "addTitle": "Add a worker",
+    "editTitle": "Edit worker",
+    "username": "Username",
+    "email": "Email",
+    "fullName": "Full name",
+    "phone": "Phone number",
+    "password": "Password",
+    "role": "Role",
+    "permissions": "Permissions",
+    "active": "Active"
   },
   "productPage": {
     "name": "Product",
@@ -91,15 +108,32 @@
     "deleteConfirmTitle": "Delete {{count}} selected?",
     "deleteConfirmBody": "This permanently removes the selected items. This cannot be undone.",
     "deleteSuccess": "Deleted {{count}}",
-    "deleteError": "Failed to delete"
+    "deleteError": "Failed to delete",
+    "yes": "Yes",
+    "no": "No"
   },
   "auth": {
     "title": "Sign in to your tenant",
+    "subtitle": "Enter your details to continue",
     "email": "Email",
-    "password": "Password"
+    "phone": "Phone number",
+    "password": "Password",
+    "loginFailed": "Login failed",
+    "workerTab": "Worker",
+    "adminTab": "Admin",
+    "workerDesc": "You'll get access to the sections assigned to you.",
+    "adminDesc": "Manage the whole system and add workers.",
+    "heroTitle": "Andijan Meat Co",
+    "heroSubtitle": "ERP for meat production and warehouse management.",
+    "heroBullet1": "Track warehouses and lots in real time",
+    "heroBullet2": "Manage production and recipes",
+    "heroBullet3": "Oversee purchase and sales orders",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "navbar": {
-    "content": "Content area"
+    "content": "Content area",
+    "hello": "Hello"
   },
   "enums": {
     "RAW_MATERIAL": "Raw material",
@@ -133,7 +167,13 @@
     "INVOICED": "Invoiced",
     "SHIPPED": "Shipped",
     "RECEIVED": "Received",
-    "PARTIALLY_RECEIVED": "Partially received"
+    "PARTIALLY_RECEIVED": "Partially received",
+    "admin": "Admin",
+    "production_manager": "Production Manager",
+    "warehouse_operator": "Warehouse Operator",
+    "sales": "Sales",
+    "accountant": "Accountant",
+    "staff": "Staff"
   },
   "expiry": {
     "left": "{{n}}D left",

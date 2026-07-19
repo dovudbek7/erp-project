@@ -1,6 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import Auth from "../components/Auth/Auth";
 import Layout from "../components/Layout";
+import PrivateRoute from "../components/common/PrivateRoute";
+import AdminRoute from "../components/common/AdminRoute";
+import Users from "../components/Users/Users";
 import Lots from "../components/Lots/Lots";
 import Products from "../components/Products/Products";
 import Warehouse from "../components/Warehouse/Warehouse";
@@ -26,40 +29,46 @@ import InventoryValuation from "../components/Reports/InventoryValuation";
 import Traceability from "../components/Reports/Traceability";
 
 const router = createBrowserRouter([
+  { path: "/register", element: <Auth /> },
   {
-    path: "/",
-    element: <Layout />,
+    element: <PrivateRoute />,
     children: [
-      { path: "/", element: <ReportsDashboard /> },
       {
-        path: "/lots/",
-        element: <Lots />,
+        path: "/",
+        element: <Layout />,
+        children: [
+          { path: "/", element: <ReportsDashboard /> },
+          { path: "/lots/", element: <Lots /> },
+          { path: "/lots/:id", element: <LotsDetail /> },
+          { path: "/products", element: <Products /> },
+          { path: "/products/:id", element: <ProductDetail /> },
+          { path: "/warehouses", element: <Warehouse /> },
+          { path: "/warehouses/:id", element: <WarehouseDetail /> },
+          { path: "/purchase-orders", element: <PurchaseOrders /> },
+          { path: "/purchase-orders/new", element: <CreatePurchaseOrder /> },
+          { path: "/purchase-orders/:id", element: <PurchaseOrderDetail /> },
+          { path: "/purchase-orders/:id/receive", element: <ReceiveGoods /> },
+          { path: "/production/orders", element: <ProductionOrders /> },
+          { path: "/production/orders/new", element: <NewProductionOrder /> },
+          { path: "/production/orders/:id", element: <ProductionOrderDetail /> },
+          { path: "/recipes", element: <Recipes /> },
+          { path: "/recipes/new", element: <RecipeForm /> },
+          { path: "/recipes/:id", element: <RecipeDetail /> },
+          { path: "/recipes/:id/edit", element: <RecipeForm /> },
+          { path: "/sales/orders", element: <SalesOrders /> },
+          { path: "/sales/orders/new", element: <NewSalesOrder /> },
+          { path: "/sales/orders/:id", element: <SalesOrderDetail /> },
+          { path: "/reports/yield", element: <YieldReport /> },
+          { path: "/reports/inventory-valuation", element: <InventoryValuation /> },
+          { path: "/reports/traceability", element: <Traceability /> },
+          {
+            element: <AdminRoute />,
+            children: [{ path: "/users", element: <Users /> }],
+          },
+        ],
       },
-      { path: "/lots/:id", element: <LotsDetail /> },
-      { path: "/products", element: <Products /> },
-      { path: "/products/:id", element: <ProductDetail /> },
-      { path: "/warehouses", element: <Warehouse /> },
-      { path: "/warehouses/:id", element: <WarehouseDetail /> },
-      { path: "/purchase-orders", element: <PurchaseOrders /> },
-      { path: "/purchase-orders/new", element: <CreatePurchaseOrder /> },
-      { path: "/purchase-orders/:id", element: <PurchaseOrderDetail /> },
-      { path: "/purchase-orders/:id/receive", element: <ReceiveGoods /> },
-      { path: "/production/orders", element: <ProductionOrders /> },
-      { path: "/production/orders/new", element: <NewProductionOrder /> },
-      { path: "/production/orders/:id", element: <ProductionOrderDetail /> },
-      { path: "/recipes", element: <Recipes /> },
-      { path: "/recipes/new", element: <RecipeForm /> },
-      { path: "/recipes/:id", element: <RecipeDetail /> },
-      { path: "/recipes/:id/edit", element: <RecipeForm /> },
-      { path: "/sales/orders", element: <SalesOrders /> },
-      { path: "/sales/orders/new", element: <NewSalesOrder /> },
-      { path: "/sales/orders/:id", element: <SalesOrderDetail /> },
-      { path: "/reports/yield", element: <YieldReport /> },
-      { path: "/reports/inventory-valuation", element: <InventoryValuation /> },
-      { path: "/reports/traceability", element: <Traceability /> },
     ],
   },
-  { path: "/register", element: <Auth /> },
 ]);
 
 export default router;

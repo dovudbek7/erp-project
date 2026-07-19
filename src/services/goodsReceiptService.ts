@@ -1,4 +1,10 @@
-import { type GoodsReceipt } from "../types";
-import APICLIENT from "./apiClient";
+// Replaced by receivePurchaseOrder in purchaseOrderService.ts — stub
+import type { GoodsReceipt } from "../types";
 
-export default new APICLIENT<GoodsReceipt>("goods-receipts");
+const goodsReceiptService = {
+  getAll: () => Promise.resolve([] as GoodsReceipt[]),
+  get: () => Promise.resolve(null),
+  post: () => Promise.resolve(null),
+  del: () => Promise.resolve(null),
+};
+export default goodsReceiptService;

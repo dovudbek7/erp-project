@@ -1,59 +1,68 @@
-import axios from "axios";
-import type { SalesOrder } from "../types";
-import type {
-  ConfirmSalesOrderPayload,
-  CreateSalesOrderPayload,
-  DeliverSalesOrderPayload,
-  SalesOrderWithLines,
-  SuggestAllocationsResponse,
-} from "../types/sales";
+import { axiosInstance } from "./apiClient";
+import { adaptSalesOrder } from "./adapters";
+import type { CreateSalesOrderPayload, SalesOrderWithLines } from "../types/sales";
 
-// Local axios instance (mirrors services/apiClient.ts) so this file owns the
-// sales-order endpoints without editing the shared apiClient.
-const api = axios.create({ baseURL: "/api/" });
-
-interface ListParams {
-  status?: string;
-  customerId?: string;
-}
+interface ListParams { status?: string; customerId?: string; }
 
 const salesOrderService = {
   list: (params: ListParams = {}) =>
-    api.get<SalesOrder[]>("sales-orders", { params }).then((r) => r.data),
+    axiosInstance.get<any[]>("sales-orders", { params })
+      .then((r) => r.data.map(adaptSalesOrder)),
 
-  get: (id: string) =>
-    api.get<SalesOrderWithLines>(`sales-orders/${id}`).then((r) => r.data),
+  get: (so_number: string) =>
+    axiosInstance.get<any>(`sales-orders/${so_number}`)
+      .then((r) => adaptSalesOrder(r.data)),
 
   create: (payload: CreateSalesOrderPayload) =>
-    api
-      .post<SalesOrderWithLines>("sales-orders", payload)
-      .then((r) => r.data),
+    axiosInstance.post<any>("sales-orders", {
+      customer_id: Number(payload.customerId),
+      warehouse_id: Number(payload.warehouseId),
+      promised_date: payload.promisedDate,
+      notes: payload.notes ?? null,
+      items: (payload.lines ?? []).map((l) => ({
+        product_id: Number(l.productId),
+        quantity: Number(l.orderedQuantity),
+        unit_price: Number(l.unitPrice),
+      })),
+    }).then((r) => adaptSalesOrder(r.data)),
 
-  confirm: (id: string, payload: ConfirmSalesOrderPayload) =>
-    api
-      .post<SalesOrderWithLines>(`sales-orders/${id}/confirm`, payload)
-      .then((r) => r.data),
+  update: (so_number: string, payload: Partial<CreateSalesOrderPayload>) =>
+    axiosInstance.put<any>(`sales-orders/${so_number}`, {
+      customer_id: payload.customerId ? Number(payload.customerId) : undefined,
+      warehouse_id: payload.warehouseId ? Number(payload.warehouseId) : undefined,
+      promised_date: payload.promisedDate,
+      notes: payload.notes,
+    }).then((r) => adaptSalesOrder(r.data)),
 
-  pick: (id: string) =>
-    api.post<SalesOrderWithLines>(`sales-orders/${id}/pick`).then((r) => r.data),
+  confirm: (so_number: string, _payload?: any) =>
+    axiosInstance.post<any>(`sales-orders/${so_number}/confirm`)
+      .then((r) => adaptSalesOrder(r.data)),
 
-  deliver: (id: string, payload: DeliverSalesOrderPayload) =>
-    api
-      .post<SalesOrderWithLines>(`sales-orders/${id}/deliver`, payload)
-      .then((r) => r.data),
+  invoice: (so_number: string) =>
+    axiosInstance.post<any>(`sales-orders/${so_number}/invoice`)
+      .then((r) => adaptSalesOrder(r.data)),
 
-  suggestAllocations: (
-    orderId: string,
-    lineId: string,
-    productId: string,
-    quantity: string,
-  ) =>
-    api
-      .get<SuggestAllocationsResponse>(
-        `sales-orders/${orderId}/suggest-allocations`,
-        { params: { lineId, productId, quantity } },
-      )
-      .then((r) => r.data),
+  // map pick→confirm, deliver→invoice for backend compatibility
+  pick: (so_number: string) =>
+    axiosInstance.post<any>(`sales-orders/${so_number}/confirm`)
+      .then((r) => adaptSalesOrder(r.data)),
+
+  deliver: (so_number: string, _payload?: any) =>
+    axiosInstance.post<any>(`sales-orders/${so_number}/invoice`)
+      .then((r) => adaptSalesOrder(r.data)),
+
+  cancel: (so_number: string) =>
+    axiosInstance.post<any>(`sales-orders/${so_number}/cancel`)
+      .then((r) => adaptSalesOrder(r.data)),
+
+  remove: (so_number: string) =>
+    axiosInstance.delete(`sales-orders/${so_number}`).then((r) => r.data),
+
+  // Not in backend — return empty
+  suggestAllocations: (_orderId?: string, _lineId?: string, _productId?: string, _qty?: string) =>
+    Promise.resolve({
+      productId: _productId ?? "", lineId: _lineId ?? "", requestedQuantity: _qty ?? "0", shortfall: "0", suggestions: [],
+    }),
 };
 
 export default salesOrderService;

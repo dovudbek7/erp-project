@@ -1,18 +1,9 @@
-import axios from "axios";
+// No backend endpoint — stub
 import type { AvailabilityResponse, PriceListWithItems } from "../types/sales";
 
-const api = axios.create({ baseURL: "/api/" });
-
 const priceListService = {
-  get: (id: string) =>
-    api.get<PriceListWithItems>(`price-lists/${id}`).then((r) => r.data),
-
-  availability: (productId: string) =>
-    api
-      .get<AvailabilityResponse>("inventory/availability", {
-        params: { productId },
-      })
-      .then((r) => r.data),
+  get: (_id: string): Promise<PriceListWithItems | null> => Promise.resolve(null),
+  availability: (_productId: string): Promise<AvailabilityResponse> =>
+    Promise.resolve({ productId: _productId, onHand: "0", reserved: "0", available: "0" }),
 };
-
 export default priceListService;

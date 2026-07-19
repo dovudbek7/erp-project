@@ -17,18 +17,22 @@ export interface Tenant {
 }
 
 export type UserRole =
-  | "ADMIN"
-  | "PRODUCTION_MANAGER"
-  | "WAREHOUSE_OPERATOR"
-  | "SALES"
-  | "ACCOUNTANT";
+  | "admin"
+  | "production_manager"
+  | "warehouse_operator"
+  | "sales"
+  | "accountant"
+  | "staff";
 
 export interface User {
   id: string;
   tenantId: string;
-  email: string;
+  username: string | null;
+  email: string | null;
+  phone: string | null;
   fullName: string;
   role: UserRole;
+  permissions: string[];
   isActive: boolean;
   lastLoginAt: string;
   createdAt: string;

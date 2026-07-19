@@ -1,79 +1,63 @@
-import axios from "axios";
-import type {
-  ProductionOrder,
-  ProductionOrderInput,
-} from "../types";
-import type {
-  ProductionOrderWithDetail,
-  SuggestLotsResponse,
-  PatchInputPayload,
-  CompleteProductionPayload,
-  CreateProductionOrderPayload,
-} from "../types/production";
+import { axiosInstance } from "./apiClient";
+import { adaptProductionOrder } from "./adapters";
+import type { ProductionOrder } from "../types";
+import type { ProductionOrderWithDetail, CreateProductionOrderPayload } from "../types/production";
 
-// Local axios instance (mirrors services/apiClient.ts) so this file owns
-// the production endpoints without editing the shared apiClient.
-const api = axios.create({ baseURL: "/api/" });
-
-interface ListParams {
-  status?: string;
-  recipeId?: string;
-}
+interface ListParams { status?: string; recipeId?: string; }
 
 const productionService = {
   list: (params: ListParams = {}) =>
-    api
-      .get<ProductionOrder[]>("production-orders", { params })
-      .then((r) => r.data),
+    axiosInstance.get<any[]>("production-orders", { params })
+      .then((r) => r.data.map(adaptProductionOrder)),
 
-  get: (id: string) =>
-    api
-      .get<ProductionOrderWithDetail>(`production-orders/${id}`)
-      .then((r) => r.data),
+  get: (prd_number: string) =>
+    axiosInstance.get<any>(`production-orders/${prd_number}`)
+      .then((r) => adaptProductionOrder(r.data)),
 
   create: (payload: CreateProductionOrderPayload) =>
-    api
-      .post<ProductionOrderWithDetail>("production-orders", payload)
-      .then((r) => r.data),
+    axiosInstance.post<any>("production-orders", {
+      recipe_id: Number(payload.recipeId),
+      warehouse_id: Number(payload.warehouseId),
+      planned_output: Number(payload.plannedOutputQuantity),
+      schedule_for: payload.scheduledFor,
+      notes: payload.notes ?? null,
+    }).then((r) => adaptProductionOrder(r.data)),
 
-  update: (
-    id: string,
-    payload: { plannedOutputQuantity?: string; notes?: string | null },
-  ) =>
-    api
-      .patch<ProductionOrderWithDetail>(`production-orders/${id}`, payload)
-      .then((r) => r.data),
+  update: (prd_number: string, payload: Partial<CreateProductionOrderPayload>) =>
+    axiosInstance.put<any>(`production-orders/${prd_number}`, {
+      recipe_id: payload.recipeId ? Number(payload.recipeId) : undefined,
+      warehouse_id: payload.warehouseId ? Number(payload.warehouseId) : undefined,
+      planned_output: payload.plannedOutputQuantity ? Number(payload.plannedOutputQuantity) : undefined,
+      schedule_for: payload.scheduledFor,
+      notes: payload.notes,
+    }).then((r) => adaptProductionOrder(r.data)),
 
-  remove: (id: string) =>
-    api.delete(`production-orders/${id}`).then((r) => r.data),
+  remove: (prd_number: string) =>
+    axiosInstance.delete(`production-orders/${prd_number}`).then((r) => r.data),
 
-  start: (id: string) =>
-    api
-      .post<ProductionOrderWithDetail>(`production-orders/${id}/start`)
-      .then((r) => r.data),
+  start: (prd_number: string) =>
+    axiosInstance.post<any>(`production-orders/${prd_number}/start`)
+      .then((r) => adaptProductionOrder(r.data)),
 
-  complete: (id: string, payload: CompleteProductionPayload) =>
-    api
-      .post<ProductionOrderWithDetail>(
-        `production-orders/${id}/complete`,
-        payload,
-      )
-      .then((r) => r.data),
+  complete: (prd_number: string, payload: { actualOutputQuantity?: string; actual_output?: number }) => {
+    const actual_output = payload.actual_output ??
+      (payload.actualOutputQuantity ? Number(payload.actualOutputQuantity) : 0);
+    return axiosInstance
+      .post<any>(`production-orders/${prd_number}/complete`, { actual_output })
+      .then((r) => adaptProductionOrder(r.data));
+  },
 
-  patchInput: (orderId: string, inputId: string, payload: PatchInputPayload) =>
-    api
-      .patch<ProductionOrderInput>(
-        `production-orders/${orderId}/inputs/${inputId}`,
-        payload,
-      )
-      .then((r) => r.data),
+  cancel: (prd_number: string) =>
+    axiosInstance.post<any>(`production-orders/${prd_number}/cancel`)
+      .then((r) => adaptProductionOrder(r.data)),
 
-  suggestLots: (orderId: string, productId: string, quantity: string) =>
-    api
-      .get<SuggestLotsResponse>(`production-orders/${orderId}/suggest-lots`, {
-        params: { productId, quantity },
-      })
-      .then((r) => r.data),
+  // No backend endpoint for per-input patching — no-op
+  patchInput: (_orderId: string, inputId: string, payload: any) =>
+    Promise.resolve({ id: inputId, ...payload }),
+
+  // No backend endpoint for lot suggestion
+  suggestLots: (_orderId: string, _productId: string, _qty: string) =>
+    Promise.resolve({ suggestions: [] }),
 };
 
 export default productionService;
